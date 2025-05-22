@@ -1,0 +1,42 @@
+<h2>Modifier Poinçon — Étape 1</h2>
+
+<form [formGroup]="form" (ngSubmit)="next()">
+  <div class="grid-container">
+    <mat-form-field appearance="outline">
+      <mat-label>Code format</mat-label>
+      <input matInput formControlName="codeFormat" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Marque</mat-label>
+      <mat-select formControlName="marque">
+        <mat-option value="a">a</mat-option>
+        <mat-option value="b">b</mat-option>
+        <mat-option value="c">c</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Add other fields here in same style... -->
+    <mat-form-field appearance="outline">
+      <mat-label>Commentaire</mat-label>
+      <textarea matInput formControlName="commentaire"></textarea>
+    </mat-form-field>
+  </div>
+
+  <div class="file-upload">
+    <button mat-stroked-button color="accent" (click)="fileInput.click()" type="button">
+      {{ uploadedFileName ? 'Changer Fiche technique' : 'Ajouter Fiche technique' }}
+    </button>
+    <input #fileInput type="file" (change)="onFileChange($event)" hidden />
+
+    <div *ngIf="uploadedFileName">
+      <mat-icon color="primary">insert_drive_file</mat-icon>
+      <span>{{ uploadedFileName }}</span>
+      <button mat-button color="warn" (click)="removeFile()" type="button">Supprimer</button>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button mat-flat-button color="primary" type="submit">Suivant ⭢</button>
+  </div>
+</form>

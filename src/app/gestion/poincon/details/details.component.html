@@ -1,0 +1,57 @@
+<h2 class="page-title"> Détails du Poinçon</h2>
+
+<div class="details-container" *ngIf="poincon as p">
+
+  <!-- General Info -->
+  <mat-card class="info-card">
+    <mat-card-header>
+      <mat-card-title> Informations Générales</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="grid">
+        <div><strong>Code Format:</strong> {{ p.codeFormat }}</div>
+        <div><strong>Forme:</strong> {{ p.forme }}</div>
+        <div><strong>Marque:</strong> {{ p.marque }}</div>
+        <div><strong>Code GMAO:</strong> {{ p.codeGMAO }}</div>
+        <div><strong>Fournisseur:</strong> {{ p.fournisseur }}</div>
+        <div><strong>Clavetage:</strong> {{ p.clavetage }}</div>
+        <div><strong>Emplacement:</strong> {{ p.emplacementReception }}</div>
+        <div><strong>Date Réception:</strong> {{ p.dateReception | date }}</div>
+        <div><strong>Date Fabrication:</strong> {{ p.dateFabrication | date }}</div>
+        <div><strong>Date Mise en Service:</strong> {{ p.dateMiseEnService | date }}</div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Technical Info -->
+  <mat-card class="info-card">
+    <mat-card-header>
+      <mat-card-title> Caractéristiques Techniques</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="grid">
+        <div *ngIf="p.matrice"><strong>Matrice:</strong> {{ p.matrice }}</div>
+        <div *ngIf="p.largeur"><strong>Largeur:</strong> {{ p.largeur }}</div>
+        <div *ngIf="p.longueur"><strong>Longueur:</strong> {{ p.longueur }}</div>
+        <div *ngIf="p.refSup"><strong>Réf. Sup:</strong> {{ p.refSup }}</div>
+        <div *ngIf="p.refInf"><strong>Réf. Inf:</strong> {{ p.refInf }}</div>
+        <div *ngIf="p.diametre"><strong>Diamètre:</strong> {{ p.diametre }}</div>
+        <div *ngIf="p.chAdm"><strong>CH Adm:</strong> {{ p.chAdm }}</div>
+        <div *ngIf="p.status"><strong>Status:</strong> {{ p.status }}</div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Actions -->
+  <div class="actions">
+    <button mat-raised-button color="accent" (click)="openFiche()" *ngIf="p.ficheTechniqueUrl">
+      <mat-icon>description</mat-icon>
+      Télécharger la Fiche Technique
+    </button>
+
+    <button mat-stroked-button color="primary" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Retour à la liste
+    </button>
+  </div>
+</div>

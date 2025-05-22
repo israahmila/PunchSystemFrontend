@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Raison de la modification</h2>
+<mat-dialog-content>
+  <mat-form-field appearance="fill" style="width: 100%;">
+    <mat-label>Entrez la raison</mat-label>
+    <textarea matInput [(ngModel)]="reason" rows="4"></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Annuler</button>
+  <button mat-flat-button color="primary" (click)="submit()">Valider</button>
+</mat-dialog-actions>

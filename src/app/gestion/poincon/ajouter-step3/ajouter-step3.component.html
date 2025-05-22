@@ -1,0 +1,67 @@
+<form [formGroup]="form" (ngSubmit)="submit()" class="step3-form">
+    <div formArrayName="poincons">
+      <div
+        *ngFor="let group of controls; let i = index"
+        [formGroupName]="i"
+        class="poincon-card"
+      >
+        <mat-card>
+          <mat-card-title>Poinçon {{ i + 1 }}</mat-card-title>
+          <div class="grid-container">
+            <mat-form-field appearance="outline">
+              <mat-label>Code Format</mat-label>
+              <input matInput formControlName="codeFormat" />
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline">
+              <mat-label>Matrice</mat-label>
+              <input matInput formControlName="matrice" />
+            </mat-form-field>
+        
+            <mat-form-field appearance="outline">
+              <mat-label>Largeur (mm)</mat-label>
+              <input matInput type="number" formControlName="largeur" />
+            </mat-form-field>
+        
+            <mat-form-field appearance="outline">
+              <mat-label>Longueur (mm)</mat-label>
+              <input matInput type="number" formControlName="longueur" />
+            </mat-form-field>
+        
+            <mat-form-field appearance="outline">
+              <mat-label>Référence Supérieure</mat-label>
+              <input matInput formControlName="refSup" />
+            </mat-form-field>
+        
+            <mat-form-field appearance="outline">
+              <mat-label>Référence Inférieure</mat-label>
+              <input matInput formControlName="refInf" />
+            </mat-form-field>
+        
+            <mat-form-field appearance="outline">
+              <mat-label>Diamètre (mm)</mat-label>
+              <input matInput type="number" formControlName="diametre" />
+            </mat-form-field>
+        
+            <mat-form-field appearance="outline">
+              <mat-label>CH Adm</mat-label>
+              <input matInput formControlName="chAdm" />
+            </mat-form-field>
+        
+            <mat-form-field appearance="outline">
+              <mat-label>Status</mat-label>
+              <mat-select formControlName="status">
+                <mat-option value="actif">Actif</mat-option>
+                <mat-option value="inactif">Inactif</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  
+    <div class="form-actions">
+      <button mat-flat-button color="primary" type="submit">Soumettre</button>
+    </div>
+  </form>
+  

@@ -1,0 +1,120 @@
+<mat-sidenav-container class="layout-container">
+    <!-- Sidebar -->
+    <mat-sidenav mode="side" opened class="sidenav">
+      <!-- Logo/Header -->
+      <mat-toolbar color="primary" class="sidenav-title">
+        LOGO
+      </mat-toolbar>
+  
+      <!-- Navigation -->
+      <mat-nav-list>
+        <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link">
+          <mat-icon>dashboard</mat-icon>
+          <span>Dashboard</span>
+        </a>
+  
+        <mat-divider></mat-divider>
+  
+        <!-- Gestion Group -->
+        <div class="nav-section-title">Gestion</div>
+  
+        <a mat-list-item routerLink="/gestion/poincon/liste" routerLinkActive="active-link" (click)="debugClick('poincon')">
+          <mat-icon>category</mat-icon>
+          <span>Poinçons</span>
+        </a>
+  
+        <a mat-list-item routerLink="/gestion/utilisateurs" routerLinkActive="active-link">
+          <mat-icon>group</mat-icon>
+          <span>Utilisateurs</span>
+        </a>
+  
+        <a mat-list-item routerLink="/gestion/fournisseurs" routerLinkActive="active-link">
+          <mat-icon>store</mat-icon>
+          <span>Fournisseurs</span>
+        </a>
+  
+        <a mat-list-item routerLink="/gestion/marques" routerLinkActive="active-link">
+          <mat-icon>branding_watermark</mat-icon>
+          <span>Marques</span>
+        </a>
+  
+        <a mat-list-item routerLink="/gestion/formes" routerLinkActive="active-link">
+          <mat-icon>layers</mat-icon>
+          <span>Formes Poinçons</span>
+        </a>
+  
+        <a mat-list-item routerLink="/gestion/emplacement" routerLinkActive="active-link">
+          <mat-icon>place</mat-icon>
+          <span>Emplacements</span>
+        </a>
+  
+        <a mat-list-item routerLink="/gestion/etats" routerLinkActive="active-link">
+          <mat-icon>flag</mat-icon>
+          <span>États Poinçons</span>
+        </a>
+  
+        <a mat-list-item routerLink="/gestion/compresseuse" routerLinkActive="active-link">
+          <mat-icon>precision_manufacturing</mat-icon>
+          <span>Compresseuses</span>
+        </a>
+  
+        <a mat-list-item routerLink="/gestion/produits-entretien" routerLinkActive="active-link">
+          <mat-icon>science</mat-icon>
+          <span>Produits Entretien</span>
+        </a>
+  
+        <mat-divider></mat-divider>
+  
+        <!-- Suivi -->
+        
+  
+        <div class="nav-section-title">Suivi</div>
+        <a mat-list-item routerLink="/suivi/utilisation/liste" routerLinkActive="active-link" >
+          <mat-icon>search</mat-icon>
+          <span>Utilisation</span>
+        </a>
+
+        <a mat-list-item routerLink="/suivi/entretien/liste" routerLinkActive="active-link">
+          <mat-icon>search</mat-icon>
+          <span>Entretiens</span>
+        </a>
+  
+        <mat-divider></mat-divider>
+  
+        <!-- Historique -->
+        <div class="nav-section-title">Historique</div>
+        <a mat-list-item routerLink="/historique/exemple" routerLinkActive="active-link">
+          <mat-icon>history</mat-icon>
+          <span>Historique Exemple</span>
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+  
+    <!-- Main App Content -->
+    <mat-sidenav-content>
+      <!-- Topbar -->
+      <mat-toolbar color="primary" class="topbar">
+        <span class="page-title">Dashboard</span>
+        <span class="spacer"></span>
+  
+        <button mat-icon-button [matMenuTriggerFor]="userMenu">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+  
+        <mat-menu #userMenu="matMenu">
+          <button mat-menu-item>
+            <mat-icon>person</mat-icon> Profil
+          </button>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon> Se déconnecter
+          </button>
+        </mat-menu>
+      </mat-toolbar>
+  
+      <!-- Routed View -->
+      <main class="content">
+        <router-outlet></router-outlet>
+      </main>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  

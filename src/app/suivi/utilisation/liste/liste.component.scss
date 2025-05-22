@@ -1,0 +1,24 @@
+.table-wrapper {
+  margin: 20px;
+  overflow: auto;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.search-field {
+  width: 300px;
+  margin-left: 20px;
+}
+
+.export-button {
+  text-align: right;
+  margin: 20px;
+}

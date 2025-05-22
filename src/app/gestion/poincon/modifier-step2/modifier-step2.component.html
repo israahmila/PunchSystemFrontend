@@ -1,0 +1,50 @@
+<h2>Modifier Poinçon — Étape 2</h2>
+
+<form [formGroup]="form" (ngSubmit)="next()">
+  <mat-form-field appearance="outline">
+    <mat-label>Matrice</mat-label>
+    <input matInput formControlName="matrice" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Largeur</mat-label>
+    <input matInput formControlName="largeur" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Longueur</mat-label>
+    <input matInput formControlName="longueur" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Réf Sup</mat-label>
+    <input matInput formControlName="refSup" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Réf Inf</mat-label>
+    <input matInput formControlName="refInf" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Diamètre</mat-label>
+    <input matInput formControlName="diametre" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>CH ADM</mat-label>
+    <input matInput formControlName="chAdm" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Status</mat-label>
+    <mat-select formControlName="status">
+      <mat-option value="actif">Actif</mat-option>
+      <mat-option value="inactif">Inactif</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="form-actions">
+    <button mat-flat-button color="primary" type="submit">enregistrer</button>
+  </div>
+</form>

@@ -1,0 +1,120 @@
+<h2>Ajouter Poinçon</h2>
+
+<form [formGroup]="form" (ngSubmit)="next()" class="step-form">
+
+  <!-- === Grid Fields === -->
+  <div class="grid-container">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Code Format</mat-label>
+      <input matInput formControlName="codeFormat" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Marque</mat-label>
+      <mat-select formControlName="marque">
+        <mat-option value="a">a</mat-option>
+        <mat-option value="b">b</mat-option>
+        <mat-option value="c">c</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Forme</mat-label>
+      <input matInput formControlName="forme" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Code GMAO</mat-label>
+      <input matInput formControlName="codeGMAO" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Fournisseur</mat-label>
+      <mat-select formControlName="fournisseur">
+        <mat-option value="a">a</mat-option>
+        <mat-option value="b">b</mat-option>
+        <mat-option value="c">c</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Gravure Sup</mat-label>
+      <input matInput formControlName="gravureSup" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Gravure Inf</mat-label>
+      <input matInput formControlName="gravureInf" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Sécabilité</mat-label>
+      <mat-select formControlName="secabilite">
+        <mat-option value="oui">Oui</mat-option>
+        <mat-option value="non">Non</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Clavetage</mat-label>
+      <mat-select formControlName="clavetage">
+        <mat-option value="oui">Oui</mat-option>
+        <mat-option value="non">Non</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Emplacement Réception</mat-label>
+      <input matInput formControlName="emplacementReception" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Date Réception</mat-label>
+      <input matInput type="date" formControlName="dateReception" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Date Fabrication</mat-label>
+      <input matInput type="date" formControlName="dateFabrication" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Date Mise en service</mat-label>
+      <input matInput type="date" formControlName="dateMiseEnService" />
+    </mat-form-field>
+
+  </div>
+
+  <!-- === Commentaire === -->
+  <mat-form-field appearance="outline" class="textarea">
+    <mat-label>Commentaire</mat-label>
+    <textarea matInput rows="4" formControlName="commentaire"></textarea>
+  </mat-form-field>
+
+  <!-- === File Upload === -->
+  <div class="file-upload">
+    <button mat-stroked-button color="accent" type="button" (click)="fileInput.click()">
+      <mat-icon>attach_file</mat-icon>
+      Ajouter Fiche technique
+    </button>
+
+    <input #fileInput type="file" (change)="onFileChange($event)" hidden />
+
+    <div *ngIf="uploadedFileName" class="file-feedback">
+      <mat-icon color="primary">check_circle</mat-icon>
+      <span>Fichier sélectionné : {{ uploadedFileName }}</span>
+
+      <button mat-button type="button" color="primary" (click)="fileInput.click()">Changer</button>
+      <button mat-button type="button" color="warn" (click)="removeFile()">Supprimer</button>
+    </div>
+  </div>
+
+  <!-- === Action Button === -->
+  <div class="form-actions">
+    <button mat-flat-button color="primary" type="submit">
+      Suivant ⭢
+    </button>
+  </div>
+
+</form>

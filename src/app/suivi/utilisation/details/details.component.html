@@ -1,0 +1,21 @@
+<h2 class="page-title">Détails de l'Utilisation</h2>
+
+<div class="details-container" *ngIf="utilisation as u">
+  
+  <!-- General Info -->
+  <mat-card class="info-card">
+    <mat-card-header>
+      <mat-card-title>Informations Générales</mat-card-title>
+    </mat-card-header>
+    
+   
+  </mat-card>
+
+  <!-- Actions -->
+  <div class="actions">
+    <button mat-stroked-button color="primary" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Retour à la liste
+    </button>
+  </div>
+</div>

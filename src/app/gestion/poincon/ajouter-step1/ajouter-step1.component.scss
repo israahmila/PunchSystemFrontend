@@ -1,0 +1,63 @@
+.step-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem;
+  }
+  
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .textarea {
+    width: 100%;
+  }
+  
+  .file-upload {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .file-label {
+    cursor: pointer;
+    padding: 1rem;
+    background: #e0e0e0;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .file-feedback {
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+    color: #2e7d32;
+  
+    mat-icon {
+      font-size: 20px;
+    }
+  
+    button {
+      text-transform: none;
+      font-size: 14px;
+    }
+  }
+  
+  .file-label {
+    cursor: pointer;
+    color: #1976d2;
+    font-weight: 500;
+    display: inline-block;
+    margin-bottom: 4px;
+  }
+  
+  
+  
+  

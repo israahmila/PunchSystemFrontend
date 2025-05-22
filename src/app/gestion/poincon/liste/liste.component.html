@@ -1,0 +1,71 @@
+<mat-toolbar color="primary" class="toolbar">
+    <span>Liste Poinçons</span>
+    <span class="spacer"></span>
+    <button mat-raised-button color="accent" (click)="ajouter()">
+      <mat-icon>add</mat-icon> Ajouter
+    </button>
+  </mat-toolbar>
+  
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Rechercher</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Code, forme, fournisseur..." />
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+  
+  <div class="table-wrapper">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
+  
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let p">{{ p.id }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="codeFormat">
+        <th mat-header-cell *matHeaderCellDef>Code Format</th>
+        <td mat-cell *matCellDef="let p">{{ p.codeFormat }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="forme">
+        <th mat-header-cell *matHeaderCellDef>Forme</th>
+        <td mat-cell *matCellDef="let p">{{ p.forme }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="fournisseur">
+        <th mat-header-cell *matHeaderCellDef>Fournisseur</th>
+        <td mat-cell *matCellDef="let p">{{ p.fournisseur }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="emplacementReception">
+        <th mat-header-cell *matHeaderCellDef>Emplacement</th>
+        <td mat-cell *matCellDef="let p">{{ p.emplacementReception }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let p">
+            <button mat-icon-button color="primary" (click)="goToDetails(p.id)" matTooltip="Voir les détails">
+              <mat-icon>open_in_new</mat-icon>
+            </button>
+          
+            <button mat-icon-button color="accent" (click)="router.navigate(['/gestion/poincon/modifier', p.id])" matTooltip="Modifier">
+              <mat-icon>edit</mat-icon>
+            </button>
+          
+            <button mat-icon-button color="warn" (click)="deletePoincon(p.id)" matTooltip="Supprimer">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </td>
+          
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  
+    <mat-paginator [pageSize]="10" showFirstLastButtons></mat-paginator>
+  </div>
+  
+  <div class="export-button">
+    <button mat-stroked-button color="accent" (click)="exporter()">Exporter</button>
+  </div>
+  

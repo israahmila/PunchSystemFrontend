@@ -1,0 +1,23 @@
+.form-card {
+    margin: 20px;
+    padding: 20px;
+  }
+  
+  .form-grid,
+  .poincon-grid {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    margin-bottom: 20px;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+  }
+  
+  .full-width {
+    grid-column: 1 / -1;
+  }
+  
