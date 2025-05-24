@@ -1,21 +1,25 @@
-<h2 class="page-title">Détails de l'Utilisation</h2>
+<mat-card *ngIf="!isLoading && utilisation">
+  <mat-card-title>Détails de l'utilisation</mat-card-title>
+  <mat-card-content>
+    <div class="utilisation-details">
+      <p><strong>ID:</strong> {{ utilisation.id }}</p>
+      <p><strong>Date d'utilisation:</strong> {{ utilisation.dateUtilisation | date }}</p>
+      <p><strong>Date de retour:</strong> {{ utilisation.dateRetour | date }}</p>
+      <p><strong>Comprimeuse:</strong> {{ utilisation.compresseuse }}</p>
+      <p><strong>Nombre de Comprimés:</strong> {{ utilisation.nombreComprimes }}</p>
+      <p><strong>Emplacement Retour:</strong> {{ utilisation.emplacementRetour }}</p>
+      <p><strong>Commentaire:</strong> {{ utilisation.commentaire || '-' }}</p>
 
-<div class="details-container" *ngIf="utilisation as u">
-  
-  <!-- General Info -->
-  <mat-card class="info-card">
-    <mat-card-header>
-      <mat-card-title>Informations Générales</mat-card-title>
-    </mat-card-header>
-    
-   
-  </mat-card>
+      <p><strong>Utilisateurs:</strong> {{ utilisation.userIds.join(', ') }}</p>
+      <p><strong>Lots:</strong> {{ utilisation.lotNumbers.join(', ') }}</p>
+      <p><strong>Code Formats:</strong> {{ utilisation.codeFormats.join(', ') }}</p>
+      <p><strong>Poinçon IDs:</strong> {{ utilisation.poinconIds.join(', ') }}</p>
+      <p><strong>États des Poinçons:</strong> {{ utilisation.etatPoincons.join(', ') }}</p>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-stroked-button color="primary" (click)="back()">Retour</button>
+  </mat-card-actions>
+</mat-card>
 
-  <!-- Actions -->
-  <div class="actions">
-    <button mat-stroked-button color="primary" (click)="goBack()">
-      <mat-icon>arrow_back</mat-icon>
-      Retour à la liste
-    </button>
-  </div>
-</div>
+<mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>

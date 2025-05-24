@@ -1,3 +1,4 @@
+// details-utilisation.component.ts
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UtilisationService } from '../utilisation.service';
@@ -5,31 +6,25 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { Utilisation } from '../utilisation.model';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
-interface Utilisation {
-  numero: string;
-  date: Date;
-  utilisateur: string;
-  comprimeuse: string;
-  produit: string;
-  lot: string;
-  commentaires: string;
-}
 
 @Component({
   selector: 'app-details-utilisation',
-  standalone: true,
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss'],
   imports: [
     CommonModule,
     MatCardModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatProgressSpinner
   ]
 })
 export class DetailsUtilisationComponent implements OnInit {
   utilisation: Utilisation | null = null;
+  isLoading = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,24 +33,22 @@ export class DetailsUtilisationComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (!isNaN(id)) {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
       this.utilisationService.getOne(id).subscribe({
         next: (data) => {
-          //this.utilisation = data;
+          this.utilisation = data;
+          this.isLoading = false;
         },
         error: (err) => {
-          console.error('❌ Error fetching utilisation:', err);
-          this.router.navigate(['/suivi/utilisation/liste']);
+          console.error('Erreur lors de la récupération de l\'utilisation', err);
+          this.isLoading = false;
         }
       });
-    } else {
-      console.warn('Invalid ID in route');
-      this.router.navigate(['/suivi/utilisation/liste']);
     }
   }
 
-  goBack(): void {
+  back(): void {
     this.router.navigate(['/suivi/utilisation/liste']);
   }
 }

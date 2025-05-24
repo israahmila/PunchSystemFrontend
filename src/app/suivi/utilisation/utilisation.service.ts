@@ -1,54 +1,33 @@
+// utilisation.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Utilisation } from './utilisation.model';
 
-interface Utilisation {
-  id: number;
-  dateUtilisation: string;
-  dateRetour: string;
-  compresseuse: string;
-  nombreComprimés: number;
-  emplacementRetour: string;
-  commentaire: string;
-  lotNumbers: string[];
-  poinconIds: number[];
-  userIds: number[];
-  codeFormats: string[];
-  etatPoincons: string[];
-}
-
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class UtilisationService {
-  private baseUrl = 'https://localhost:7225/api/utilisations';
+  private apiUrl = 'https://localhost:7225/api/utilisations';
 
   constructor(private http: HttpClient) {}
 
-  // GET all utilisations
   getAll(): Observable<Utilisation[]> {
-    return this.http.get<Utilisation[]>(`${this.baseUrl}`);
+    return this.http.get<Utilisation[]>(this.apiUrl);
   }
 
-  // GET a single utilisation by ID
-  getOne(id: number): Observable<Utilisation> {
-    return this.http.get<Utilisation>(`${this.baseUrl}/${id}`);
+  getById(id: string): Observable<Utilisation> {
+    return this.http.get<Utilisation>(`${this.apiUrl}/${id}`);
   }
 
-  // POST a new utilisation
-  create(utilisation: Partial<Utilisation>): Observable<Utilisation> {
-    return this.http.post<Utilisation>(`${this.baseUrl}`, utilisation);
+  create(utilisation: Omit<Utilisation, 'id' | 'dateUtilisation' | 'codeFormats' | 'etatPoincons'>): Observable<Utilisation> {
+    return this.http.post<Utilisation>(this.apiUrl, utilisation);
   }
 
-  // PUT (update) an existing utilisation
-  update(id: number, utilisation: Partial<Utilisation>): Observable<void> {
-    return this.http.put<void>(`${this.baseUrl}/${id}`, utilisation);
+  update(id: string, utilisation: Partial<Utilisation>): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/${id}`, utilisation);
   }
 
-  // DELETE an existing utilisation
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  delete(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }
-
-

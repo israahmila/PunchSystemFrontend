@@ -1,67 +1,114 @@
+// ajouter-utilisation.component.ts
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { UtilisationService } from '../utilisation.service';
+import { Utilisation } from '../utilisation.model';
+import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-ajouter-utilisation',
-  standalone: true,
-  imports: [CommonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatCardModule,ReactiveFormsModule],
   templateUrl: './ajouter.component.html',
-  styleUrls: ['./ajouter.component.scss']
+  styleUrls: ['./ajouter.component.scss'],
+  imports: [
+  CommonModule,
+  ReactiveFormsModule,
+  MatCardModule,
+  MatFormFieldModule,
+  MatSelectModule,
+  MatInputModule,
+  MatButtonModule,
+  MatIconModule
+]
+
 })
 export class AjouterUtilisationComponent implements OnInit {
   utilisationForm!: FormGroup;
-  utilisateurs: string[] = ['Alice', 'Bob', 'Charlie'];
-  comprimeuses: string[] = ['Comprimeuse A', 'Comprimeuse B', 'Comprimeuse C'];
-  produits: string[] = ['Produit 1', 'Produit 2', 'Produit 3'];
-  emplacements: string[] = ['Emplacement A', 'Emplacement B', 'Emplacement C'];
-  lots: string[] = ['Lot 1', 'Lot 2', 'Lot 3'];
+  utilisateurs: string[] = [];
+  comprimeuses: string[] = [];
+  produits: string[] = [];
+  emplacements: string[] = [];
+  lots: string[] = [];
 
-  constructor(private fb: FormBuilder,public router: Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private utilisationService: UtilisationService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.utilisationForm = this.fb.group({
-      numero: ['', Validators.required],
       dateUtilisation: ['', Validators.required],
       dateRetour: ['', Validators.required],
-      utilisateurs: [[], Validators.required],
-      comprimeuses: [[], Validators.required],
+      userIds: [[], Validators.required],
+      compresseuse: ['', Validators.required],
       produit: ['', Validators.required],
       emplacementRetour: ['', Validators.required],
-      lots: [[], Validators.required],
-      comment: [''],
-      poincons: this.fb.array([])
+      lotNumbers: [[], Validators.required],
+      commentaire: [''],
+      poincons: this.fb.array([this.createPoinconGroup()])
     });
 
-    // Initialize with 30 empty poinçons
-    this.initPoincons(30);
+    // charger les valeurs simulées (à remplacer par des appels de service réels)
+    this.utilisateurs = ['User 1', 'User 2'];
+    this.comprimeuses = ['Machine A', 'Machine B'];
+    this.produits = ['Produit A', 'Produit B'];
+    this.emplacements = ['Zone A', 'Zone B'];
+    this.lots = ['Lot1', 'Lot2'];
   }
 
   get poinconsArray(): FormArray {
     return this.utilisationForm.get('poincons') as FormArray;
   }
 
-  initPoincons(count: number): void {
-    for (let i = 0; i < count; i++) {
-      this.poinconsArray.push(this.fb.group({
-        numero: [''],
-        etat: ['']
-      }));
-    }
+  createPoinconGroup(): FormGroup {
+    return this.fb.group({
+      numero: ['', Validators.required],
+      etat: ['', Validators.required]
+    });
+  }
+
+  addPoincon(): void {
+    this.poinconsArray.push(this.createPoinconGroup());
+  }
+
+  removePoincon(index: number): void {
+    this.poinconsArray.removeAt(index);
   }
 
   onSubmit(): void {
-    this.router.navigate(['/suivi/utilisation/liste']);
-    console.log(this.utilisationForm.value);
+    if (this.utilisationForm.invalid) {
+      return;
+    }
+
+    const formValue = this.utilisationForm.value;
+    const utilisation: Partial<Utilisation> = {
+      dateUtilisation: formValue.dateUtilisation,
+      dateRetour: formValue.dateRetour,
+      compresseuse: formValue.compresseuse,
+      nombreComprimes: formValue.nombreComprimés || 0,
+      emplacementRetour: formValue.emplacementRetour,
+      commentaire: formValue.commentaire,
+      lotNumbers: formValue.lotNumbers,
+      poinconIds: formValue.poincons.map((p: any) => p.numero),
+      etatPoincons: formValue.poincons.map((p:any) => p.etat),
+      userIds: formValue.userIds,
+      codeFormats: [] // à compléter selon logique de l'app
+    };
+
+    this.utilisationService.create(utilisation).subscribe({
+      next: () => this.router.navigate(['/suivi/utilisation/liste']),
+      error: err => console.error('Erreur lors de l\'enregistrement', err)
+    });
   }
 
   cancel(): void {
-    this.utilisationForm.reset();
+    this.router.navigate(['/suivi/utilisation/liste']);
   }
 }

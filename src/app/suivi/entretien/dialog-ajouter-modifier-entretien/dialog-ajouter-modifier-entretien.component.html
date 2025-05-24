@@ -1,0 +1,50 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Modifier Entretien' : 'Ajouter Entretien' }}</h2>
+<mat-dialog-content [formGroup]="form">
+  <mat-form-field appearance="outline">
+    <mat-label>Référence</mat-label>
+    <input matInput formControlName="reference">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Utilisateur</mat-label>
+    <mat-select formControlName="utilisateurId">
+      <mat-option *ngFor="let user of utilisateurs" [value]="user">{{ user }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Référence Poinçon</mat-label>
+    <mat-select formControlName="referencePoincon">
+      <mat-option *ngFor="let p of poincons" [value]="p">{{ p }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Type d'entretien</mat-label>
+    <mat-select formControlName="type">
+      <mat-option *ngFor="let t of types" [value]="t">{{ t }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Date</mat-label>
+    <input matInput type="date" formControlName="date">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Produit</mat-label>
+    <mat-select formControlName="produit">
+      <mat-option *ngFor="let p of produits" [value]="p">{{ p }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Commentaire</mat-label>
+    <textarea matInput formControlName="commentaire"></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Annuler</button>
+  <button mat-raised-button color="primary" (click)="submit()">Enregistrer</button>
+</mat-dialog-actions>

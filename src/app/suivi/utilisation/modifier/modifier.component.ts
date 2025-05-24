@@ -1,3 +1,4 @@
+// modifier-utilisation.component.ts
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { UtilisationService } from '../utilisation.service'; // Your API service
+import { UtilisationService } from '../utilisation.service';
 
 @Component({
   selector: 'app-modifier-utilisation',
@@ -32,7 +33,7 @@ export class ModifierUtilisationComponent implements OnInit {
   emplacements: string[] = ['Emplacement A', 'Emplacement B', 'Emplacement C'];
   lots: string[] = ['Lot 1', 'Lot 2', 'Lot 3'];
 
-  id!: number;
+  id!: string;
 
   constructor(
     private fb: FormBuilder,
@@ -42,7 +43,7 @@ export class ModifierUtilisationComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.id = +this.route.snapshot.paramMap.get('id')!;
+    this.id = this.route.snapshot.paramMap.get('id')!;
     this.utilisationForm = this.fb.group({
       numero: ['', Validators.required],
       dateUtilisation: ['', Validators.required],
@@ -78,7 +79,7 @@ export class ModifierUtilisationComponent implements OnInit {
           comment: data.commentaire
         });
 
-        const poincons = data.poinconIds.map((id: number, idx: number) => ({
+        const poincons = data.poinconIds.map((id: string, idx: number) => ({
           numero: id,
           etat: data.etatPoincons?.[idx] ?? ''
         }));
@@ -100,7 +101,7 @@ export class ModifierUtilisationComponent implements OnInit {
       ...this.utilisationForm.value,
       userIds: this.utilisationForm.value.utilisateurs,
       lotNumbers: this.utilisationForm.value.lots,
-      poinconIds: this.utilisationForm.value.poincons.map((p: any) => p.numero),
+      poinconIds: this.utilisationForm.value.poincons.map((p: any) => String(p.numero)),
       etatPoincons: this.utilisationForm.value.poincons.map((p: any) => p.etat),
       codeFormats: [this.utilisationForm.value.produit],
       compresseuse: this.utilisationForm.value.comprimeuses?.[0] ?? ''

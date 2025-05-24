@@ -1,0 +1,59 @@
+<mat-card>
+  <mat-card-title>Liste des Utilisateurs</mat-card-title>
+  <mat-card-content>
+    <div class="actions">
+      <button mat-raised-button color="primary" (click)="openAjouter()">Ajouter</button>
+    </div>
+
+    <table mat-table [dataSource]="utilisateurs" class="mat-elevation-z8">
+
+      <ng-container matColumnDef="nom">
+        <th mat-header-cell *matHeaderCellDef> Nom </th>
+        <td mat-cell *matCellDef="let user"> {{ user.nom }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="prenom">
+        <th mat-header-cell *matHeaderCellDef> Prénom </th>
+        <td mat-cell *matCellDef="let user"> {{ user.prenom }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="login">
+        <th mat-header-cell *matHeaderCellDef> Login </th>
+        <td mat-cell *matCellDef="let user"> {{ user.login }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef> Rôle </th>
+        <td mat-cell *matCellDef="let user"> {{ user.role }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="statut">
+        <th mat-header-cell *matHeaderCellDef> Statut </th>
+        <td mat-cell *matCellDef="let user"> {{ user.statut }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="derniereConnexion">
+        <th mat-header-cell *matHeaderCellDef> Dernière Connexion </th>
+        <td mat-cell *matCellDef="let user"> {{ user.derniereConnexion | date:'short' }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let user">
+          <button mat-icon-button color="accent" (click)="openModifier(user)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="supprimer(user.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-icon-button color="primary" (click)="openPermissions(user)">
+            <mat-icon>lock</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['nom', 'prenom', 'login', 'role', 'statut', 'derniereConnexion', 'actions']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['nom', 'prenom', 'login', 'role', 'statut', 'derniereConnexion', 'actions'];"></tr>
+    </table>
+  </mat-card-content>
+</mat-card>

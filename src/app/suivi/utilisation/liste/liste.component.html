@@ -1,145 +1,55 @@
-<!--<div class="liste-utilisations-container">
-    <h2>Liste des Utilisations</h2>
-  
-    
-    <div class="filter-section">
-      <mat-form-field appearance="outline" class="search-field">
-        <mat-label>Rechercher</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Code, forme, fournisseur..." />
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-form-field>
-      
+<mat-card class="mat-elevation-z3">
+  <mat-card-title>Liste des utilisations</mat-card-title>
+  <mat-card-content>
+    <div *ngIf="loading" class="loading-container">
+      <mat-spinner></mat-spinner>
     </div>
-    <div>
-      <button mat-raised-button color="accent" (click)="ajouterUtilisation()">Ajouter</button>
-    </div>
-  
-    
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
-      <ng-container matColumnDef="numero">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>N° Utilisation</th>
-        <td mat-cell *matCellDef="let utilisation">{{ utilisation.numero }}</td>
+
+    <table mat-table [dataSource]="utilisations" class="mat-elevation-z1" *ngIf="!loading">
+
+      <!-- Référence Column -->
+      <ng-container matColumnDef="reference">
+        <th mat-header-cell *matHeaderCellDef> Référence </th>
+        <td mat-cell *matCellDef="let element"> {{ element.id }} </td>
       </ng-container>
-  
-      <ng-container matColumnDef="date">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
-        <td mat-cell *matCellDef="let utilisation">{{ utilisation.date | date }}</td>
-      </ng-container>
-  
-      <ng-container matColumnDef="utilisateur">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Utilisateurs</th>
-        <td mat-cell *matCellDef="let utilisation">{{ utilisation.utilisateur }}</td>
-      </ng-container>
-  
+
+      <!-- Comprimeuse Column -->
       <ng-container matColumnDef="comprimeuse">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Comprimeuse</th>
-        <td mat-cell *matCellDef="let utilisation">{{ utilisation.comprimeuse }}</td>
+        <th mat-header-cell *matHeaderCellDef> Machine </th>
+        <td mat-cell *matCellDef="let element"> {{ element.comprimeuse }} </td>
       </ng-container>
-  
-      <ng-container matColumnDef="produit">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Produits</th>
-        <td mat-cell *matCellDef="let utilisation">{{ utilisation.produit }}</td>
+
+      <!-- Quantité Column -->
+      <ng-container matColumnDef="nombreComprims">
+        <th mat-header-cell *matHeaderCellDef> Nb Comprimés </th>
+        <td mat-cell *matCellDef="let element"> {{ element.nombreComprimes }} </td>
       </ng-container>
-  
-      <ng-container matColumnDef="lot">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>N° Lots</th>
-        <td mat-cell *matCellDef="let utilisation">{{ utilisation.lot }}</td>
+
+      <!-- Date Column -->
+      <ng-container matColumnDef="dateUtilisation">
+        <th mat-header-cell *matHeaderCellDef> Date </th>
+        <td mat-cell *matCellDef="let element"> {{ element.dateUtilisation | date:'short' }} </td>
       </ng-container>
-  
+
+      <!-- Actions Column -->
       <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Actions</th>
-        <td mat-cell *matCellDef="let utilisation">
-            <button mat-icon-button color="primary" (click)="goToDetails(utilisation.numero)" matTooltip="Voir les détails">
-                <mat-icon>open_in_new</mat-icon>
-              </button>
-          <button mat-icon-button (click)="edit(utilisation.numero)">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button color="warn" (click)="delete(utilisation.numero)">
-            <mat-icon>delete</mat-icon>
-          </button>
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-button color="primary" [routerLink]="['/suivi/utilisation/details', element.id]">Détails</button>
+          <button mat-button color="accent" [routerLink]="['/suivi/utilisation/modifier', element.id]">Modifier</button>
         </td>
       </ng-container>
-  
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-  
-    <mat-paginator [pageSize]="5"></mat-paginator>
-    <button mat-raised-button color="primary" (click)="exportToCSV()">Exporter</button>
-  </div>
-  !-->
+  </mat-card-content>
+</mat-card>
 
-
-  <mat-toolbar color="primary" class="toolbar">
-    <span>Liste Utilisations</span>
-    <span class="spacer"></span>
-    <button mat-raised-button color="accent" (click)="ajouter()">
-      <mat-icon>add</mat-icon> Ajouter
-    </button>
-  </mat-toolbar>
-  
-  <mat-form-field appearance="outline" class="search-field">
-    <mat-label>Rechercher</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="utilisateur,produit,lot....." />
-    <mat-icon matSuffix>search</mat-icon>
-  </mat-form-field>
-  <div class="table-wrapper">
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z2">
-      <ng-container matColumnDef="numero">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>N° Utilisation</th>
-        <td mat-cell *matCellDef="let utilisation">{{ utilisation.numero }}</td>
-      </ng-container>
-  
-      <ng-container matColumnDef="date">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
-        <td mat-cell *matCellDef="let utilisation">{{ utilisation.date | date }}</td>
-      </ng-container>
-  
-      <ng-container matColumnDef="utilisateur">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Utilisateurs</th>
-        <td mat-cell *matCellDef="let utilisation">{{ utilisation.utilisateur }}</td>
-      </ng-container>
-  
-      <ng-container matColumnDef="comprimeuse">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Comprimeuse</th>
-        <td mat-cell *matCellDef="let utilisation">{{ utilisation.comprimeuse }}</td>
-      </ng-container>
-  
-      <ng-container matColumnDef="produit">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Produits</th>
-        <td mat-cell *matCellDef="let utilisation">{{ utilisation.produit }}</td>
-      </ng-container>
-  
-      <ng-container matColumnDef="lot">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>N° Lots</th>
-        <td mat-cell *matCellDef="let utilisation">{{ utilisation.lot }}</td>
-      </ng-container>
-  
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Actions</th>
-        <td mat-cell *matCellDef="let utilisation">
-            <button mat-icon-button color="primary" (click)="goToDetails(utilisation.numero)" matTooltip="Voir les détails">
-                <mat-icon>open_in_new</mat-icon>
-              </button>
-          <button mat-icon-button (click)="edit(utilisation.numero)">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button color="warn" (click)="delete(utilisation.id)" matTooltip="Supprimer">
-            <mat-icon>delete</mat-icon>
-          </button>
-          </td>
-          
-      </ng-container>
-  
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-  
-    <mat-paginator [pageSize]="10" showFirstLastButtons></mat-paginator>
-  </div>
-  
-  <div class="export-button">
-    <button mat-stroked-button color="accent" (click)="exporter()">Exporter</button>
-  </div>
-  
+<style>
+.loading-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+</style>

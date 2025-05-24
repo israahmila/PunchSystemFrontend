@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>Gestion des Permissions</h2>
+<mat-dialog-content [formGroup]="form">
+  <div formArrayName="permissions">
+    <div *ngFor="let perm of permissionsArray.controls; let i = index" [formGroupName]="i" class="permission-card">
+      <mat-card>
+        <mat-card-title>{{ perm.value.module }}</mat-card-title>
+        <mat-card-content class="checkbox-grid">
+          <mat-checkbox formControlName="consulter">Consulter</mat-checkbox>
+          <mat-checkbox formControlName="ajouter">Ajouter</mat-checkbox>
+          <mat-checkbox formControlName="modifier">Modifier</mat-checkbox>
+          <mat-checkbox formControlName="supprimer">Supprimer</mat-checkbox>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Annuler</button>
+  <button mat-raised-button color="primary" (click)="submit()">Enregistrer</button>
+</mat-dialog-actions>

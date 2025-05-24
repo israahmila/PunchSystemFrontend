@@ -1,0 +1,66 @@
+<mat-card>
+  <mat-card-title>Liste Connexions</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="filterForm" class="filter-form">
+      <div class="filter-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Date</mat-label>
+          <input matInput type="date" formControlName="date">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Login</mat-label>
+          <mat-select formControlName="login">
+            <mat-option value="">Tous</mat-option>
+            <mat-option value="a">a</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" (click)="filtrer()">Filtrer</button>
+      </div>
+    </form>
+
+    <table mat-table [dataSource]="connexions" class="mat-elevation-z8">
+
+      <ng-container matColumnDef="nom">
+        <th mat-header-cell *matHeaderCellDef> Nom </th>
+        <td mat-cell *matCellDef="let row"> {{ row.nom }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="prenom">
+        <th mat-header-cell *matHeaderCellDef> Prénom </th>
+        <td mat-cell *matCellDef="let row"> {{ row.prenom }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef> Email </th>
+        <td mat-cell *matCellDef="let row"> {{ row.email }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="login">
+        <th mat-header-cell *matHeaderCellDef> Login </th>
+        <td mat-cell *matCellDef="let row"> {{ row.login }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef> Date </th>
+        <td mat-cell *matCellDef="let row"> {{ row.date | date:'short' }} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['nom', 'prenom', 'email', 'login', 'date']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['nom', 'prenom', 'email', 'login', 'date'];"></tr>
+    </table>
+
+    <div class="pagination">
+      <button mat-button disabled>1</button>
+      <button mat-button>2</button>
+      <button mat-button>3</button>
+      <button mat-button>...</button>
+      <button mat-button>6</button>
+    </div>
+
+    <div class="export">
+      <button mat-flat-button color="primary">Exporter</button>
+    </div>
+  </mat-card-content>
+</mat-card>
