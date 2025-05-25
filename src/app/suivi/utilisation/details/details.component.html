@@ -1,25 +1,27 @@
-<mat-card *ngIf="!isLoading && utilisation">
+<mat-card *ngIf="utilisation">
   <mat-card-title>Détails de l'utilisation</mat-card-title>
   <mat-card-content>
-    <div class="utilisation-details">
-      <p><strong>ID:</strong> {{ utilisation.id }}</p>
-      <p><strong>Date d'utilisation:</strong> {{ utilisation.dateUtilisation | date }}</p>
-      <p><strong>Date de retour:</strong> {{ utilisation.dateRetour | date }}</p>
-      <p><strong>Comprimeuse:</strong> {{ utilisation.compresseuse }}</p>
-      <p><strong>Nombre de Comprimés:</strong> {{ utilisation.nombreComprimes }}</p>
-      <p><strong>Emplacement Retour:</strong> {{ utilisation.emplacementRetour }}</p>
-      <p><strong>Commentaire:</strong> {{ utilisation.commentaire || '-' }}</p>
+    <p><strong>Machine :</strong> {{ utilisation.compresseuse }}</p>
+    <p><strong>Quantité :</strong> {{ utilisation.nombreComprimes }}</p>
+    <p><strong>Emplacement de retour :</strong> {{ utilisation.emplacementRetour }}</p>
+    <p><strong>Commentaire :</strong> {{ utilisation.commentaire || 'N/A' }}</p>
 
-      <p><strong>Utilisateurs:</strong> {{ utilisation.userIds.join(', ') }}</p>
-      <p><strong>Lots:</strong> {{ utilisation.lotNumbers.join(', ') }}</p>
-      <p><strong>Code Formats:</strong> {{ utilisation.codeFormats.join(', ') }}</p>
-      <p><strong>Poinçon IDs:</strong> {{ utilisation.poinconIds.join(', ') }}</p>
-      <p><strong>États des Poinçons:</strong> {{ utilisation.etatPoincons.join(', ') }}</p>
-    </div>
+    <p><strong>Lots :</strong></p>
+    <ul>
+      <li *ngFor="let lot of utilisation.lotNumbers">{{ lot }}</li>
+    </ul>
+
+    <p><strong>Poinçon IDs :</strong></p>
+    <ul>
+      <li *ngFor="let p of utilisation.poinconIds">{{ p }}</li>
+    </ul>
+
+    <p><strong>Utilisateurs IDs :</strong></p>
+    <ul>
+      <li *ngFor="let u of utilisation.userIds">{{ u }}</li>
+    </ul>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-stroked-button color="primary" (click)="back()">Retour</button>
+    <button mat-button color="primary" (click)="retour()">Retour</button>
   </mat-card-actions>
 </mat-card>
-
-<mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>

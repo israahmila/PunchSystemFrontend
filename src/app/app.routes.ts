@@ -64,7 +64,7 @@ export const routes: Routes = [
       // Suivi Utilisation
       {
         path: 'suivi/utilisation/liste',
-        loadComponent: () => import('./suivi/utilisation/liste/liste.component').then(m => m.ListeUtilisationsComponent),
+        loadComponent: () => import('./suivi/utilisation/liste/liste.component').then(m => m.ListeUtilisationComponent),
         //canActivate: [permissionGuard('Utilisations.consulter')]
       },
       {

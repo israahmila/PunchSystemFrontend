@@ -12,7 +12,7 @@ import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
 import { can } from '../../../core/utils/permission.utils';
 import { PermissionService } from '../../../core/permission.service';
-import { UserPermission } from '../../../gestion/utilisateurs/utilisateur.model';
+import { Permission } from '../../../gestion/utilisateurs/utilisateur.model';
 
 @Component({
   standalone: true,
@@ -32,52 +32,17 @@ import { UserPermission } from '../../../gestion/utilisateurs/utilisateur.model'
   ]
 })
 export class ShellComponent {
-  permissions : string[]=[];
+  permissions: string[] = [];
 
-  constructor(
-    private authService: AuthService,
-    private permissionService: PermissionService
-  ) {
-    this.permissions = this.authService.getPermissions();
+constructor(
+  private authService: AuthService,
+  private permissionService: PermissionService
+) {
+  this.permissions = this.authService.getPermissions();
+  this.permissionService.loadPermissions(this.permissions); // 🔁 direct
+}
 
-    const permissionsByModule: { [module: string]: UserPermission } = {};
-
-this.permissions.forEach(p => {
-  const [module, action] = p.split('.');
-  if (!permissionsByModule[module]) {
-    permissionsByModule[module] = {
-      module,
-      consulter: false,
-      ajouter: false,
-      modifier: false,
-      supprimer: false
-    };
-  }
-
-  if (
-    action === 'consulter' ||
-    action === 'ajouter' ||
-    action === 'modifier' ||
-    action === 'supprimer'
-  ) {
-    (permissionsByModule[module] as any)[action] = true;
-  }
-});
-
-
-    this.permissionService.loadPermissions(Object.values(permissionsByModule));
-  }
-
-  can(permission: string): boolean {
-    return can(permission, this.permissions);
-  }
-
-  logout() {
-    localStorage.removeItem('token');
-    location.href = '/login';
-  }
-
-  debugClick(label: string) {
-    console.log('Clicked:', label);
-  }
+can(permission: string): boolean {
+  return this.permissionService.has(permission); // ✅ simple & clair
+}
 }

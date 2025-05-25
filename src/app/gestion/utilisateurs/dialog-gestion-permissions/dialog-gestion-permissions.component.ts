@@ -1,72 +1,80 @@
-// dialog-gestion-permissions.component.ts
 import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogActions } from '@angular/material/dialog';
+import { PermissionService } from '../../../core/permission.service';
+import { Permission } from '../utilisateur.model';
 import { CommonModule } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { User , UserPermission } from '../utilisateur.model';
+import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 
 @Component({
   selector: 'app-dialog-gestion-permissions',
-  standalone: true,
   templateUrl: './dialog-gestion-permissions.component.html',
   styleUrls: ['./dialog-gestion-permissions.component.scss'],
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatCheckboxModule,
-    MatCardModule,
-    MatButtonModule,
+    MatCard,
+    MatCardTitle,
+    MatCardContent,
     MatDialogActions
   ]
 })
 export class DialogGestionPermissionsComponent implements OnInit {
   form!: FormGroup;
-  modules: string[] = ['Utilisateurs', 'Poinçons', 'Produits', 'Fournisseurs', 'Marques', 'Utilisations', 'Entretiens', 'Audit'];
 
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<DialogGestionPermissionsComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: User
+    @Inject(MAT_DIALOG_DATA) public data: { userId: string; permissions: Permission[] },
+    private permissionService: PermissionService
   ) {}
 
   ngOnInit(): void {
-    this.form = this.fb.group({
-      permissions: this.fb.array([])
+    const groupedPermissions: { [key: string]: Permission[] } = {};
+    this.data.permissions.forEach((perm) => {
+      if (!groupedPermissions[perm.module]) {
+        groupedPermissions[perm.module] = [];
+      }
+      groupedPermissions[perm.module].push(perm);
     });
 
-    const permissionsArray = this.form.get('permissions') as FormArray;
+    const permissionFormGroups = Object.entries(groupedPermissions).map(([module, perms]) => {
+      const group: any = {
+        module
+      };
+      perms.forEach((perm) => {
+        group[perm.action.toLowerCase()] = true;
+      });
+      return this.fb.group(group);
+    });
 
-    this.modules.forEach(module => {
-      const existing = this.data.permissions?.find(p => p.module === module);
-      permissionsArray.push(
-        this.fb.group({
-          module: [module],
-          consulter: [existing?.consulter || false],
-          ajouter: [existing?.ajouter || false],
-          modifier: [existing?.modifier || false],
-          supprimer: [existing?.supprimer || false]
-        })
-      );
+    this.form = this.fb.group({
+      permissions: this.fb.array(permissionFormGroups)
     });
   }
 
-  submit(): void {
-    if (this.form.valid) {
-      this.dialogRef.close(this.form.value.permissions);
-    }
+  get permissionsArray(): FormArray {
+    return this.form.get('permissions') as FormArray;
   }
 
   cancel(): void {
-    this
-    .dialogRef.close();
+    this.dialogRef.close();
   }
-  get permissionsArray(): FormArray {
-  return this.form.get('permissions') as FormArray;
-}
 
+  submit(): void {
+    const formValue = this.form.value.permissions;
+    const permissions: string[] = [];
+
+    formValue.forEach((group: any) => {
+      Object.keys(group).forEach((key) => {
+        if (key !== 'module' && group[key]) {
+          permissions.push(`${group.module}.${key.charAt(0).toUpperCase() + key.slice(1)}`);
+        }
+      });
+    });
+
+    this.permissionService.updateUserPermissions(this.data.userId, permissions).subscribe(() => {
+      this.dialogRef.close(true);
+    });
+  }
 }

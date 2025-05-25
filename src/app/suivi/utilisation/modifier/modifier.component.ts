@@ -1,20 +1,20 @@
 // modifier-utilisation.component.ts
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl, FormArray, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { UtilisationService } from '../utilisation.service';
+import { UtilisateurService } from '../../../gestion/utilisateurs/utilisateur.service';
+import { PoinconService } from '../../../gestion/poincon/poincon.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { UtilisationService } from '../utilisation.service';
 
 @Component({
   selector: 'app-modifier-utilisation',
   standalone: true,
-  templateUrl: './modifier.component.html',
-  styleUrls: ['./modifier.component.scss'],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -23,94 +23,93 @@ import { UtilisationService } from '../utilisation.service';
     MatSelectModule,
     MatButtonModule,
     MatCardModule
-  ]
+  ],
+  templateUrl: './modifier.component.html',
+  styleUrls: ['./modifier.component.scss']
 })
 export class ModifierUtilisationComponent implements OnInit {
-  utilisationForm!: FormGroup;
-  utilisateurs: string[] = ['Alice', 'Bob', 'Charlie'];
-  comprimeuses: string[] = ['Comprimeuse A', 'Comprimeuse B', 'Comprimeuse C'];
-  produits: string[] = ['Produit 1', 'Produit 2', 'Produit 3'];
-  emplacements: string[] = ['Emplacement A', 'Emplacement B', 'Emplacement C'];
-  lots: string[] = ['Lot 1', 'Lot 2', 'Lot 3'];
-
+  form: FormGroup;
   id!: string;
+  users: any[] = [];
+  poincons: any[] = [];
+  lotInput = new FormControl('');
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private utilisationService: UtilisationService
-  ) {}
+    private service: UtilisationService,
+    private userService: UtilisateurService,
+    private poinconService: PoinconService
+  ) {
+    this.form = this.fb.group({
+      compresseuse: ['', Validators.required],
+      nombreComprimes: [0, [Validators.required, Validators.min(1)]],
+      emplacementRetour: ['', Validators.required],
+      commentaire: [''],
+      lotNumbers: this.fb.array([], Validators.required),
+      poinconIds: [[], Validators.required],
+      userIds: [[], Validators.required]
+    });
+  }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id')!;
-    this.utilisationForm = this.fb.group({
-      numero: ['', Validators.required],
-      dateUtilisation: ['', Validators.required],
-      dateRetour: ['', Validators.required],
-      utilisateurs: [[], Validators.required],
-      comprimeuses: [[], Validators.required],
-      produit: ['', Validators.required],
-      emplacementRetour: ['', Validators.required],
-      lots: [[], Validators.required],
-      comment: [''],
-      poincons: this.fb.array([])
+
+    this.userService.getAll().subscribe({
+      next: data => this.users = data,
+      error: err => console.error('Erreur chargement utilisateurs', err)
     });
 
-    this.fetchUtilisation();
-  } 
+    this.poinconService.getAll().subscribe({
+      next: data => this.poincons = data,
+      error: err => console.error('Erreur chargement poinçons', err)
+    });
 
-  get poinconsArray(): FormArray {
-    return this.utilisationForm.get('poincons') as FormArray;
-  }
-
-  fetchUtilisation() {
-    this.utilisationService.getOne(this.id).subscribe({
-      next: (data) => {
-        this.utilisationForm.patchValue({
-          numero: data.id,
-          dateUtilisation: data.dateUtilisation,
-          dateRetour: data.dateRetour,
-          utilisateurs: data.userIds,
-          comprimeuses: [data.compresseuse],
-          produit: data.codeFormats?.[0] ?? '',
+    this.service.getById(this.id).subscribe({
+      next: data => {
+        this.form.patchValue({
+          compresseuse: data.compresseuse,
+          nombreComprimes: data.nombreComprimes,
           emplacementRetour: data.emplacementRetour,
-          lots: data.lotNumbers,
-          comment: data.commentaire
+          commentaire: data.commentaire,
+          poinconIds: data.poinconIds,
+          userIds: data.userIds
         });
 
-        const poincons = data.poinconIds.map((id: string, idx: number) => ({
-          numero: id,
-          etat: data.etatPoincons?.[idx] ?? ''
-        }));
-
-        this.poinconsArray.clear();
-        for (let i = 0; i < 30; i++) {
-          this.poinconsArray.push(this.fb.group(poincons[i] || { numero: '', etat: '' }));
-        }
+        this.lotNumbers.clear();
+        data.lotNumbers?.forEach((lot: string) => this.lotNumbers.push(new FormControl(lot)));
       },
-      error: (err) => {
-        console.error('❌ Failed to load utilisation:', err);
+      error: err => {
+        console.error('Erreur chargement utilisation', err);
         this.router.navigate(['/suivi/utilisation/liste']);
       }
     });
   }
 
-  onSubmit(): void {
-    const payload = {
-      ...this.utilisationForm.value,
-      userIds: this.utilisationForm.value.utilisateurs,
-      lotNumbers: this.utilisationForm.value.lots,
-      poinconIds: this.utilisationForm.value.poincons.map((p: any) => String(p.numero)),
-      etatPoincons: this.utilisationForm.value.poincons.map((p: any) => p.etat),
-      codeFormats: [this.utilisationForm.value.produit],
-      compresseuse: this.utilisationForm.value.comprimeuses?.[0] ?? ''
-    };
+  get lotNumbers(): FormArray {
+    return this.form.get('lotNumbers') as FormArray;
+  }
 
-    this.utilisationService.update(this.id, payload).subscribe({
-      next: () => this.router.navigate(['/suivi/utilisation/liste']),
-      error: (err) => console.error('❌ Update failed', err)
-    });
+  addLot(): void {
+    const lot = this.lotInput.value?.trim();
+    if (lot) {
+      this.lotNumbers.push(new FormControl(lot));
+      this.lotInput.reset();
+    }
+  }
+
+  removeLot(index: number): void {
+    this.lotNumbers.removeAt(index);
+  }
+
+  onSubmit(): void {
+    if (this.form.valid) {
+      this.service.update(this.id, this.form.value).subscribe({
+        next: () => this.router.navigate(['/suivi/utilisation/liste']),
+        error: err => console.error('Erreur mise à jour', err)
+      });
+    }
   }
 
   cancel(): void {

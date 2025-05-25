@@ -14,6 +14,11 @@ export interface User {
 }
 export interface Permission {
   module: string;
-  action: string;
+  action?: string; // Optionnel car remplacé par les booléens ci-dessous
+  consulter?: boolean;
+  ajouter?: boolean;
+  modifier?: boolean;
+  supprimer?: boolean;
 }
+
 

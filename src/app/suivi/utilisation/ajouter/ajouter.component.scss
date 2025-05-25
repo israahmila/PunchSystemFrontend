@@ -1,23 +1,16 @@
-.form-card {
-    margin: 20px;
-    padding: 20px;
-  }
-  
-  .form-grid,
-  .poincon-grid {
-    display: grid;
-    gap: 20px;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    margin-bottom: 20px;
-  }
-  
-  .form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 15px;
-  }
-  
-  .full-width {
-    grid-column: 1 / -1;
-  }
-  
+.lot-section {
+  margin-bottom: 1rem;
+}
+.lot-list {
+  list-style: none;
+  padding-left: 0;
+}
+.lot-list li {
+  margin: 0.25rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f2f2f2;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+}

@@ -1,16 +1,13 @@
-// liste-utilisateurs.component.ts
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatCardModule } from '@angular/material/card';
-
-import { User } from '../utilisateur.model';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { UtilisateurService } from '../utilisateur.service';
-import { DialogAjouterModifierUtilisateurComponent } from '../dialog-ajouter-modifier-utilisateur/dialog-ajouter-modifier-utilisateur.component';
-import { DialogGestionPermissionsComponent } from '../dialog-gestion-permissions/dialog-gestion-permissions.component';
+import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
+import { MatDialogActions } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-liste-utilisateurs',
@@ -19,64 +16,52 @@ import { DialogGestionPermissionsComponent } from '../dialog-gestion-permissions
   styleUrls: ['./liste.component.scss'],
   imports: [
     CommonModule,
-    MatButtonModule,
+    ReactiveFormsModule,
     MatTableModule,
+    MatButtonModule,
     MatIconModule,
-    MatCardModule
+    MatSlideToggleModule,
+    MatCard,
+    MatCardTitle,
+    MatCardContent,
+    MatDialogActions
   ]
 })
 export class ListeUtilisateursComponent implements OnInit {
-  utilisateurs: User[] = [];
-  isLoading = true;
+  form: FormGroup;
+  users: any[] = [];
 
-  constructor(
-    private utilisateurService: UtilisateurService,
-    private dialog: MatDialog
-  ) {}
+  constructor(private fb: FormBuilder, private userService: UtilisateurService) {
+    this.form = this.fb.group({});
+  }
 
   ngOnInit(): void {
-    this.loadUtilisateurs();
+    this.loadUsers();
   }
 
-  loadUtilisateurs(): void {
-    this.utilisateurService.getAll().subscribe({
-      next: (data) => {
-        this.utilisateurs = data;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Erreur chargement utilisateurs', err);
-        this.isLoading = false;
-      }
+  loadUsers(): void {
+    this.userService.getAll().subscribe({
+      next: (data) => this.users = data,
+      error: (err) => console.error('Erreur chargement utilisateurs', err)
     });
   }
 
-  openAjouter(): void {
-    const dialogRef = this.dialog.open(DialogAjouterModifierUtilisateurComponent, {
-      width: '500px',
-      data: null
-    });
-    dialogRef.afterClosed().subscribe(res => res && this.loadUtilisateurs());
-  }
-
-  openModifier(utilisateur: User): void {
-    const dialogRef = this.dialog.open(DialogAjouterModifierUtilisateurComponent, {
-      width: '500px',
-      data: utilisateur
-    });
-    dialogRef.afterClosed().subscribe(res => res && this.loadUtilisateurs());
-  }
-
-  openPermissions(utilisateur: User): void {
-    this.dialog.open(DialogGestionPermissionsComponent, {
-      width: '800px',
-      data: utilisateur
+  toggleStatus(user: any): void {
+    const updatedStatus = user.statut === 'Actif' ? 'Inactif' : 'Actif';
+    this.userService.update(user.id, { statut: updatedStatus }).subscribe({
+      next: () => user.statut = updatedStatus,
+      error: (err) => console.error('Erreur modification statut', err)
     });
   }
+  get permissionsArray() {
+  return (this.form.get('permissions') as FormArray).controls;
+}
 
-  supprimer(id: string): void {
-    if (confirm('Supprimer cet utilisateur ?')) {
-      this.utilisateurService.delete(id).subscribe(() => this.loadUtilisateurs());
-    }
-  }
+  cancel() {
+  this.form.reset();
+}
+
+submit() {
+  console.log(this.form.value);
+}
 }

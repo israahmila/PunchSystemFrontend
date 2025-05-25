@@ -1,16 +1,20 @@
 import { Injectable } from '@angular/core';
-import { UserPermission } from '../gestion/utilisateurs/utilisateur.model';
 
+
+// permission.service.ts
 @Injectable({ providedIn: 'root' })
 export class PermissionService {
-  private permissions: UserPermission[] = [];
+  private permissions: string[] = [];
 
-  loadPermissions(perms: UserPermission[]) {
+  loadPermissions(perms: string[]) {
     this.permissions = perms;
   }
 
-  can(module: string, action: 'consulter' | 'ajouter' | 'modifier' | 'supprimer'): boolean {
-    const found = this.permissions.find(p => p.module === module);
-    return !!found && !!found[action];
+  has(permission: string): boolean {
+    return this.permissions.includes(permission);
+  }
+
+  getAll(): string[] {
+    return this.permissions;
   }
 }

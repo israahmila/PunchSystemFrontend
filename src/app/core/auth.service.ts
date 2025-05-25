@@ -24,11 +24,16 @@ export class AuthService {
     return !!localStorage.getItem(this.tokenKey);
   }
   getPermissions(): string[] {
-  const token = localStorage.getItem('access_token');
+  const token = localStorage.getItem('auth_token');
   if (!token) return [];
-  const payload = JSON.parse(atob(token.split('.')[1]));
-  return payload?.permissions || [];
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload?.permissions || [];
+  } catch {
+    return [];
+  }
 }
+
 
 
   logout() {

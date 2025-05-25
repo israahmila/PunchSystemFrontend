@@ -1,92 +1,62 @@
 <mat-card class="form-card">
-  <mat-card-title>Modifier Utilisation</mat-card-title>
+  <mat-card-title>Modifier une utilisation</mat-card-title>
   <mat-card-content>
-    <form [formGroup]="utilisationForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-      <div class="form-grid">
-        <mat-form-field appearance="outline">
-          <mat-label>N° Utilisation</mat-label>
-          <input matInput formControlName="numero" />
-        </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Machine (Comprimeuse)</mat-label>
+        <input matInput formControlName="compresseuse" required />
+      </mat-form-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Date Utilisation</mat-label>
-          <input matInput type="date" formControlName="dateUtilisation" />
-        </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Quantité (Nombre de comprimés)</mat-label>
+        <input matInput type="number" formControlName="nombreComprimes" required />
+      </mat-form-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Date Retour</mat-label>
-          <input matInput type="date" formControlName="dateRetour" />
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Utilisateurs</mat-label>
-          <mat-select formControlName="utilisateurs" multiple>
-            <mat-option *ngFor="let utilisateur of utilisateurs" [value]="utilisateur">
-              {{ utilisateur }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Comprimeuse</mat-label>
-          <mat-select formControlName="comprimeuses">
-            <mat-option *ngFor="let comprimeuse of comprimeuses" [value]="comprimeuse">
-              {{ comprimeuse }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Produit</mat-label>
-          <mat-select formControlName="produit">
-            <mat-option *ngFor="let produit of produits" [value]="produit">
-              {{ produit }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Emplacement Retour</mat-label>
-          <mat-select formControlName="emplacementRetour">
-            <mat-option *ngFor="let emplacement of emplacements" [value]="emplacement">
-              {{ emplacement }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Lots</mat-label>
-          <mat-select formControlName="lots" multiple>
-            <mat-option *ngFor="let lot of lots" [value]="lot">
-              {{ lot }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <div formArrayName="poincons">
-        <div *ngFor="let group of poinconsArray.controls; let i = index" [formGroupName]="i" class="form-grid">
-          <mat-form-field appearance="outline">
-            <mat-label>Poinçon {{ i + 1 }}</mat-label>
-            <input matInput formControlName="numero" placeholder="Référence" />
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>État</mat-label>
-            <input matInput formControlName="etat" placeholder="État (actif/inactif)" />
-          </mat-form-field>
-        </div>
-      </div>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Emplacement de retour</mat-label>
+        <input matInput formControlName="emplacementRetour" required />
+      </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Commentaire</mat-label>
-        <textarea matInput formControlName="comment"></textarea>
+        <textarea matInput formControlName="commentaire"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Ajouter un lot</mat-label>
+        <input matInput [formControl]="lotInput" (keyup.enter)="addLot()" placeholder="Entrer un numéro de lot" />
+        <button mat-icon-button matSuffix (click)="addLot()" type="button">
+          <span aria-hidden="true">➕</span>
+        </button>
+      </mat-form-field>
+
+      <ul class="lot-list">
+        <li *ngFor="let lot of lotNumbers.controls; let i = index">
+          {{ lot.value }}
+          <button type="button" mat-icon-button color="warn" (click)="removeLot(i)">
+            <span aria-hidden="true">🗑️</span>
+          </button>
+        </li>
+      </ul>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Poinçons</mat-label>
+        <mat-select formControlName="poinconIds" multiple>
+          <mat-option *ngFor="let p of poincons" [value]="p.id">{{ p.reference }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Utilisateurs</mat-label>
+        <mat-select formControlName="userIds" multiple>
+          <mat-option *ngFor="let u of users" [value]="u.id">{{ u.nom }} {{ u.prenom }}</mat-option>
+        </mat-select>
       </mat-form-field>
 
       <div class="form-actions">
-        <button mat-raised-button color="primary" type="submit">Enregistrer</button>
-        <button mat-stroked-button color="warn" type="button" (click)="cancel()">Annuler</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Enregistrer</button>
+        <button mat-button type="button" (click)="cancel()">Annuler</button>
       </div>
     </form>
   </mat-card-content>
