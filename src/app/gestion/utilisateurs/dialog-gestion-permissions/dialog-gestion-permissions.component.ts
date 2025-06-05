@@ -43,7 +43,7 @@ export class DialogGestionPermissionsComponent implements OnInit {
         module
       };
       perms.forEach((perm) => {
-        group[perm.action.toLowerCase()] = true;
+        group[perm.action!.toLowerCase()] = true;
       });
       return this.fb.group(group);
     });

@@ -1,17 +1,33 @@
-.step-form {
+.ajouter-form {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  padding: 2rem;
+  gap: 24px;
+  padding: 24px;
 }
 
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+.section-card {
+  padding: 16px;
 }
 
-.form-actions {
+.form-section {
   display: flex;
-  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 12px;
+  margin-bottom: 24px;
+}
+
+.field {
+  flex: 1 1 30%;
+  min-width: 220px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
 }

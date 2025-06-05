@@ -48,11 +48,11 @@ export class ListeComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  goToDetails(id: number): void {
+  goToDetails(id: string): void {
     this.router.navigate(['/gestion/poincon/details', id]);
   }
 
-  deletePoincon(id: number): void {
+  deletePoincon(id: string): void {
     if (confirm('Supprimer ce poinçon ?')) {
       this.poinconService.delete(id).subscribe(() => {
         this.dataSource.data = this.dataSource.data.filter(p => p.id !== id);

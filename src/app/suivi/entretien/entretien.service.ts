@@ -7,7 +7,7 @@ import { Entretien  } from './entretien.model';
   providedIn: 'root'
 })
 export class EntretiensService {
-  private baseUrl = 'https://localhost:7225/api/entretiens';
+  private baseUrl = 'https://localhost:7225/api/Entretien';
 
   constructor(private http: HttpClient) {}
 

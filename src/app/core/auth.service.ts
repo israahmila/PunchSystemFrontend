@@ -7,7 +7,7 @@ import { tap } from 'rxjs/operators';
 export class AuthService {
   private apiUrl = 'https://localhost:7225/api/Auth'; // ✅ Base URL
   private tokenKey = 'auth_token';
-
+  private permissionsKey = 'user_permissions';
   constructor(private http: HttpClient, private router: Router) {}
 
   login(username: string, password: string) {
@@ -15,7 +15,7 @@ export class AuthService {
       .pipe(
         tap(response => {
           localStorage.setItem(this.tokenKey, response.token);
-          // You can store user info too if you want
+          localStorage.setItem(this.permissionsKey, JSON.stringify(response.permissions));
         })
       );
   }
@@ -38,6 +38,7 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem(this.tokenKey);
+    localStorage.removeItem(this.permissionsKey);
     this.router.navigate(['/login']);
   }
 

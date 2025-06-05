@@ -1,120 +1,177 @@
-<h2>Ajouter Poinçon</h2>
+<form [formGroup]="poinconForm" (ngSubmit)="onSubmit()" class="ajouter-form">
 
-<form [formGroup]="form" (ngSubmit)="next()" class="step-form">
+  <!-- 📌 Section 1: Informations Générales -->
+  <mat-card class="section-card">
+    <mat-card-title>Informations Générales</mat-card-title>
 
-  <!-- === Grid Fields === -->
-  <div class="grid-container">
+    <div class="row">
+      <mat-form-field appearance="fill" class="field">
+        <mat-label>Code Format</mat-label>
+        <input matInput formControlName="codeFormat" required>
+      </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Code Format</mat-label>
-      <input matInput formControlName="codeFormat" />
-    </mat-form-field>
+      <mat-form-field appearance="fill" class="field">
+        <mat-label>Forme</mat-label>
+        <input matInput formControlName="forme">
+      </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Marque</mat-label>
-      <mat-select formControlName="marque">
-        <mat-option value="a">a</mat-option>
-        <mat-option value="b">b</mat-option>
-        <mat-option value="c">c</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Forme</mat-label>
-      <input matInput formControlName="forme" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Code GMAO</mat-label>
-      <input matInput formControlName="codeGMAO" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Fournisseur</mat-label>
-      <mat-select formControlName="fournisseur">
-        <mat-option value="a">a</mat-option>
-        <mat-option value="b">b</mat-option>
-        <mat-option value="c">c</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Gravure Sup</mat-label>
-      <input matInput formControlName="gravureSup" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Gravure Inf</mat-label>
-      <input matInput formControlName="gravureInf" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Sécabilité</mat-label>
-      <mat-select formControlName="secabilite">
-        <mat-option value="oui">Oui</mat-option>
-        <mat-option value="non">Non</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Clavetage</mat-label>
-      <mat-select formControlName="clavetage">
-        <mat-option value="oui">Oui</mat-option>
-        <mat-option value="non">Non</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Emplacement Réception</mat-label>
-      <input matInput formControlName="emplacementReception" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Date Réception</mat-label>
-      <input matInput type="date" formControlName="dateReception" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Date Fabrication</mat-label>
-      <input matInput type="date" formControlName="dateFabrication" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Date Mise en service</mat-label>
-      <input matInput type="date" formControlName="dateMiseEnService" />
-    </mat-form-field>
-
-  </div>
-
-  <!-- === Commentaire === -->
-  <mat-form-field appearance="outline" class="textarea">
-    <mat-label>Commentaire</mat-label>
-    <textarea matInput rows="4" formControlName="commentaire"></textarea>
-  </mat-form-field>
-
-  <!-- === File Upload === -->
-  <div class="file-upload">
-    <button mat-stroked-button color="accent" type="button" (click)="fileInput.click()">
-      <mat-icon>attach_file</mat-icon>
-      Ajouter Fiche technique
-    </button>
-
-    <input #fileInput type="file" (change)="onFileChange($event)" hidden />
-
-    <div *ngIf="uploadedFileName" class="file-feedback">
-      <mat-icon color="primary">check_circle</mat-icon>
-      <span>Fichier sélectionné : {{ uploadedFileName }}</span>
-
-      <button mat-button type="button" color="primary" (click)="fileInput.click()">Changer</button>
-      <button mat-button type="button" color="warn" (click)="removeFile()">Supprimer</button>
+      <mat-form-field appearance="fill" class="field">
+        <mat-label>Code GMAO</mat-label>
+        <input matInput formControlName="codeGMAO">
+      </mat-form-field>
     </div>
-  </div>
 
-  <!-- === Action Button === -->
-  <div class="form-actions">
-    <button mat-flat-button color="primary" type="submit">
-      Suivant ⭢
-    </button>
-  </div>
+    <div class="row">
+      <mat-form-field appearance="fill" class="field">
+        <mat-label>Marque</mat-label>
+        <input matInput formControlName="marque" [matAutocomplete]="marqueAuto">
+        <mat-autocomplete #marqueAuto="matAutocomplete">
+          <mat-option *ngFor="let option of marqueSuggestions$ | async" [value]="option">
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
 
+      <mat-form-field appearance="fill" class="field">
+        <mat-label>Fournisseur</mat-label>
+        <input matInput formControlName="fournisseur" [matAutocomplete]="fournisseurAuto">
+        <mat-autocomplete #fournisseurAuto="matAutocomplete">
+          <mat-option *ngFor="let option of fournisseurSuggestions$ | async" [value]="option">
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="field">
+        <mat-label>Gravure Sup</mat-label>
+        <input matInput formControlName="gravureSup">
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill" class="field">
+        <mat-label>Gravure Inf</mat-label>
+        <input matInput formControlName="gravureInf">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="field">
+        <mat-label>Sécabilité</mat-label>
+        <mat-select formControlName="secabilite">
+          <mat-option *ngFor="let option of ['a', 'b', 'c']" [value]="option">{{ option }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="field">
+        <mat-label>Clavetage</mat-label>
+        <mat-select formControlName="clavetage">
+          <mat-option *ngFor="let option of ['a', 'b', 'c']" [value]="option">{{ option }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill" class="field">
+        <mat-label>Emplacement Réception</mat-label>
+        <mat-select formControlName="emplacementReception">
+          <mat-option *ngFor="let option of ['a', 'b', 'c']" [value]="option">{{ option }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </mat-card>
+
+  <!-- 📅 Section 2: Dates -->
+  <mat-card class="section-card">
+    <mat-card-title>Dates</mat-card-title>
+
+    <div class="row">
+      <mat-form-field appearance="fill" class="field">
+        <mat-label>Date de Fabrication</mat-label>
+        <input matInput [matDatepicker]="dp1" formControlName="dateFabrication">
+        <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle>
+        <mat-datepicker #dp1></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="field">
+        <mat-label>Date de Réception</mat-label>
+        <input matInput [matDatepicker]="dp2" formControlName="dateReception">
+        <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
+        <mat-datepicker #dp2></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="field">
+        <mat-label>Date de Mise en Service</mat-label>
+        <input matInput [matDatepicker]="dp3" formControlName="dateMiseEnService">
+        <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+        <mat-datepicker #dp3></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </mat-card>
+
+  <!-- 📝 Section 3: Commentaire + Fichier -->
+  <mat-card class="section-card">
+    <mat-card-title>Commentaire & Fiche Technique</mat-card-title>
+
+    <div class="row">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Commentaire</mat-label>
+        <textarea matInput formControlName="commentaire" rows="4"></textarea>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <input type="file" (change)="onFileChange($event)" accept=".pdf,.doc,.docx,.jpg,.png" />
+    </div>
+  </mat-card>
+
+  <mat-card class="section-card">
+    <mat-card-title>Forme</mat-card-title>
+    <div class="form-section">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Forme</mat-label>
+        <input type="text" matInput [formControl]="formeControl" [matAutocomplete]="autoForme">
+        <mat-autocomplete #autoForme="matAutocomplete" (optionSelected)="onFormeSelected($event)">
+          <mat-option *ngFor="let option of filteredFormes$ | async" [value]="option">
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+  </mat-card>
+
+  <mat-card class="section-card">
+    <mat-card-title>Dimensions</mat-card-title>
+    <div class="form-section">
+      <mat-form-field appearance="fill" class="field">
+        <mat-label>Diamètre (mm)</mat-label>
+        <input matInput formControlName="diametre" type="number">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="field">
+        <mat-label>Largeur (mm)</mat-label>
+        <input matInput formControlName="largeur" type="number">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="field">
+        <mat-label>Longueur (mm)</mat-label>
+        <input matInput formControlName="longueur" type="number">
+      </mat-form-field>
+    </div>
+
+    <div class="form-section">
+      <mat-form-field appearance="fill" class="field">
+        <mat-label>Épaisseur (mm)</mat-label>
+        <input matInput formControlName="epaisseur" type="number">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="field">
+        <mat-label>Hauteur (mm)</mat-label>
+        <input matInput formControlName="hauteur" type="number">
+      </mat-form-field>
+    </div>
+  </mat-card>
+
+  <div class="actions">
+    <button mat-raised-button color="primary" type="submit" [disabled]="dimensionsForm.invalid">Suivant →</button>
+  </div>
+  
 </form>

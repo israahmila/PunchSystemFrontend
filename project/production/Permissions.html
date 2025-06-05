@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Permissions de l'Utilisateur</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body, html { background: #ffffff; }
+    .main-container { margin-left: 260px; transition: margin-left 0.2s; padding: 24px; }
+    @media (max-width: 991px) { .main-container { margin-left: 0; padding: 16px; } }
+    .page-title { font-size: 2rem; color: #2c3e50; font-weight: 500; margin-bottom: 32px; margin-top: 24px; }
+    .permission-card { background: #ffffff; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); padding: 24px; margin-bottom: 16px; }
+    .permission-card h4 { color: #2c3e50; font-weight: 600; margin-bottom: 20px; }
+    .permission-card .checkbox-group { display: block; }
+    .permission-card .module-section { margin-bottom: 16px; padding: 12px; background: #f9f9f9; border-radius: 8px; }
+    .permission-card .module-section strong { display: block; margin-bottom: 8px; color: #34495e; font-weight: 600; }
+    .permission-card .module-section label { margin-right: 16px; display: inline-block; margin-bottom: 4px; }
+    .permission-card input[type="checkbox"] { margin-right: 4px; }
+    .save-btn { background: #2980b9; color: #fff; border: none; border-radius: 6px; padding: 10px 22px; font-size: 1rem; font-weight: 500; margin-top: 16px; transition: background 0.18s; }
+    .save-btn:hover { background: #00a8ff; }
+    .modern-sidebar { position: fixed; top: 0; left: 0; height: 100vh; width: 240px; background: #111827; border-radius: 18px 0 0 18px; box-shadow: 2px 0 16px rgba(44, 62, 80, 0.10); display: flex; flex-direction: column; z-index: 1050; padding: 18px 0 0 0; border-top-left-radius: 32px; }
+    .modern-sidebar .sidebar-logo { text-align: center; margin-bottom: 32px; font-size: 2rem; font-weight: 700; color: #009eff; letter-spacing: 2px; }
+    .modern-sidebar nav { flex: 1; }
+    .modern-sidebar ul { list-style: none; padding: 0; margin: 0; }
+    .modern-sidebar li { margin-bottom: 8px; }
+    .modern-sidebar a { display: flex; align-items: center; color: #cbd5e1; font-size: 1.08rem; font-weight: 500; padding: 12px 24px; border-radius: 8px; text-decoration: none; transition: background 0.18s, color 0.18s; }
+    .modern-sidebar a:hover, .modern-sidebar li.active > a { background: #1e293b; color: #fff; }
+    .modern-sidebar a i { margin-right: 16px; font-size: 1.3rem; opacity: 0.92; color: #00a8ff; transition: color 0.18s; }
+    .modern-sidebar a:hover i, .modern-sidebar li.active > a i { color: #fff; }
+    .modern-sidebar .sidebar-bottom { margin-top: auto; padding-bottom: 24px; position: relative; }
+    .modern-sidebar .settings-btn { width: 100%; display: flex; align-items: center; color: #cbd5e1; font-size: 1.08rem; font-weight: 500; padding: 12px 24px; border-radius: 8px; background: none; border: none; outline: none; cursor: pointer; transition: background 0.18s, color 0.18s; }
+    .modern-sidebar .settings-btn:hover, .modern-sidebar .settings-btn.active { background: #1e293b; color: #fff; }
+    .modern-sidebar .settings-btn i { margin-right: 16px; font-size: 1.3rem; color: #00a8ff; transition: color 0.18s; }
+    .modern-sidebar .settings-btn:hover i, .modern-sidebar .settings-btn.active i { color: #fff; }
+    .settings-dropdown { display: none; position: absolute; left: 24px; bottom: 56px; background: #1e293b; border-radius: 12px; box-shadow: 0 4px 16px rgba(44,62,80,0.18); min-width: 170px; z-index: 2000; padding: 8px 0; }
+    .settings-dropdown.show { display: block; }
+    .settings-dropdown a { color: #cbd5e1; padding: 10px 24px; font-size: 1rem; display: flex; align-items: center; border-radius: 8px; transition: background 0.18s, color 0.18s; }
+    .settings-dropdown a i { margin-right: 10px; color: #00a8ff; font-size: 1.1rem; }
+    .settings-dropdown a:hover { background: #00a8ff; color: #fff; }
+    .settings-dropdown a:hover i { color: #fff; }
+    @media (max-width: 991px) { .modern-sidebar { position: static; width: 100%; height: auto; border-radius: 0; flex-direction: row; box-shadow: none; padding: 0; } .modern-sidebar .sidebar-logo { margin-bottom: 12px; } }
+    .child_menu { max-height: 1000px; overflow: hidden; transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1); }
+    .child_menu.collapsed { max-height: 0; padding: 0 !important; }
+    .menu-item-has-children > a .fa-chevron-down { transition: transform 0.3s; }
+    .menu-item-has-children.open > a .fa-chevron-down { transform: rotate(-180deg); }
+    .modern-search-bar { display: flex; align-items: center; background: #f8fafb; border: 1.5px solid #dbe6ee; border-radius: 6px; overflow: hidden; margin-bottom: 16px; }
+    .modern-search-input { flex: 1; border: none; background: none; padding: 10px 14px; font-size: 1.1rem; outline: none; }
+    .modern-search-btn { border: none; background: none; padding: 8px; color: #4e6a81; cursor: pointer; }
+  </style>
+</head>
+<body class="nav-md">
+  <div class="container body">
+    <div class="left_col scroll-view custom-sidebar">
+      <div class="modern-sidebar">
+        <div class="sidebar-logo">LOGO</div>
+        <nav>
+          <ul>
+            <li><a href="index.html"><i class="fa fa-home"></i> Dashboard</a></li>
+            <li><a href="users.html"><i class="fa fa-users"></i> Utilisateurs</a></li>
+            <li><a href="products.html"><i class="fa fa-cube"></i> Produits</a></li>
+            <li><a href="punches.html"><i class="fa fa-certificate"></i> Poinçons</a></li>
+            <li class="menu-item-has-children open">
+              <a href="#" id="suiviMenuLink"><i class="fa fa-search"></i> Suivi <span class="suivi-arrow"><svg width="16" height="16" viewBox="0 0 20 20"><path d="M6 8L10 12L14 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+              <ul class="child_menu" id="suiviChildMenu">
+                <li><a href="usage-list.html">Liste Utilisations</a></li>
+                <li><a href="maintenance-list.html">Liste Entretien</a></li>
+              </ul>
+            </li>
+            <li><a href="history.html"><i class="fa fa-history"></i> Historique</a></li>
+          </ul>
+        </nav>
+        <div class="sidebar-bottom">
+          <button class="settings-btn" id="settingsBtn" onclick="toggleSettingsDropdown()">
+            <i class="fa fa-cog"></i> Settings
+          </button>
+          <div class="settings-dropdown" id="settingsDropdown">
+            <a href="profile.html"><i class="fa fa-user"></i> Profile</a>
+            <a href="help.html"><i class="fa fa-question-circle"></i> Help</a>
+            <a href="login.html"><i class="fa fa-sign-out"></i> Log out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="right_col" role="main">
+      <div class="main-container">
+        <h2 class="page-title">Permissions de l'Utilisateur: Jean Dupont</h2>
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:18px;">
+          <form class="modern-search-bar" id="searchForm" onsubmit="return false;">
+            <input type="text" class="modern-search-input" placeholder="Rechercher..." id="searchInput">
+            <button class="modern-search-btn" type="submit" onclick="searchPermissions()">
+              <i class="fa fa-search"></i>
+            </button>
+          </form>
+        </div>
+        <div id="permissionCards" style="display: flex; flex-wrap: wrap; gap: 16px;">
+          <!-- Populated by JavaScript -->
+        </div>
+        <a href="edit-permissions.html" class="save-btn">Modifier</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let userPermissions = {
+      name: 'Jean Dupont',
+      modules: {
+        'Gestion Utilisateurs': ['Consulter', 'Ajouter', 'Modifier', 'Consulter Permissions', 'Modifier Permissions'],
+        'Gestion Produit': ['Ajouter', 'Modifier', 'Consulter', 'Gestion Relation Produit-Poinçon'],
+        'Gestion Poinçon': ['Consulter', 'Ajouter', 'Modifier'],
+        'Gestion Utilisation': ['Consulter', 'Ajouter', 'Modifier'],
+        'Gestion Entretien': ['Consulter', 'Ajouter', 'Modifier'],
+        'Audit Trail': ['Consulter'],
+        'Liste Connexions': ['Consulter']
+      }
+    };
+
+    function renderPermissions() {
+      const container = document.getElementById('permissionCards');
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      container.innerHTML = `
+        <div class="permission-card">
+          <h4>${userPermissions.name}</h4>
+          <div class="checkbox-group">
+            ${Object.entries(userPermissions.modules).map(([module, actions]) => `
+              <div class="module-section">
+                <strong>${module}</strong>
+                ${actions.map(action => `
+                  <label><input type="checkbox" ${actions.includes(action) ? 'checked' : ''} disabled> ${action}</label>
+                `).join('')}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function searchPermissions() {
+      renderPermissions();
+    }
+
+    function toggleSettingsDropdown() {
+      const dropdown = document.getElementById('settingsDropdown');
+      dropdown.classList.toggle('show');
+      if (dropdown.classList.contains('show')) {
+        document.addEventListener('click', handleClickOutside);
+      } else {
+        document.removeEventListener('click', handleClickOutside);
+      }
+    }
+
+    function handleClickOutside(event) {
+      const btn = document.getElementById('settingsBtn');
+      const dropdown = document.getElementById('settingsDropdown');
+      if (!btn.contains(event.target) && !dropdown.contains(event.target)) {
+        dropdown.classList.remove('show');
+      }
+    }
+
+    document.getElementById('suiviMenuLink').addEventListener('click', function(e) {
+      e.preventDefault();
+      const menuItem = this.parentElement;
+      const childMenu = document.getElementById('suiviChildMenu');
+      menuItem.classList.toggle('open');
+      if (menuItem.classList.contains('open')) {
+        childMenu.style.display = 'block';
+      } else {
+        childMenu.style.display = 'none';
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', renderPermissions);
+    document.getElementById('searchInput').addEventListener('input', searchPermissions);
+  </script>
+</body>
+</html>

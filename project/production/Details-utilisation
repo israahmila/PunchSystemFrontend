@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Détails Utilisation</title>
+  <!-- Bootstrap -->
+  <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <!-- Custom Theme Style -->
+  <link href="../build/css/custom.min.css" rel="stylesheet">
+  <style>
+    body, html { background: #111827; }
+    .main_container { margin-left: 260px; transition: margin-left 0.2s; }
+    @media (max-width: 991px) { .main_container { margin-left: 0; } }
+    .page-title { font-size: 2rem; color: #2c3e50; font-weight: 500; margin-bottom: 32px; margin-top: 24px; }
+    .details-container { background: #fff; padding: 20px; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .details-section { margin-bottom: 30px; }
+    .details-section h3 { font-size: 1.5rem; color: #34495e; font-weight: 500; margin-bottom: 15px; border-bottom: 1px solid #dbe6ee; padding-bottom: 5px; }
+    .details-table { width: 100%; border-collapse: collapse; }
+    .details-table th, .details-table td { padding: 10px; border-bottom: 1px solid #dbe6ee; }
+    .details-table th { text-align: left; color: #34495e; font-weight: 500; width: 30%; }
+    .details-table td { color: #666; }
+    .btn-back { background: #6c757d; color: #fff; border: none; border-radius: 6px; padding: 8px 18px; font-size: 1rem; font-weight: 500; transition: background 0.18s; }
+    .btn-back:hover { background: #5a6268; }
+    .modern-sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 240px;
+      background: #111827;
+      border-radius: 18px 0 0 18px;
+      box-shadow: 2px 0 16px rgba(44, 62, 80, 0.10);
+      display: flex;
+      flex-direction: column;
+      z-index: 1050;
+      padding: 18px 0 0 0;
+      border-top-left-radius: 32px;
+    }
+    .modern-sidebar .sidebar-logo {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .modern-sidebar nav { flex: 1; }
+    .modern-sidebar ul { list-style: none; padding: 0; margin: 0; }
+    .modern-sidebar li { margin-bottom: 8px; }
+    .modern-sidebar a {
+      display: flex;
+      align-items: center;
+      color: #cbd5e1;
+      font-size: 1.08rem;
+      font-weight: 500;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.18s, color 0.18s;
+    }
+    .modern-sidebar a:hover, .modern-sidebar li.active > a {
+      background: #1e293b;
+      color: #fff;
+    }
+    .modern-sidebar a i {
+      margin-right: 16px;
+      font-size: 1.3rem;
+      opacity: 0.92;
+      color: #00a8ff;
+      transition: color 0.18s;
+    }
+    .modern-sidebar a:hover i, .modern-sidebar li.active > a i { color: #fff; }
+    .modern-sidebar .sidebar-bottom {
+      margin-top: auto;
+      padding-bottom: 24px;
+      position: relative;
+    }
+    .modern-sidebar .settings-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      color: #cbd5e1;
+      font-size: 1.08rem;
+      font-weight: 500;
+      padding: 12px 24px;
+      border-radius: 8px;
+      background: none;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s;
+    }
+    .modern-sidebar .settings-btn:hover, .modern-sidebar .settings-btn.active {
+      background: #1e293b;
+      color: #fff;
+    }
+    .modern-sidebar .settings-btn i {
+      margin-right: 16px;
+      font-size: 1.3rem;
+      color: #00a8ff;
+      transition: color 0.18s;
+    }
+    .modern-sidebar .settings-btn:hover i, .modern-sidebar .settings-btn.active i { color: #fff; }
+    .settings-dropdown {
+      display: none;
+      position: absolute;
+      left: 24px;
+      bottom: 56px;
+      background: #1e293b;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(44,62,80,0.18);
+      min-width: 170px;
+      z-index: 2000;
+      padding: 8px 0;
+    }
+    .settings-dropdown.show { display: block; }
+    .settings-dropdown a {
+      color: #cbd5e1;
+      padding: 10px 24px;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      border-radius: 8px;
+      transition: background 0.18s, color 0.18s;
+    }
+    .settings-dropdown a i {
+      margin-right: 10px;
+      color: #00a8ff;
+      font-size: 1.1rem;
+    }
+    .settings-dropdown a:hover { background: #00a8ff; color: #fff; }
+    .settings-dropdown a:hover i { color: #fff; }
+    @media (max-width: 991px) {
+      .modern-sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        border-radius: 0;
+        flex-direction: row;
+        box-shadow: none;
+        padding: 0;
+      }
+      .modern-sidebar .sidebar-logo { margin-bottom: 12px; }
+    }
+  </style>
+</head>
+<body class="nav-md">
+  <div class="container body">
+    <div class="left_col scroll-view custom-sidebar">
+      <div class="modern-sidebar">
+        <div class="sidebar-logo" style="font-size:2rem;font-weight:700;color:#009eff;letter-spacing:2px;text-align:center;margin-bottom:32px;">LOGO</div>
+        <nav>
+          <ul>
+            <li><a href="index.html"><i class="fa fa-home"></i> Dashboard</a></li>
+            <li><a href="tables.html"><i class="fa fa-users"></i> Utilisateurs</a></li>
+            <li><a href="produits.html"><i class="fa fa-cube"></i> Produits</a></li>
+            <li><a href="poincons.html"><i class="fa fa-certificate"></i> Poinçons</a></li>
+            <li class="menu-item-has-children">
+              <a href="#" id="suiviMenuLink"><i class="fa fa-search"></i> Suivi <span class="suivi-arrow" id="suiviArrow" style="display:inline-block;transition:transform 0.3s;"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 8L10 12L14 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+              <ul class="child_menu" id="suiviChildMenu" style="display:none;">
+                <li><a href="Suivi_utilisations.html">Liste Utilisations</a></li>
+                <li><a href="Suivi_entretien.html">Liste Entretien</a></li>
+              </ul>
+            </li>
+            <li><a href="#"><i class="fa fa-history"></i> Historique</a></li>
+          </ul>
+        </nav>
+        <div class="sidebar-bottom">
+          <button class="settings-btn" id="settingsBtn" onclick="toggleSettingsDropdown()">
+            <i class="fa fa-cog"></i> Settings
+          </button>
+          <div class="settings-dropdown" id="settingsDropdown">
+            <a href="#"><i class="fa fa-user"></i> Profile</a>
+            <a href="#"><i class="fa fa-question-circle"></i> Help</a>
+            <a href="login.html"><i class="fa fa-sign-out"></i> Log out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="main_container">
+      <div class="right_col" role="main" style="min-height: 100vh; background: #fff;">
+        <div class="col-md-12">
+          <h2 class="page-title">Détails Utilisation</h2>
+          <div class="details-container" id="details-container">
+            <div class="details-section">
+              <h3>Informations de Base</h3>
+              <table class="details-table">
+                <tr>
+                  <th>N° Utilisation</th>
+                  <td id="numeroUtilisation"></td>
+                </tr>
+                <tr>
+                  <th>Date Utilisation</th>
+                  <td id="dateUtilisation"></td>
+                </tr>
+                <tr>
+                  <th>Utilisateur</th>
+                  <td id="utilisateur"></td>
+                </tr>
+                <tr>
+                  <th>Produit</th>
+                  <td id="produit"></td>
+                </tr>
+                <tr>
+                  <th>Code Format</th>
+                  <td id="codeFormat"></td>
+                </tr>
+              </table>
+            </div>
+            <div class="details-section">
+              <h3>Détails Poinçons</h3>
+              <table class="details-table">
+                <tr>
+                  <th>N° Poinçon 1</th>
+                  <td id="numeroPoincon1"></td>
+                </tr>
+                <tr>
+                  <th>État 1</th>
+                  <td id="etat1"></td>
+                </tr>
+                <tr>
+                  <th>N° Poinçon 2</th>
+                  <td id="numeroPoincon2"></td>
+                </tr>
+                <tr>
+                  <th>État 2</th>
+                  <td id="etat2"></td>
+                </tr>
+              </table>
+            </div>
+            <div class="details-section">
+              <h3>Informations Complémentaires</h3>
+              <table class="details-table">
+                <tr>
+                  <th>N° Lots</th>
+                  <td id="numeroLots"></td>
+                </tr>
+                <tr>
+                  <th>Date Retour</th>
+                  <td id="dateRetour"></td>
+                </tr>
+                <tr>
+                  <th>Emplacement Retour</th>
+                  <td id="emplacementRetour"></td>
+                </tr>
+                <tr>
+                  <th>Commentaire</th>
+                  <td id="commentaire"></td>
+                </tr>
+              </table>
+            </div>
+            <div class="text-center mt-4">
+              <a href="Suivi_utilisations.html" class="btn btn-back">Retour</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- jQuery -->
+  <script src="../vendors/jquery/dist/jquery.min.js"></script>
+  <!-- Bootstrap -->
+  <script src="../vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- FastClick -->
+  <script src="../vendors/fastclick/lib/fastclick.js"></script>
+  <!-- NProgress -->
+  <script src="../vendors/nprogress/nprogress.js"></script>
+  <!-- Custom Theme Scripts -->
+  <script src="../build/js/custom.min.js"></script>
+  <script>
+    function toggleSettingsDropdown() {
+      console.log("Toggling settings dropdown");
+      var dropdown = document.getElementById('settingsDropdown');
+      dropdown.classList.toggle('show');
+    }
+
+    document.addEventListener('click', function(event) {
+      var dropdown = document.getElementById('settingsDropdown');
+      var btn = document.getElementById('settingsBtn');
+      if (!btn.contains(event.target) && !dropdown.contains(event.target)) {
+        dropdown.classList.remove('show');
+      }
+    });
+
+    document.getElementById('suiviMenuLink').onclick = function(e) {
+      console.log("Toggling Suivi menu");
+      e.preventDefault();
+      var menuItem = this.parentElement;
+      var childMenu = document.getElementById('suiviChildMenu');
+      var arrow = document.getElementById('suiviArrow');
+      var isOpen = menuItem.classList.contains('open');
+      if (isOpen) {
+        menuItem.classList.remove('open');
+        childMenu.style.display = 'none';
+        arrow.style.transform = 'rotate(0deg)';
+      } else {
+        menuItem.classList.add('open');
+        childMenu.style.display = 'block';
+        arrow.style.transform = 'rotate(180deg)';
+      }
+    };
+
+    // Load utilisations from localStorage
+    let utilisations = [];
+    try {
+      const storedUtilisations = localStorage.getItem('utilisations');
+      console.log("Raw localStorage data:", storedUtilisations);
+      if (storedUtilisations) {
+        utilisations = JSON.parse(storedUtilisations);
+        console.log("Parsed utilisations from localStorage:", utilisations);
+      } else {
+        console.log("No utilisations found in localStorage");
+      }
+    } catch (error) {
+      console.error("Error parsing utilisations from localStorage:", error);
+    }
+
+    // Get the utilisation ID from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const numeroUtilisation = urlParams.get('id');
+    console.log("URL Parameter ID:", numeroUtilisation);
+
+    // Find the utilisation
+    const utilisation = utilisations.find(u => u.numeroUtilisation === numeroUtilisation);
+    console.log("Found utilisation:", utilisation);
+
+    // Display the utilisation details
+    if (utilisation) {
+      document.getElementById('numeroUtilisation').textContent = utilisation.numeroUtilisation;
+      document.getElementById('dateUtilisation').textContent = utilisation.dateUtilisation;
+      document.getElementById('utilisateur').textContent = utilisation.utilisateur;
+      document.getElementById('produit').textContent = utilisation.produit;
+      document.getElementById('codeFormat').textContent = utilisation.codeFormat;
+      document.getElementById('numeroPoincon1').textContent = utilisation.numeroPoincon1;
+      document.getElementById('etat1').textContent = utilisation.etat1;
+      document.getElementById('numeroPoincon2').textContent = utilisation.numeroPoincon2;
+      document.getElementById('etat2').textContent = utilisation.etat2;
+      document.getElementById('numeroLots').textContent = utilisation.numeroLots;
+      document.getElementById('dateRetour').textContent = utilisation.dateRetour;
+      document.getElementById('emplacementRetour').textContent = utilisation.emplacementRetour;
+      document.getElementById('commentaire').textContent = utilisation.commentaire || 'Aucun commentaire';
+    } else {
+      document.getElementById('details-container').innerHTML = '<p>Utilisation non trouvée. Vérifiez que l\'utilisation existe dans la liste et que les données sont correctement sauvegardées.</p>';
+    }
+
+    // Check if jQuery loaded
+    if (typeof jQuery === 'undefined') {
+      console.error("jQuery failed to load. Check the path to ../vendors/jquery/dist/jquery.min.js");
+    } else {
+      console.log("jQuery loaded successfully");
+    }
+  </script>
+</body>
+</html>

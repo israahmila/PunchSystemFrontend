@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ajouter Poinçon</title>
+    <!-- Bootstrap -->
+    <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="../build/css/custom.min.css" rel="stylesheet">
+    <!-- jQuery Smart Wizard -->
+    <link href="../vendors/jQuery-Smart-Wizard/css/smart_wizard.css" rel="stylesheet">
+    <style>
+       
+      body, html { background: #f5f8fa; }
+      .main_container { margin-left: 260px; transition: margin-left 0.2s; }
+      @media (max-width: 991px) { .main_container { margin-left: 0; } }
+      .page-title {
+        font-size: 2rem;
+        color: #2c3e50;
+        font-weight: 500;
+        margin-bottom: 32px;
+        margin-top: 24px;
+      }
+      .table-container {
+        background: #f5f8fa;
+        border-radius: 12px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        padding: 32px 24px;
+        margin-bottom: 32px;
+      }
+      .table thead th {
+        background: #eaf1f5;
+        color: #2c3e50;
+        font-weight: 600;
+        border-bottom: 2px solid #dbe3ea;
+      }
+      .table tbody tr {
+        background: #fff;
+        transition: background 0.18s;
+      }
+      .table tbody tr:hover {
+        background: #eaf1f5;
+      }
+      .table td, .table th {
+        vertical-align: middle !important;
+      }
+      .action-btn {
+        border: none;
+        background: none;
+        color: #2980b9;
+        font-size: 1.2rem;
+        margin-right: 8px;
+        cursor: pointer;
+        transition: color 0.18s;
+      }
+      .action-btn.delete { color: #e74c3c; }
+      .action-btn:hover { color: #00a8ff; }
+      .action-btn.delete:hover { color: #c0392b; }
+      .add-btn {
+        background: #009eff;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 18px;
+        font-size: 1rem;
+        font-weight: 500;
+        margin-bottom: 18px;
+        float: right;
+        transition: background 0.18s;
+      }
+      .add-btn:hover { background: #2980b9; }
+      .modern-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 240px;
+        background: #111827;
+        border-radius: 18px 0 0 18px;
+        box-shadow: 2px 0 16px rgba(44, 62, 80, 0.10);
+        display: flex;
+        flex-direction: column;
+        z-index: 1050;
+        padding: 18px 0 0 0;
+        border-top-left-radius: 32px;
+      }
+      .modern-sidebar .sidebar-logo {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+      .modern-sidebar .sidebar-logo svg {
+        width: 38px;
+        height: 38px;
+        color: #00a8ff;
+      }
+      .modern-sidebar nav {
+        flex: 1;
+      }
+      .modern-sidebar ul {
+        list-style: none;
+        padding: 0 0 0 0;
+        margin: 0;
+      }
+      .modern-sidebar li {
+        margin-bottom: 8px;
+      }
+      .modern-sidebar a {
+        display: flex;
+        align-items: center;
+        color: #cbd5e1;
+        font-size: 1.08rem;
+        font-weight: 500;
+        padding: 12px 24px;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: background 0.18s, color 0.18s;
+      }
+      .modern-sidebar a:hover, .modern-sidebar li.active > a {
+        background: #1e293b;
+        color: #fff;
+      }
+      .modern-sidebar a i {
+        margin-right: 16px;
+        font-size: 1.3rem;
+        opacity: 0.92;
+        color: #00a8ff;
+        transition: color 0.18s;
+      }
+      .modern-sidebar a:hover i, .modern-sidebar li.active > a i {
+        color: #fff;
+      }
+      .modern-sidebar .sidebar-bottom {
+        margin-top: auto;
+        padding-bottom: 24px;
+        position: relative;
+      }
+      .modern-sidebar .settings-btn {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        color: #cbd5e1;
+        font-size: 1.08rem;
+        font-weight: 500;
+        padding: 12px 24px;
+        border-radius: 8px;
+        background: none;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        transition: background 0.18s, color 0.18s;
+      }
+      .modern-sidebar .settings-btn:hover, .modern-sidebar .settings-btn.active {
+        background: #1e293b;
+        color: #fff;
+      }
+      .modern-sidebar .settings-btn i {
+        margin-right: 16px;
+        font-size: 1.3rem;
+        color: #00a8ff;
+        transition: color 0.18s;
+      }
+      .modern-sidebar .settings-btn:hover i, .modern-sidebar .settings-btn.active i {
+        color: #fff;
+      }
+      .settings-dropdown {
+        display: none;
+        position: absolute;
+        left: 24px;
+        bottom: 56px;
+        background: #1e293b;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(44,62,80,0.18);
+        min-width: 170px;
+        z-index: 2000;
+        padding: 8px 0;
+      }
+      .settings-dropdown.show {
+        display: block;
+      }
+      .settings-dropdown a {
+        color: #cbd5e1;
+        padding: 10px 24px;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        border-radius: 8px;
+        transition: background 0.18s, color 0.18s;
+      }
+      .settings-dropdown a i {
+        margin-right: 10px;
+        color: #00a8ff;
+        font-size: 1.1rem;
+      }
+      .settings-dropdown a:hover {
+        background: #00a8ff;
+        color: #fff;
+      }
+      .settings-dropdown a:hover i {
+        color: #fff;
+      }
+      @media (max-width: 991px) {
+        .modern-sidebar {
+          position: static;
+          width: 100%;
+          height: auto;
+          border-radius: 0;
+          flex-direction: row;
+          box-shadow: none;
+          padding: 0;
+        }
+        .modern-sidebar .sidebar-logo {
+          margin-bottom: 12px;
+        }
+      }
+      .main_container {
+        margin-left: 260px;
+        transition: margin-left 0.2s;
+      }
+      @media (max-width: 991px) {
+        .main_container {
+          margin-left: 0;
+        }
+      }
+      .child_menu {
+        max-height: 1000px;
+        overflow: hidden;
+        transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1);
+      }
+      .child_menu.collapsed {
+        max-height: 0;
+        padding: 0 !important;
+      }
+      .menu-item-has-children > a .fa-chevron-down {
+        transition: transform 0.3s;
+      }
+      .menu-item-has-children.open > a .fa-chevron-down {
+        transform: rotate(-180deg);
+      }
+    
+      body, html { background: #f5f8fa; }
+      .main_container { margin-left: 260px; transition: margin-left 0.2s; }
+      @media (max-width: 991px) { .main_container { margin-left: 0; } }
+      .page-title { font-size: 2rem; color: #2c3e50; font-weight: 500; margin-bottom: 32px; margin-top: 24px; }
+      .form_wizard .stepContainer { min-height: 400px; }
+      .wizard_horizontal ul.wizard_steps { display: table; width: 100%; margin: 0 0 20px; padding: 0; list-style: none; }
+      .wizard_horizontal ul.wizard_steps li { display: table-cell; text-align: center; }
+      .wizard_horizontal ul.wizard_steps li a, .wizard_horizontal ul.wizard_steps li:hover { display: block; position: relative; opacity: 1; color: #666; text-decoration: none; }
+      .wizard_horizontal ul.wizard_steps li a:before { content: ""; position: absolute; height: 4px; background: #ccc; top: 20px; width: 100%; z-index: 4; left: 0; }
+      .wizard_horizontal ul.wizard_steps li a.disabled:before { background: #ccc; }
+      .wizard_horizontal ul.wizard_steps li a.done:before, .wizard_horizontal ul.wizard_steps li a.done:hover:before { background: #2980b9; }
+      .wizard_horizontal ul.wizard_steps li a .step_no { width: 40px; height: 40px; line-height: 40px; border-radius: 50%; display: block; margin: 0 auto 5px; font-size: 16px; text-align: center; position: relative; z-index: 5; background: #fff; color: #ccc; border: 2px solid #ccc; }
+      .wizard_horizontal ul.wizard_steps li a.done .step_no { background: #2980b9; color: #fff; border-color: #2980b9; }
+      .wizard_horizontal ul.wizard_steps li a .step_descr { font-size: 14px; color: #666; }
+      .wizard_horizontal ul.wizard_steps li a.done .step_descr { color: #2980b9; }
+      .form_wizard .actionBar { padding: 15px 0; text-align: right; }
+      .form_wizard .actionBar .buttonDisabled { display: none; }
+      .form_wizard .actionBar a.btn { margin-left: 10px; padding: 8px 16px; font-size: 14px; border-radius: 4px; }
+      .form_wizard .actionBar .btn-primary { background: #2980b9; border-color: #2980b9; }
+      .form_wizard .actionBar .btn-primary:hover { background: #00a8ff; border-color: #00a8ff; }
+      .form_wizard .actionBar .btn-secondary { background: #aab7c4; border-color: #aab7c4; }
+      .form_wizard .actionBar .btn-secondary:hover { background: #9ca7b4; border-color: #9ca7b4; }
+      .form-horizontal .form-group { margin-bottom: 20px; }
+      .form-horizontal .form-group label { font-size: 1.1rem; color: #34495e; font-weight: 500; }
+      .form-horizontal .form-group input, .form-horizontal .form-group select, .form-horizontal .form-group textarea { width: 100%; padding: 10px 14px; border-radius: 6px; border: 1.5px solid #dbe6ee; background: #f8fafb; font-size: 1.1rem; }
+      .form-horizontal .form-group textarea { min-height: 100px; resize: vertical; }
+      .repeat-section { margin-bottom: 30px; padding: 20px; border: 1px solid #dbe3ea; border-radius: 6px; background: #f8fafb; }
+      .repeat-section h4 { font-size: 1.2rem; color: #2c3e50; margin-bottom: 20px; }
+    </style>
+  </head>
+  <body class="nav-md">
+    <div class="container body">
+      <div class="left_col scroll-view custom-sidebar">
+        <div class="modern-sidebar">
+          <div class="sidebar-logo" style="font-size:2rem;font-weight:700;color:#009eff;letter-spacing:2px;text-align:center;margin-bottom:32px;">LOGO</div>
+          <nav><ul><li><a href="index.html"><i class="fa fa-home"></i> Dashboard</a></li><li><a href="tables.html"><i class="fa fa-users"></i> Utilisateurs</a></li><li><a href="produits.html"><i class="fa fa-cube"></i> Produits</a></li><li><a href="poincons.html"><i class="fa fa-certificate"></i> Poinçons</a></li><li class="menu-item-has-children"><a href="#" id="suiviMenuLink"><i class="fa fa-search"></i> Suivi <span class="suivi-arrow" id="suiviArrow" style="display:inline-block;transition:transform 0.3s;"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 8L10 12L14 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><ul class="child_menu" id="suiviChildMenu" style="display:none;"><li><a href="Suivi_utilisations.html">Liste Utilisations</a></li><li><a href="Suivi_entretien.html">Liste Entretien</a></li></ul></li><li><a href="#"><i class="fa fa-history"></i> Historique</a></li></ul></nav>
+          <div class="sidebar-bottom"><button class="settings-btn" id="settingsBtn" onclick="toggleSettingsDropdown()"><i class="fa fa-cog"></i> Settings</button><div class="settings-dropdown" id="settingsDropdown"><a href="#"><i class="fa fa-user"></i> Profile</a><a href="#"><i class="fa fa-question-circle"></i> Help</a><a href="login.html"><i class="fa fa-sign-out"></i> Log out</a></div></div>
+        </div>
+      </div>
+      <div class="right_col" role="main" style="min-height: 100vh; background: #fff;">
+        <div class="" style="display: block;">
+          <div class="col-md-12">
+            <h2 class="page-title">Ajouter Poinçon</h2>
+            <div id="wizard" class="form_wizard wizard_horizontal">
+              <ul class="wizard_steps">
+                <li>
+                  <a href="#step-1">
+                    <span class="step_no">1</span>
+                    <span class="step_descr">Étape 1<br /><small>Informations de base</small></span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#step-2">
+                    <span class="step_no">2</span>
+                    <span class="step_descr">Étape 2<br /><small>Détails techniques</small></span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#step-3">
+                    <span class="step_no">3</span>
+                    <span class="step_descr">Étape 3<br /><small>Personnalisation</small></span>
+                  </a>
+                </li>
+              </ul>
+              <div id="step-1">
+                <form class="form-horizontal" id="poinconForm">
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align" for="codeFormat">Code format <span class="required">*</span></label>
+                    <div class="col-md-9"><input type="text" id="codeFormat" name="codeFormat" required class="form-control"></div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align" for="marque">Marque <span class="required">*</span></label>
+                    <div class="col-md-9"><input type="text" id="marque" name="marque" required class="form-control"></div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align" for="forme">Forme <span class="required">*</span></label>
+                    <div class="col-md-9"><input type="text" id="forme" name="forme" required class="form-control"></div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align" for="codeGMAO">Code GMAO <span class="required">*</span></label>
+                    <div class="col-md-9"><input type="text" id="codeGMAO" name="codeGMAO" required class="form-control"></div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align" for="fournisseur">Fournisseur <span class="required">*</span></label>
+                    <div class="col-md-9"><input type="text" id="fournisseur" name="fournisseur" required class="form-control"></div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align" for="gravureInf">Gravure Inférieur <span class="required">*</span></label>
+                    <div class="col-md-9"><input type="text" id="gravureInf" name="gravureInf" required class="form-control"></div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align" for="gravureSup">Gravure Supérieur <span class="required">*</span></label>
+                    <div class="col-md-9"><input type="text" id="gravureSup" name="gravureSup" required class="form-control"></div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align" for="secabilite">Sécabilité <span class="required">*</span></label>
+                    <div class="col-md-9"><input type="text" id="secabilite" name="secabilite" required class="form-control"></div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align" for="clavetage">Clavetage <span class="required">*</span></label>
+                    <div class="col-md-9"><input type="text" id="clavetage" name="clavetage" required class="form-control"></div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align" for="emplacementReception">Emplacement Réception <span class="required">*</span></label>
+                    <div class="col-md-9"><input type="text" id="emplacementReception" name="emplacementReception" required class="form-control"></div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align" for="dateReception">Date Réception <span class="required">*</span></label>
+                    <div class="col-md-9"><input type="date" id="dateReception" name="dateReception" required class="form-control"></div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align" for="dateFabrication">Date Fabrication <span class="required">*</span></label>
+                    <div class="col-md-9"><input type="date" id="dateFabrication" name="dateFabrication" required class="form-control"></div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align" for="dateMiseEnService">Date Mise en Service <span class="required">*</span></label>
+                    <div class="col-md-9"><input type="date" id="dateMiseEnService" name="dateMiseEnService" required class="form-control"></div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align" for="commentaire">Commentaire</label>
+                    <div class="col-md-9"><textarea id="commentaire" name="commentaire" class="form-control"></textarea></div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align" for="ficheTechnique">Ajouter Fiche Technique</label>
+                    <div class="col-md-9"><input type="file" id="ficheTechnique" name="ficheTechnique" class="form-control-file"></div>
+                  </div>
+                </form>
+              </div>
+              <div id="step-2">
+                <form class="form-horizontal">
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align" for="nombrePoincon">Nombre Poinçon <span class="required">*</span></label>
+                    <div class="col-md-9"><input type="number" id="nombrePoincon" name="nombrePoincon" required class="form-control" min="1"></div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align" for="matrice">Matrice <span class="required">*</span></label>
+                    <div class="col-md-9"><input type="text" id="matrice" name="matrice" required class="form-control"></div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align" for="largeur">Largeur <span class="required">*</span></label>
+                    <div class="col-md-9"><input type="text" id="largeur" name="largeur" required class="form-control"></div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align" for="longueur">Longueur <span class="required">*</span></label>
+                    <div class="col-md-9"><input type="text" id="longueur" name="longueur" required class="form-control"></div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align" for="referenceSup">Référence Supérieur <span class="required">*</span></label>
+                    <div class="col-md-9"><input type="text" id="referenceSup" name="referenceSup" required class="form-control"></div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align" for="referenceInf">Référence Inférieur <span class="required">*</span></label>
+                    <div class="col-md-9"><input type="text" id="referenceInf" name="referenceInf" required class="form-control"></div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align" for="diametre">Diamètre <span class="required">*</span></label>
+                    <div class="col-md-9"><input type="text" id="diametre" name="diametre" required class="form-control"></div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align" for="chAdm">CH ADM <span class="required">*</span></label>
+                    <div class="col-md-9"><input type="text" id="chAdm" name="chAdm" required class="form-control"></div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label label-align" for="status">Status <span class="required">*</span></label>
+                    <div class="col-md-9"><select id="status" name="status" class="form-control" required><option value="Actif">Actif</option><option value="Inactif">Inactif</option><option value="En attente">En attente</option></select></div>
+                  </div>
+                </form>
+              </div>
+              <div id="step-3">
+                <form class="form-horizontal" id="repeat-form">
+                  <div id="repeat-sections"></div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- jQuery -->
+    <script src="../vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="../vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- FastClick -->
+    <script src="../vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="../vendors/nprogress/nprogress.js"></script>
+    <!-- jQuery Smart Wizard -->
+    <script src="../vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="../build/js/custom.min.js"></script>
+    <script>
+      function toggleSettingsDropdown() {
+        var dropdown = document.getElementById('settingsDropdown');
+        dropdown.classList.toggle('show');
+      }
+      document.addEventListener('click', function(event) {
+        var dropdown = document.getElementById('settingsDropdown');
+        var btn = document.getElementById('settingsBtn');
+        if (!btn.contains(event.target) && !dropdown.contains(event.target)) {
+          dropdown.classList.remove('show');
+        }
+      });
+      document.getElementById('suiviMenuLink').onclick = function(e) {
+        e.preventDefault();
+        var menuItem = this.parentElement;
+        menuItem.classList.toggle('open');
+        var childMenu = document.getElementById('suiviChildMenu');
+        if (menuItem.classList.contains('open')) {
+          childMenu.style.display = 'block';
+        } else {
+          childMenu.style.display = 'none';
+        }
+      };
+
+      let step2Data = {};
+      let repeatedData = [];
+
+      function populateRepeatForm() {
+        const nombrePoincon = parseInt($('#nombrePoincon').val()) || 0;
+        const matrice = $('#matrice').val();
+        const largeur = $('#largeur').val();
+        const longueur = $('#longueur').val();
+        const referenceSup = $('#referenceSup').val();
+        const referenceInf = $('#referenceInf').val();
+        const diametre = $('#diametre').val();
+        const chAdm = $('#chAdm').val();
+        const status = $('#status').val();
+
+        step2Data = { matrice, largeur, longueur, referenceSup, referenceInf, diametre, chAdm, status, nombrePoincon };
+        repeatedData = [];
+
+        const container = $('#repeat-sections');
+        container.empty();
+
+        if (nombrePoincon > 0) {
+          for (let i = 0; i < nombrePoincon; i++) {
+            const sectionId = `repeat-section-${i}`;
+            container.append(`
+              <div class="repeat-section" id="${sectionId}">
+                <h4>Poinçon ${i + 1}</h4>
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label label-align" for="matrice-${i}">Matrice <span class="required">*</span></label>
+                  <div class="col-md-9"><input type="text" id="matrice-${i}" name="matrice-${i}" value="${matrice}" required class="form-control"></div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label label-align" for="largeur-${i}">Largeur <span class="required">*</span></label>
+                  <div class="col-md-9"><input type="text" id="largeur-${i}" name="largeur-${i}" value="${largeur}" required class="form-control"></div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label label-align" for="longueur-${i}">Longueur <span class="required">*</span></label>
+                  <div class="col-md-9"><input type="text" id="longueur-${i}" name="longueur-${i}" value="${longueur}" required class="form-control"></div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label label-align" for="referenceSup-${i}">Référence Supérieur <span class="required">*</span></label>
+                  <div class="col-md-9"><input type="text" id="referenceSup-${i}" name="referenceSup-${i}" value="${referenceSup}" required class="form-control"></div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label label-align" for="referenceInf-${i}">Référence Inférieur <span class="required">*</span></label>
+                  <div class="col-md-9"><input type="text" id="referenceInf-${i}" name="referenceInf-${i}" value="${referenceInf}" required class="form-control"></div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label label-align" for="diametre-${i}">Diamètre <span class="required">*</span></label>
+                  <div class="col-md-9"><input type="text" id="diametre-${i}" name="diametre-${i}" value="${diametre}" required class="form-control"></div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label label-align" for="chAdm-${i}">CH ADM <span class="required">*</span></label>
+                  <div class="col-md-9"><input type="text" id="chAdm-${i}" name="chAdm-${i}" value="${chAdm}" required class="form-control"></div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label label-align" for="status-${i}">Status <span class="required">*</span></label>
+                  <div class="col-md-9">
+                    <select id="status-${i}" name="status-${i}" class="form-control" required>
+                      <option value="Actif" ${status === 'Actif' ? 'selected' : ''}>Actif</option>
+                      <option value="Inactif" ${status === 'Inactif' ? 'selected' : ''}>Inactif</option>
+                      <option value="En attente" ${status === 'En attente' ? 'selected' : ''}>En attente</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            `);
+          }
+        }
+      }
+
+      function collectRepeatedData() {
+        const nombrePoincon = parseInt($('#nombrePoincon').val()) || 0;
+        repeatedData = [];
+        for (let i = 0; i < nombrePoincon; i++) {
+          const data = {
+            matrice: $(`#matrice-${i}`).val(),
+            largeur: $(`#largeur-${i}`).val(),
+            longueur: $(`#longueur-${i}`).val(),
+            referenceSup: $(`#referenceSup-${i}`).val(),
+            referenceInf: $(`#referenceInf-${i}`).val(),
+            diametre: $(`#diametre-${i}`).val(),
+            chAdm: $(`#chAdm-${i}`).val(),
+            status: $(`#status-${i}`).val()
+          };
+          repeatedData.push(data);
+        }
+        return repeatedData;
+      }
+
+      $('#wizard').smartWizard({
+        selected: 0,
+        onLeaveStep: function(obj, step) {
+          const stepNum = step.fromStep;
+          if (stepNum === 1 || stepNum === 2) {
+            const $form = $(`#step-${stepNum} form`);
+            const inputs = $form.find('input[required], select[required]');
+            let isValid = true;
+            inputs.each(function() {
+              if (!$(this).val()) {
+                isValid = false;
+                $(this).css('border-color', '#e74c3c');
+              } else {
+                $(this).css('border-color', '#dbe6ee');
+              }
+            });
+            if (stepNum === 2 && isValid) {
+              populateRepeatForm();
+            }
+            return isValid;
+          }
+          return true;
+        },
+        onFinish: function() {
+          const codeFormat = $('#codeFormat').val();
+          const marque = $('#marque').val();
+          const forme = $('#forme').val();
+          const codeGMAO = $('#codeGMAO').val();
+          const fournisseur = $('#fournisseur').val();
+          const gravureInf = $('#gravureInf').val();
+          const gravureSup = $('#gravureSup').val();
+          const secabilite = $('#secabilite').val();
+          const clavetage = $('#clavetage').val();
+          const emplacementReception = $('#emplacementReception').val();
+          const dateReception = $('#dateReception').val();
+          const dateFabrication = $('#dateFabrication').val();
+          const dateMiseEnService = $('#dateMiseEnService').val();
+          const commentaire = $('#commentaire').val();
+          const nombrePoincon = $('#nombrePoincon').val();
+
+          const repeatedPoincons = collectRepeatedData();
+
+          const newPoincon = {
+            codeFormat, marque, forme, codeGMAO, fournisseur, gravureInf, gravureSup, secabilite,
+            clavetage, emplacementReception, dateReception, dateFabrication, dateMiseEnService, commentaire,
+            nombrePoincon, repeatedPoincons
+          };
+          window.location.href = `poincons.html?newPoincon=${encodeURIComponent(JSON.stringify(newPoincon))}`;
+        }
+      });
+
+      $('.buttonNext').addClass('btn btn-primary');
+      $('.buttonPrevious').addClass('btn btn-secondary');
+      $('.buttonFinish').addClass('btn btn-primary');
+    </script>
+  </body>
+</html>

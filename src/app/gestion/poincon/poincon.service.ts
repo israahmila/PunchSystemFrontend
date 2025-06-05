@@ -1,47 +1,54 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Poincon } from './poincon.model';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class PoinconService {
-  private apiUrl = 'https://localhost:7225/api/poincons';
+  private apiUrl = 'https://localhost:7225/api/Poincon';
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<Poincon[]> {
-    return this.http.get<Poincon[]>(this.apiUrl);
+  // Used in Liste
+  getAll(search = '', page = 1, pageSize = 10): Observable<any> {
+    let params = new HttpParams()
+      .set('page', page)
+      .set('pageSize', pageSize);
+    if (search) {
+      params = params.set('search', search);
+    }
+    return this.http.get(`${this.apiUrl}`, { params });
   }
 
-  getOne(id: number): Observable<Poincon> {
-    return this.http.get<Poincon>(`${this.apiUrl}/${id}`);
-  }
-
-  addMany(poincons: Poincon[]): Observable<any> {
-    return this.http.post(`${this.apiUrl}/batch`, poincons);
-  }
-
-  update(id: number, data: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, data, {
-      headers: { 'Content-Type': 'application/json' }
-    });
-  }
-  getById(id: number): Observable<any> {
+  // Used in Details and Modifier
+  getById(id: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/${id}`);
   }
 
-  delete(id: number): Observable<any> {
+  // Alias for getById (fix getOne() error)
+  getOne(id: string): Observable<any> {
+    return this.getById(id);
+  }
+
+  // Soft delete
+  delete(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
-  uploadFiche(file: File): Observable<{ url: string }> {
-    const formData = new FormData();
-    formData.append('file', file);
-  
-    return this.http.post<{ url: string }>(
-      'https://localhost:7225/api/poincons/upload',
-      formData
-    );
+  // Modifier poinçon
+  update(id: string, formData: FormData): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, formData);
   }
-  
+
+  // Ajouter poinçon
+  ajouterPoincon(formData: FormData): Observable<any> {
+    return this.http.post(`${this.apiUrl}`, formData);
+  }
+
+  // Autocomplete
+  getSuggestions(field: string, q: string): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiUrl}/suggestions`, {
+      params: new HttpParams().set('field', field).set('q', q)
+    });
+  }
 }
+

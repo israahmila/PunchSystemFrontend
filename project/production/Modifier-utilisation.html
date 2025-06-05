@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modifier Utilisation</title>
+  <!-- Bootstrap -->
+  <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <!-- Custom Theme Style -->
+  <link href="../build/css/custom.min.css" rel="stylesheet">
+  <style>
+    body, html { background: #ffffff; }
+    .main_container { margin-left: 260px; transition: margin-left 0.2s; }
+    @media (max-width: 991px) { .main_container { margin-left: 0; } }
+    .page-title { font-size: 2rem; color: #2c3e50; font-weight: 500; margin-bottom: 32px; margin-top: 24px; }
+    .form-container { background: #fff; padding: 20px; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { font-size: 1.1rem; color: #34495e; font-weight: 500; margin-bottom: 5px; display: block; }
+    .form-group input, .form-group select { width: 100%; padding: 8px 12px; border: 1px solid #dbe6ee; border-radius: 4px; font-size: 1.1rem; color: #666; }
+    .form-group .add-lot { position: relative; }
+    .form-group .add-lot input { padding-right: 40px; }
+    .form-group .add-lot .fa-plus { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #2980b9; cursor: pointer; }
+    .modern-sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 240px;
+      background: #111827;
+      border-radius: 18px 0 0 18px;
+      box-shadow: 2px 0 16px rgba(44, 62, 80, 0.10);
+      display: flex;
+      flex-direction: column;
+      z-index: 1050;
+      padding: 18px 0 0 0;
+      border-top-left-radius: 32px;
+    }
+    .modern-sidebar .sidebar-logo {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .modern-sidebar nav { flex: 1; }
+    .modern-sidebar ul { list-style: none; padding: 0; margin: 0; }
+    .modern-sidebar li { margin-bottom: 8px; }
+    .modern-sidebar a {
+      display: flex;
+      align-items: center;
+      color: #cbd5e1;
+      font-size: 1.08rem;
+      font-weight: 500;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.18s, color 0.18s;
+    }
+    .modern-sidebar a:hover, .modern-sidebar li.active > a {
+      background: #1e293b;
+      color: #fff;
+    }
+    .modern-sidebar a i {
+      margin-right: 16px;
+      font-size: 1.3rem;
+      opacity: 0.92;
+      color: #00a8ff;
+      transition: color 0.18s;
+    }
+    .modern-sidebar a:hover i, .modern-sidebar li.active > a i { color: #fff; }
+    .modern-sidebar .sidebar-bottom {
+      margin-top: auto;
+      padding-bottom: 24px;
+      position: relative;
+    }
+    .modern-sidebar .settings-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      color: #cbd5e1;
+      font-size: 1.08rem;
+      font-weight: 500;
+      padding: 12px 24px;
+      border-radius: 8px;
+      background: none;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s;
+    }
+    .modern-sidebar .settings-btn:hover, .modern-sidebar .settings-btn.active {
+      background: #1e293b;
+      color: #fff;
+    }
+    .modern-sidebar .settings-btn i {
+      margin-right: 16px;
+      font-size: 1.3rem;
+      color: #00a8ff;
+      transition: color 0.18s;
+    }
+    .modern-sidebar .settings-btn:hover i, .modern-sidebar .settings-btn.active i { color: #fff; }
+    .settings-dropdown {
+      display: none;
+      position: absolute;
+      left: 24px;
+      bottom: 56px;
+      background: #1e293b;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(44,62,80,0.18);
+      min-width: 170px;
+      z-index: 2000;
+      padding: 8px 0;
+    }
+    .settings-dropdown.show { display: block; }
+    .settings-dropdown a {
+      color: #cbd5e1;
+      padding: 10px 24px;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      border-radius: 8px;
+      transition: background 0.18s, color 0.18s;
+    }
+    .settings-dropdown a i {
+      margin-right: 10px;
+      color: #00a8ff;
+      font-size: 1.1rem;
+    }
+    .settings-dropdown a:hover { background: #00a8ff; color: #fff; }
+    .settings-dropdown a:hover i { color: #fff; }
+    @media (max-width: 991px) {
+      .modern-sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        border-radius: 0;
+        flex-direction: row;
+        box-shadow: none;
+        padding: 0;
+      }
+      .modern-sidebar .sidebar-logo { margin-bottom: 12px; }
+    }
+  </style>
+</head>
+<body class="nav-md">
+  <div class="container body">
+    <div class="left_col scroll-view custom-sidebar">
+      <div class="modern-sidebar">
+        <div class="sidebar-logo" style="font-size:2rem;font-weight:700;color:#009eff;letter-spacing:2px;text-align:center;margin-bottom:32px;">LOGO</div>
+        <nav>
+          <ul>
+            <li><a href="index.html"><i class="fa fa-home"></i> Dashboard</a></li>
+            <li><a href="tables.html"><i class="fa fa-users"></i> Utilisateurs</a></li>
+            <li><a href="produits.html"><i class="fa fa-cube"></i> Produits</a></li>
+            <li><a href="poincons.html"><i class="fa fa-certificate"></i> Poinçons</a></li>
+            <li class="menu-item-has-children">
+              <a href="#" id="suiviMenuLink"><i class="fa fa-search"></i> Suivi <span class="suivi-arrow" id="suiviArrow" style="display:inline-block;transition:transform 0.3s;"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 8L10 12L14 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+              <ul class="child_menu" id="suiviChildMenu" style="display:none;">
+                <li><a href="Suivi_utilisations.html">Liste Utilisations</a></li>
+                <li><a href="Suivi_entretien.html">Liste Entretien</a></li>
+              </ul>
+            </li>
+            <li><a href="#"><i class="fa fa-history"></i> Historique</a></li>
+          </ul>
+        </nav>
+        <div class="sidebar-bottom">
+          <button class="settings-btn" id="settingsBtn" onclick="toggleSettingsDropdown()">
+            <i class="fa fa-cog"></i> Settings
+          </button>
+          <div class="settings-dropdown" id="settingsDropdown">
+            <a href="#"><i class="fa fa-user"></i> Profile</a>
+            <a href="#"><i class="fa fa-question-circle"></i> Help</a>
+            <a href="login.html"><i class="fa fa-sign-out"></i> Log out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="right_col" role="main" style="min-height: 100vh; background: #fff;">
+      <div class="" style="display: block;">
+        <div class="col-md-12">
+          <h2 class="page-title">Modifier Utilisation</h2>
+          <div class="form-container">
+            <div class="form-group">
+              <label for="numeroUtilisation">N° utilisation</label>
+              <input type="text" id="numeroUtilisation" readonly>
+            </div>
+            <div class="form-group">
+              <label for="dateUtilisation">Date Utilisation</label>
+              <input type="date" id="dateUtilisation" required>
+            </div>
+            <div class="form-group">
+              <label for="utilisateur">Utilisateurs</label>
+              <select id="utilisateur" required>
+                <option value="" disabled>Sélectionner un utilisateur</option>
+                <option value="Utilisateur A">Utilisateur A</option>
+                <option value="Utilisateur B">Utilisateur B</option>
+                <option value="Utilisateur C">Utilisateur C</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="produit">Produit</label>
+              <select id="produit" required>
+                <option value="" disabled>Sélectionner un produit</option>
+                <option value="Produit Alpha">Produit Alpha</option>
+                <option value="Produit Beta">Produit Beta</option>
+                <option value="Produit Gamma">Produit Gamma</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="codeFormat">Code Format</label>
+              <input type="text" id="codeFormat" required>
+            </div>
+            <div class="form-group">
+              <label for="numeroPoincon1">N° poinçon 1</label>
+              <input type="text" id="numeroPoincon1" required>
+            </div>
+            <div class="form-group">
+              <label for="etat1">État 1</label>
+              <select id="etat1" required>
+                <option value="" disabled>Sélectionner un état</option>
+                <option value="actif">Actif</option>
+                <option value="inactif">Inactif</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="numeroPoincon2">N° poinçon 2</label>
+              <input type="text" id="numeroPoincon2" required>
+            </div>
+            <div class="form-group">
+              <label for="etat2">État 2</label>
+              <select id="etat2" required>
+                <option value="" disabled>Sélectionner un état</option>
+                <option value="actif">Actif</option>
+                <option value="inactif">Inactif</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="commentaire">Commentaire</label>
+              <textarea id="commentaire" rows="4"></textarea>
+            </div>
+            <div class="form-group add-lot">
+              <label for="numeroLots">N° lots</label>
+              <input type="text" id="numeroLots" required>
+              <i class="fa fa-plus" onclick="addLotField()"></i>
+            </div>
+            <div class="form-group">
+              <label for="dateRetour">Date Retour</label>
+              <input type="date" id="dateRetour" required>
+            </div>
+            <div class="form-group">
+              <label for="emplacementRetour">Emplacement Retour</label>
+              <input type="text" id="emplacementRetour" required>
+            </div>
+            <div class="text-center mt-4">
+              <a href="Suivi_utilisations.html" class="btn btn-secondary">Retour</a>
+              <button class="btn btn-primary" onclick="updateUtilisation()">Enregistrer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- jQuery -->
+  <script src="../vendors/jquery/dist/jquery.min.js"></script>
+  <!-- Bootstrap -->
+  <script src="../vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- FastClick -->
+  <script src="../vendors/fastclick/lib/fastclick.js"></script>
+  <!-- NProgress -->
+  <script src="../vendors/nprogress/nprogress.js"></script>
+  <!-- Custom Theme Scripts -->
+  <script src="../build/js/custom.min.js"></script>
+  <script>
+    function toggleSettingsDropdown() {
+      var dropdown = document.getElementById('settingsDropdown');
+      dropdown.classList.toggle('show');
+    }
+    document.addEventListener('click', function(event) {
+      var dropdown = document.getElementById('settingsDropdown');
+      var btn = document.getElementById('settingsBtn');
+      if (!btn.contains(event.target) && !dropdown.contains(event.target)) {
+        dropdown.classList.remove('show');
+      }
+    });
+    document.getElementById('suiviMenuLink').onclick = function(e) {
+      e.preventDefault();
+      var menuItem = this.parentElement;
+      var childMenu = document.getElementById('suiviChildMenu');
+      var arrow = document.getElementById('suiviArrow');
+      var isOpen = menuItem.classList.contains('open');
+      if (isOpen) {
+        menuItem.classList.remove('open');
+        childMenu.style.display = 'none';
+        arrow.style.transform = 'rotate(0deg)';
+      } else {
+        menuItem.classList.add('open');
+        childMenu.style.display = 'block';
+        arrow.style.transform = 'rotate(180deg)';
+      }
+    };
+
+    let utilisations = [
+      { numeroUtilisation: 'UTL-001', dateUtilisation: '2024-06-01', utilisateur: 'Utilisateur A', produit: 'Produit Alpha', codeFormat: 'PNC-001', numeroPoincon1: 'P1', etat1: 'actif', numeroPoincon2: 'P2', etat2: 'inactif', commentaire: 'Test', numeroLots: 'Lot-01', dateRetour: '2024-06-02', emplacementRetour: 'Empl-01' },
+      { numeroUtilisation: 'UTL-002', dateUtilisation: '2024-05-20', utilisateur: 'Utilisateur B', produit: 'Produit Beta', codeFormat: 'PNC-002', numeroPoincon1: 'P3', etat1: 'inactif', numeroPoincon2: 'P4', etat2: 'actif', commentaire: 'Test 2', numeroLots: 'Lot-02', dateRetour: '2024-05-21', emplacementRetour: 'Empl-02' }
+    ];
+    let lotCount = 1;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const numeroUtilisation = urlParams.get('id');
+    const utilisation = utilisations.find(u => u.numeroUtilisation === numeroUtilisation);
+
+    if (utilisation) {
+      $('#numeroUtilisation').val(utilisation.numeroUtilisation);
+      $('#dateUtilisation').val(utilisation.dateUtilisation);
+      $('#utilisateur').val(utilisation.utilisateur);
+      $('#produit').val(utilisation.produit);
+      $('#codeFormat').val(utilisation.codeFormat);
+      $('#numeroPoincon1').val(utilisation.numeroPoincon1);
+      $('#etat1').val(utilisation.etat1);
+      $('#numeroPoincon2').val(utilisation.numeroPoincon2);
+      $('#etat2').val(utilisation.etat2);
+      $('#commentaire').val(utilisation.commentaire);
+      $('#numeroLots').val(utilisation.numeroLots);
+      $('#dateRetour').val(utilisation.dateRetour);
+      $('#emplacementRetour').val(utilisation.emplacementRetour);
+    } else {
+      $('.form-container').html('<p>Utilisation non trouvée.</p>');
+    }
+
+    function addLotField() {
+      lotCount++;
+      const lotField = `<div class="form-group add-lot" id="lot-field-${lotCount}">
+        <label for="numeroLots${lotCount}">N° lots ${lotCount}</label>
+        <input type="text" id="numeroLots${lotCount}" placeholder="Ex: Lot-0${lotCount}" required>
+        <i class="fa fa-plus" onclick="addLotField()"></i>
+        <i class="fa fa-minus" onclick="removeLotField(${lotCount})" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #e74c3c; cursor: pointer;"></i>
+      </div>`;
+      $('.form-container').append(lotField);
+    }
+
+    function removeLotField(index) {
+      $(`#lot-field-${index}`).remove();
+      lotCount--;
+    }
+
+    function updateUtilisation() {
+      const updatedUtilisation = {
+        numeroUtilisation: $('#numeroUtilisation').val(),
+        dateUtilisation: $('#dateUtilisation').val(),
+        utilisateur: $('#utilisateur').val(),
+        produit: $('#produit').val(),
+        codeFormat: $('#codeFormat').val(),
+        numeroPoincon1: $('#numeroPoincon1').val(),
+        etat1: $('#etat1').val(),
+        numeroPoincon2: $('#numeroPoincon2').val(),
+        etat2: $('#etat2').val(),
+        commentaire: $('#commentaire').val(),
+        numeroLots: $('#numeroLots').val(),
+        dateRetour: $('#dateRetour').val(),
+        emplacementRetour: $('#emplacementRetour').val()
+      };
+
+      if (!updatedUtilisation.dateUtilisation || !updatedUtilisation.utilisateur || !updatedUtilisation.produit || !updatedUtilisation.codeFormat || !updatedUtilisation.numeroPoincon1 || !updatedUtilisation.etat1 || !updatedUtilisation.numeroPoincon2 || !updatedUtilisation.etat2 || !updatedUtilisation.dateRetour || !updatedUtilisation.emplacementRetour) {
+        alert('Veuillez remplir tous les champs obligatoires.');
+        return;
+      }
+
+      const index = utilisations.findIndex(u => u.numeroUtilisation === numeroUtilisation);
+      if (index !== -1) {
+        utilisations[index] = updatedUtilisation;
+        alert('Utilisation mise à jour avec succès !');
+        window.location.href = 'Suivi_utilisations.html';
+      }
+    }
+  </script>
+</body>
+</html>

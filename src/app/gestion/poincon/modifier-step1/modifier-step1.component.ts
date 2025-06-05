@@ -20,7 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class ModifierStep1Component implements OnInit {
   form!: FormGroup;
   uploadedFileName: string | null = null;
-  id!: number;
+  id!: string;
 
   constructor(
     private fb: FormBuilder,
@@ -31,7 +31,9 @@ export class ModifierStep1Component implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.id = +this.route.snapshot.paramMap.get('id')!;
+    this.route.params.subscribe(params => {
+      this.id = params['id']; // Access the 'id' parameter from the URL
+    });
     this.form = this.fb.group({
       codeFormat: ['', Validators.required],
       forme: [''],

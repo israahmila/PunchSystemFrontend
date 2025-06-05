@@ -8,7 +8,7 @@ import { AuditEntry } from './audit-entry.model';
   providedIn: 'root'
 })
 export class AuditService {
-  private baseUrl = 'https://localhost:7225/api/audit';
+  private baseUrl = 'https://localhost:7225/api/Audit';
 
   constructor(private http: HttpClient) {}
 

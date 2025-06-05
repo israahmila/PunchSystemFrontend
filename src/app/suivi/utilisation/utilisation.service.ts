@@ -7,7 +7,7 @@ import { Utilisation } from './utilisation.model';
 
 @Injectable({ providedIn: 'root' })
 export class UtilisationService {
-  private apiUrl = 'https://localhost:7225/api/utilisations';
+  private apiUrl = 'https://localhost:7225/api/Utilisations';
 
   constructor(private http: HttpClient) {}
 

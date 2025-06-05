@@ -1,62 +1,53 @@
-<h2>Ajouter Poinçons Details</h2>
+<form [formGroup]="dimensionsForm" (ngSubmit)="onSubmit()" class="ajouter-form" *ngIf="dimensionsForm">
+  <mat-card class="section-card">
+    <mat-card-title>Forme</mat-card-title>
+    <div class="form-section">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Forme</mat-label>
+        <input type="text" matInput [formControl]="formeControl" [matAutocomplete]="autoForme">
+        <mat-autocomplete #autoForme="matAutocomplete" (optionSelected)="onFormeSelected($event)">
+          <mat-option *ngFor="let option of filteredFormes$ | async" [value]="option">
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+  </mat-card>
 
-<form [formGroup]="form" (ngSubmit)="next()" class="step-form">
+  <mat-card class="section-card">
+    <mat-card-title>Dimensions</mat-card-title>
+    <div class="form-section">
+      <mat-form-field appearance="fill" class="field">
+        <mat-label>Diamètre (mm)</mat-label>
+        <input matInput formControlName="diametre" type="number">
+      </mat-form-field>
 
-  <div class="grid-container">
+      <mat-form-field appearance="fill" class="field">
+        <mat-label>Largeur (mm)</mat-label>
+        <input matInput formControlName="largeur" type="number">
+      </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Nombre de poinçons</mat-label>
-      <input type="number" matInput formControlName="nombre" />
-    </mat-form-field>
+      <mat-form-field appearance="fill" class="field">
+        <mat-label>Longueur (mm)</mat-label>
+        <input matInput formControlName="longueur" type="number">
+      </mat-form-field>
+    </div>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Matrice</mat-label>
-      <input matInput formControlName="matrice" />
-    </mat-form-field>
+    <div class="form-section">
+      <mat-form-field appearance="fill" class="field">
+        <mat-label>Épaisseur (mm)</mat-label>
+        <input matInput formControlName="epaisseur" type="number">
+      </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Largeur</mat-label>
-      <input type="number" matInput formControlName="largeur" />
-    </mat-form-field>
+      <mat-form-field appearance="fill" class="field">
+        <mat-label>Hauteur (mm)</mat-label>
+        <input matInput formControlName="hauteur" type="number">
+      </mat-form-field>
+    </div>
+  </mat-card>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Longueur</mat-label>
-      <input type="number" matInput formControlName="longueur" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Ref Sup</mat-label>
-      <input matInput formControlName="refSup" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Ref Inf</mat-label>
-      <input matInput formControlName="refInf" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Diamètre</mat-label>
-      <input type="number" matInput formControlName="diametre" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>CH adm</mat-label>
-      <input matInput formControlName="chAdm" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Status</mat-label>
-      <mat-select formControlName="status">
-        <mat-option value="a">a</mat-option>
-        <mat-option value="b">b</mat-option>
-        <mat-option value="c">c</mat-option>
-      </mat-select>
-    </mat-form-field>
-
+  <div class="actions">
+    <button mat-stroked-button color="primary" routerLink="/poincon/ajouter/step1">← Précédent</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="dimensionsForm.invalid">Suivant →</button>
   </div>
-
-  <div class="form-actions">
-    <button mat-flat-button color="primary" type="submit">Next ⭢</button>
-  </div>
-
 </form>

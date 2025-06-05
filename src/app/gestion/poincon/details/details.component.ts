@@ -33,8 +33,8 @@ export class DetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (!isNaN(id)) {
+    const id = String(this.route.snapshot.paramMap.get('id'));
+    if (id!='') {
       this.poinconService.getOne(id).subscribe({
         next: (data) => {
           this.poincon = data;

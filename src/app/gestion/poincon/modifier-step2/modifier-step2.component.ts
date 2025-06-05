@@ -29,7 +29,7 @@ import { PoinconService } from '../poincon.service';
 })
 export class ModifierStep2Component implements OnInit {
   form!: FormGroup;
-  id!: number;
+  id!: string;
 
   constructor(
     private fb: FormBuilder,
@@ -40,8 +40,10 @@ export class ModifierStep2Component implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.id = +this.route.snapshot.paramMap.get('id')!;
-    this.form = this.fb.group({
+      this.route.params.subscribe(params => {
+      this.id = params['id']; // Access the 'id' parameter from the URL
+    });
+      this.form = this.fb.group({
       matrice: [''],
       largeur: [''],
       longueur: [''],
@@ -65,20 +67,7 @@ export class ModifierStep2Component implements OnInit {
       ...this.form.value
     };
 
-    // Handle file upload if present
-    if (this.wizard.file) {
-      this.poinconService.uploadFiche(this.wizard.file).subscribe({
-        next: (res) => {
-          updatedData.ficheTechniqueUrl = res.url; // Add URL to data
-          this.submitUpdate(updatedData);
-        },
-        error: (err) => {
-          console.error('❌ File upload failed:', err);
-        }
-      });
-    } else {
-      this.submitUpdate(updatedData);
-    }
+  
   }
 
   submitUpdate(data: any): void {

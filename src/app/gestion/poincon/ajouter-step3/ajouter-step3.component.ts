@@ -69,28 +69,7 @@ export class AjouterStep3Component implements OnInit{
       return;
     }
   
-    this.poinconService.uploadFiche(this.wizard.file).subscribe({
-      next: res => {
-        const url = res.url;
-        const finalData = this.form.value.poincons.map((p: Poincon) => ({ ...p, ficheTechniqueUrl: url }));
-
-  
-        this.poinconService.addMany(finalData).subscribe({
-          next: () => {
-            alert('✅ Tous les poinçons ont été créés.');
-            this.router.navigate(['/dashboard']);
-          },
-          error: err => {
-            console.error('❌ Batch upload failed:', err);
-            alert('Erreur lors de la création des poinçons');
-          }
-        });
-      },
-      error: err => {
-        console.error('❌ Upload fiche failed:', err);
-        alert('Erreur lors de l’upload du fichier.');
-      }
-    });
+    
   }
   
   

@@ -1,4 +1,229 @@
-/* You can add global styles to this file, and also import other style files */
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body, html { background: #fff; }
+      .main_container { margin-left: 260px; transition: margin-left 0.2s; }
+      @media (max-width: 991px) { .main_container { margin-left: 0; } }
+      .page-title {
+        font-size: 2rem;
+        color: #2c3e50;
+        font-weight: 500;
+        margin-bottom: 32px;
+        margin-top: 24px;
+      }
+      .table-container {
+        background: #f5f8fa;
+        border-radius: 12px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        padding: 32px 24px;
+        margin-bottom: 32px;
+      }
+      .table thead th {
+        background: #eaf1f5;
+        color: #2c3e50;
+        font-weight: 600;
+        border-bottom: 2px solid #dbe3ea;
+      }
+      .table tbody tr {
+        background: #fff;
+        transition: background 0.18s;
+      }
+      .table tbody tr:hover {
+        background: #eaf1f5;
+      }
+      .table td, .table th {
+        vertical-align: middle !important;
+      }
+      .action-btn {
+        border: none;
+        background: none;
+        color: #2980b9;
+        font-size: 1.2rem;
+        margin-right: 8px;
+        cursor: pointer;
+        transition: color 0.18s;
+      }
+      .action-btn.delete { color: #e74c3c; }
+      .action-btn:hover { color: #00a8ff; }
+      .action-btn.delete:hover { color: #c0392b; }
+      .add-btn {
+        background: #009eff;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 18px;
+        font-size: 1rem;
+        font-weight: 500;
+        margin-bottom: 18px;
+        float: right;
+        transition: background 0.18s;
+      }
+      .add-btn:hover { background: #2980b9; }
+  
+      body, html {
+        background: #fff;
+      }
+      .modern-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 240px;
+        background: #111827;
+        border-radius: 18px 0 0 18px;
+        box-shadow: 2px 0 16px rgba(44, 62, 80, 0.10);
+        display: flex;
+        flex-direction: column;
+        z-index: 1050;
+        padding: 18px 0 0 0;
+        border-top-left-radius: 32px;
+      }
+      .modern-sidebar .sidebar-logo {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+      .modern-sidebar .sidebar-logo svg {
+        width: 38px;
+        height: 38px;
+        color: #00a8ff;
+      }
+      .modern-sidebar nav {
+        flex: 1;
+      }
+      .modern-sidebar ul {
+        list-style: none;
+        padding: 0 0 0 0;
+        margin: 0;
+      }
+      .modern-sidebar li {
+        margin-bottom: 8px;
+      }
+      .modern-sidebar a {
+        display: flex;
+        align-items: center;
+        color: #cbd5e1;
+        font-size: 1.08rem;
+        font-weight: 500;
+        padding: 12px 24px;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: background 0.18s, color 0.18s;
+      }
+      .modern-sidebar a:hover, .modern-sidebar li.active > a {
+        background: #1e293b;
+        color: #fff;
+      }
+      .modern-sidebar a i {
+        margin-right: 16px;
+        font-size: 1.3rem;
+        opacity: 0.92;
+        color: #00a8ff;
+        transition: color 0.18s;
+      }
+      .modern-sidebar a:hover i, .modern-sidebar li.active > a i {
+        color: #fff;
+      }
+      .modern-sidebar .sidebar-bottom {
+        margin-top: auto;
+        padding-bottom: 24px;
+        position: relative;
+      }
+      .modern-sidebar .settings-btn {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        color: #cbd5e1;
+        font-size: 1.08rem;
+        font-weight: 500;
+        padding: 12px 24px;
+        border-radius: 8px;
+        background: none;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        transition: background 0.18s, color 0.18s;
+      }
+      .modern-sidebar .settings-btn:hover, .modern-sidebar .settings-btn.active {
+        background: #1e293b;
+        color: #fff;
+      }
+      .modern-sidebar .settings-btn i {
+        margin-right: 16px;
+        font-size: 1.3rem;
+        color: #00a8ff;
+        transition: color 0.18s;
+      }
+      .modern-sidebar .settings-btn:hover i, .modern-sidebar .settings-btn.active i {
+        color: #fff;
+      }
+      .settings-dropdown {
+        display: none;
+        position: absolute;
+        left: 24px;
+        bottom: 56px;
+        background: #1e293b;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(44,62,80,0.18);
+        min-width: 170px;
+        z-index: 2000;
+        padding: 8px 0;
+      }
+      .settings-dropdown.show {
+        display: block;
+      }
+      .settings-dropdown a {
+        color: #cbd5e1;
+        padding: 10px 24px;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        border-radius: 8px;
+        transition: background 0.18s, color 0.18s;
+      }
+      .settings-dropdown a i {
+        margin-right: 10px;
+        color: #00a8ff;
+        font-size: 1.1rem;
+      }
+      .settings-dropdown a:hover {
+        background: #00a8ff;
+        color: #fff;
+      }
+      .settings-dropdown a:hover i {
+        color: #fff;
+      }
+      @media (max-width: 991px) {
+        .modern-sidebar {
+          position: static;
+          width: 100%;
+          height: auto;
+          border-radius: 0;
+          flex-direction: row;
+          box-shadow: none;
+          padding: 0;
+        }
+        .modern-sidebar .sidebar-logo {
+          margin-bottom: 12px;
+        }
+      }
+      .main_container {
+        margin-left: 260px;
+        transition: margin-left 0.2s;
+      }
+      @media (max-width: 991px) {
+        .main_container {
+          margin-left: 0;
+        }
+      }
+      .child_menu {
+        max-height: 1000px;
+        overflow: hidden;
+        transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1);
+      }
+      .child_menu.collapsed {
+        max-height: 0;
+        padding: 0 !important;
+      }
+      .menu-item-has-children > a .fa-chevron-down {
+        transition: transform 0.3s;
+      }
+      .menu-item-has-children.open > a .fa-chevron-down {
+        transform: rotate(-180deg);
+      }

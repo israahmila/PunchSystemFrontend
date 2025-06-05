@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paramètres de profil</title>
+  <!-- Bootstrap -->
+  <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <!-- NProgress -->
+  <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+  <!-- Custom Theme Style -->
+  <link href="../build/css/custom.min.css" rel="stylesheet">
+  <style>
+    body, html { background: #111827; margin: 0; padding: 0; font-family: 'Arial', sans-serif; }
+    .main_container { margin-left: 260px; transition: margin-left 0.2s; background: #f4f6f9; }
+    @media (max-width: 991px) { .main_container { margin-left: 0; } }
+    .page-title { 
+      font-size: 2rem; 
+      color: #2c3e50; 
+      font-weight: 500; 
+      margin-bottom: 24px; 
+      margin-top: 24px; 
+      padding-left: 20px; 
+    }
+    .form-container { 
+      background: #f5f8fa; 
+      border-radius: 12px; 
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04); 
+      padding: 32px 24px; 
+      margin: 0 20px 32px 20px; 
+      max-width: 500px; 
+    }
+    .form-group { 
+      margin-bottom: 20px; 
+    }
+    .form-group label { 
+      font-size: 1.1rem; 
+      color: #34495e; 
+      font-weight: 500; 
+      margin-bottom: 8px; 
+      display: block; 
+    }
+    .form-group input { 
+      width: 100%; 
+      padding: 10px; 
+      border: 1px solid #dbe6ee; 
+      border-radius: 6px; 
+      background: #f8fafb; 
+      font-size: 1rem; 
+    }
+    .btn-primary { 
+      background: #2980b9; 
+      color: #fff; 
+      border: none; 
+      border-radius: 6px; 
+      padding: 10px 22px; 
+      font-size: 1rem; 
+      font-weight: 500; 
+      box-shadow: 0 2px 8px rgba(44,62,80,0.08); 
+      transition: background 0.2s; 
+      text-decoration: none; 
+      display: inline-block; 
+    }
+    .btn-primary:hover { 
+      background: #1e5f8a; 
+    }
+    .btn-secondary { 
+      background: #95a5a6; 
+      color: #fff; 
+      border: none; 
+      border-radius: 6px; 
+      padding: 10px 22px; 
+      font-size: 1rem; 
+      font-weight: 500; 
+      box-shadow: 0 2px 8px rgba(44,62,80,0.08); 
+      transition: background 0.2s; 
+      text-decoration: none; 
+      display: inline-block; 
+    }
+    .btn-secondary:hover { 
+      background: #7f8c8d; 
+    }
+    .modern-sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 240px;
+      background: #111827;
+      border-radius: 18px 0 0 18px;
+      box-shadow: 2px 0 16px rgba(44, 62, 80, 0.10);
+      display: flex;
+      flex-direction: column;
+      z-index: 1050;
+      padding: 18px 0 0 0;
+      border-top-left-radius: 32px;
+    }
+    .modern-sidebar .sidebar-logo {
+      text-align: center;
+      margin-bottom: 32px;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #00a8ff;
+      letter-spacing: 2px;
+    }
+    .modern-sidebar nav { flex: 1; }
+    .modern-sidebar ul { list-style: none; padding: 0; margin: 0; }
+    .modern-sidebar li { margin-bottom: 8px; }
+    .modern-sidebar a {
+      display: flex;
+      align-items: center;
+      color: #cbd5e1;
+      font-size: 1.08rem;
+      font-weight: 500;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.18s, color 0.18s;
+    }
+    .modern-sidebar a:hover, .modern-sidebar li.active > a {
+      background: #1e293b;
+      color: #fff;
+    }
+    .modern-sidebar a i {
+      margin-right: 16px;
+      font-size: 1.3rem;
+      opacity: 0.92;
+      color: #00a8ff;
+      transition: color 0.18s;
+    }
+    .modern-sidebar a:hover i, .modern-sidebar li.active > a i { color: #fff; }
+    .modern-sidebar .sidebar-bottom {
+      margin-top: auto;
+      padding-bottom: 24px;
+      position: relative;
+    }
+    .modern-sidebar .settings-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      color: #cbd5e1;
+      font-size: 1.08rem;
+      font-weight: 500;
+      padding: 12px 24px;
+      border-radius: 8px;
+      background: none;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s;
+    }
+    .modern-sidebar .settings-btn:hover, .modern-sidebar .settings-btn.active {
+      background: #1e293b;
+      color: #fff;
+    }
+    .modern-sidebar .settings-btn i {
+      margin-right: 16px;
+      font-size: 1.3rem;
+      color: #00a8ff;
+      transition: color 0.18s;
+    }
+    .modern-sidebar .settings-btn:hover i, .modern-sidebar .settings-btn.active i { color: #fff; }
+    .settings-dropdown {
+      display: none;
+      position: absolute;
+      left: 24px;
+      bottom: 56px;
+      background: #1e293b;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(44,62,80,0.18);
+      min-width: 170px;
+      z-index: 2000;
+      padding: 8px 0;
+    }
+    .settings-dropdown.show { display: block; }
+    .settings-dropdown a {
+      color: #cbd5e1;
+      padding: 10px 24px;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      border-radius: 8px;
+      transition: background 0.18s, color 0.18s;
+    }
+    .settings-dropdown a i {
+      margin-right: 10px;
+      color: #00a8ff;
+      font-size: 1.1rem;
+    }
+    .settings-dropdown a:hover { background: #00a8ff; color: #fff; }
+    .settings-dropdown a:hover i { color: #fff; }
+    @media (max-width: 991px) {
+      .modern-sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        border-radius: 0;
+        flex-direction: row;
+        box-shadow: none;
+        padding: 0;
+      }
+      .modern-sidebar .sidebar-logo { margin-bottom: 12px; }
+    }
+    .child_menu {
+      max-height: 1000px;
+      overflow: hidden;
+      transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    .child_menu.collapsed {
+      max-height: 0;
+      padding: 0 !important;
+    }
+  </style>
+</head>
+<body class="nav-md">
+  <div class="container body">
+    <div class="left_col scroll-view custom-sidebar">
+      <div class="modern-sidebar">
+        <div class="sidebar-logo">TERIAK</div>
+        <nav>
+          <ul>
+            <li><a href="index.html"><i class="fa fa-home"></i> Dashboard</a></li>
+            <li class="menu-item-has-children active">
+              <a href="#" id="gestionMenuLink"><i class="fa fa-cogs"></i> Gestion <span class="gestion-arrow" id="gestionArrow" style="display:inline-block;transition:transform 0.3s;"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 8L10 12L14 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+              <ul class="child_menu" id="gestionChildMenu" style="display:block;">
+                <li><a href="utilisateurs.html">Utilisateurs</a></li>
+                <li><a href="produits.html">Produits</a></li>
+                <li><a href="poincons.html">Poinçons</a></li>
+                <li><a href="fournisseurs.html">Fournisseurs</a></li>
+                <li><a href="marques.html">Marques</a></li>
+                <li><a href="etats-poincons.html">États poinçons</a></li>
+                <li><a href="formes-poincons.html">Formes poinçons</a></li>
+                <li><a href="compresseuse.html">Compresseuse</a></li>
+                <li><a href="produit-entretien.html">Produit entretien</a></li>
+              </ul>
+            </li>
+            <li><a href="Suivi_utilisations.html"><i class="fa fa-search"></i> Suivi</a></li>
+            <li><a href="#"><i class="fa fa-history"></i> Historique</a></li>
+          </ul>
+        </nav>
+        <div class="sidebar-bottom">
+          <button class="settings-btn" id="settingsBtn" onclick="toggleSettingsDropdown()">
+            <i class="fa fa-cog"></i> Settings
+          </button>
+          <div class="settings-dropdown" id="settingsDropdown">
+            <a href="#"><i class="fa fa-user"></i> Profile</a>
+            <a href="#"><i class="fa fa-question-circle"></i> Help</a>
+            <a href="login.html"><i class="fa fa-sign-out"></i> Log out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="main_container">
+      <div class="right_col" role="main" style="min-height: 100vh; background: #f4f6f9;">
+        <div class="row" style="display: block;">
+          <div class="col-md-12">
+            <h2 class="page-title">Paramètres de profil</h2>
+            <div class="form-container">
+              <div class="form-group">
+                <label>Nom</label>
+                <input type="text" placeholder="Nom">
+              </div>
+              <div class="form-group">
+                <label>Prénom</label>
+                <input type="text" placeholder="Prénom">
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" placeholder="Email">
+              </div>
+              <div class="form-group">
+                <label>Login</label>
+                <input type="text" placeholder="Login">
+              </div>
+              <div class="form-group">
+                <label>Role</label>
+                <input type="text" placeholder="Role">
+              </div>
+              <button class="btn-primary">Ajouter une photo de profil</button>
+              <button class="btn-secondary" style="margin-left: 10px;">Supprimer la photo actuelle</button>
+              <div style="margin-top: 20px;">
+                <a href="Modifier-mot-de-passe.html" class="btn-primary">Changer mon mot de passe</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- jQuery -->
+  <script src="../vendors/jquery/dist/jquery.min.js"></script>
+  <!-- Bootstrap -->
+  <script src="../vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- FastClick -->
+  <script src="../vendors/fastclick/lib/fastclick.js"></script>
+  <!-- NProgress -->
+  <script src="../vendors/nprogress/nprogress.js"></script>
+  <!-- Custom Theme Scripts -->
+  <script src="../build/js/custom.min.js"></script>
+  <script>
+    document.getElementById('gestionMenuLink').onclick = function(e) {
+      e.preventDefault();
+      var menuItem = this.parentElement;
+      var childMenu = document.getElementById('gestionChildMenu');
+      var arrow = document.getElementById('gestionArrow');
+      var isOpen = menuItem.classList.contains('open');
+      if (isOpen) {
+        menuItem.classList.remove('open');
+        childMenu.style.display = 'none';
+        arrow.style.transform = 'rotate(0deg)';
+      } else {
+        menuItem.classList.add('open');
+        childMenu.style.display = 'block';
+        arrow.style.transform = 'rotate(180deg)';
+      }
+    };
+
+    function toggleSettingsDropdown() {
+      var dropdown = document.getElementById('settingsDropdown');
+      dropdown.classList.toggle('show');
+    }
+
+    document.addEventListener('click', function(event) {
+      var dropdown = document.getElementById('settingsDropdown');
+      var btn = document.getElementById('settingsBtn');
+      if (!btn.contains(event.target) && !dropdown.contains(event.target)) {
+        dropdown.classList.remove('show');
+      }
+    });
+  </script>
+</body>
+</html>

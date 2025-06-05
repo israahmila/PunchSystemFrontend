@@ -1,48 +1,38 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatListModule } from '@angular/material/list';
-import { NgIf } from '@angular/common';
-import { MatExpansionModule} from '@angular/material/expansion';
+import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthService } from '../../../core/auth.service';
-import { can } from '../../../core/utils/permission.utils';
+import { NgIf, NgFor } from '@angular/common';
 import { PermissionService } from '../../../core/permission.service';
-import { Permission } from '../../../gestion/utilisateurs/utilisateur.model';
 
 @Component({
+  selector: 'app-sidebar',
   standalone: true,
-  selector: 'app-shell',
+  imports: [RouterModule, NgIf],
   templateUrl: './shell.component.html',
-  styleUrl: './shell.component.scss',
-  imports: [
-    RouterOutlet,
-    MatSidenavModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    MatMenuModule,
-    MatListModule,
-    MatExpansionModule,
-    RouterModule
-  ]
+  styleUrls: ['./shell.component.scss']
 })
-export class ShellComponent {
-  permissions: string[] = [];
+export class SidebarComponent implements OnInit {
+  suiviOpen = false; // ✅ Variable de toggle du sous-menu
 
-constructor(
-  private authService: AuthService,
-  private permissionService: PermissionService
-) {
-  this.permissions = this.authService.getPermissions();
-  this.permissionService.loadPermissions(this.permissions); // 🔁 direct
+  constructor(public permissionService: PermissionService) {}
+
+
+ngOnInit(): void {
+  const storedPermissions = localStorage.getItem('user_permissions');
+  if (storedPermissions) {
+    const parsed = JSON.parse(storedPermissions);
+    this.permissionService.loadPermissions(parsed);
+  } else {
+    console.warn('Aucune permission trouvée dans localStorage');
+  }
 }
 
-can(permission: string): boolean {
-  return this.permissionService.has(permission); // ✅ simple & clair
+
+  has(permission: string): boolean {
+    return this.permissionService.has(permission);
+  }
+
+  toggleSuiviMenu(): void {
+    this.suiviOpen = !this.suiviOpen;
+  }
 }
-}
+

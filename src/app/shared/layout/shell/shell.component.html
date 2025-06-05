@@ -1,120 +1,284 @@
-<mat-sidenav-container class="layout-container">
-    <!-- Sidebar -->
-    <mat-sidenav mode="side" opened class="sidenav">
-      <!-- Logo/Header -->
-      <mat-toolbar color="primary" class="sidenav-title">
-        LOGO
-      </mat-toolbar>
+<style>
+      body, html { background: #fff; }
+      .main_container { margin-left: 260px; transition: margin-left 0.2s; }
+      @media (max-width: 991px) { .main_container { margin-left: 0; } }
+      .page-title {
+        font-size: 2rem;
+        color: #2c3e50;
+        font-weight: 500;
+        margin-bottom: 32px;
+        margin-top: 24px;
+      }
+      .table-container {
+        background: #f5f8fa;
+        border-radius: 12px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        padding: 32px 24px;
+        margin-bottom: 32px;
+      }
+      .table thead th {
+        background: #eaf1f5;
+        color: #2c3e50;
+        font-weight: 600;
+        border-bottom: 2px solid #dbe3ea;
+      }
+      .table tbody tr {
+        background: #fff;
+        transition: background 0.18s;
+      }
+      .table tbody tr:hover {
+        background: #eaf1f5;
+      }
+      .table td, .table th {
+        vertical-align: middle !important;
+      }
+      .action-btn {
+        border: none;
+        background: none;
+        color: #2980b9;
+        font-size: 1.2rem;
+        margin-right: 8px;
+        cursor: pointer;
+        transition: color 0.18s;
+      }
+      .action-btn.delete { color: #e74c3c; }
+      .action-btn:hover { color: #00a8ff; }
+      .action-btn.delete:hover { color: #c0392b; }
+      .add-btn {
+        background: #009eff;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 18px;
+        font-size: 1rem;
+        font-weight: 500;
+        margin-bottom: 18px;
+        float: right;
+        transition: background 0.18s;
+      }
+      .add-btn:hover { background: #2980b9; }
   
-      <!-- Navigation -->
-      <mat-nav-list >
-        <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link">
-          <mat-icon>dashboard</mat-icon>
-          <span>Dashboard</span>
-        </a>
-  
-        <mat-divider></mat-divider>
-  
-        <!-- Gestion Group -->
-        <div class="nav-section-title">Gestion</div>
-  
-        <a mat-list-item routerLink="/gestion/poincon/liste" routerLinkActive="active-link" (click)="debugClick('poincon')">
-          <mat-icon>category</mat-icon>
-          <span>Poinçons</span>
-        </a>
-  
-        <a mat-list-item routerLink="/gestion/utilisateurs" routerLinkActive="active-link">
-          <mat-icon>group</mat-icon>
-          <span>Utilisateurs</span>
-        </a>
-  
-        <a mat-list-item routerLink="/gestion/fournisseurs" routerLinkActive="active-link">
-          <mat-icon>store</mat-icon>
-          <span>Fournisseurs</span>
-        </a>
-  
-        <a mat-list-item routerLink="/gestion/marques" routerLinkActive="active-link">
-          <mat-icon>branding_watermark</mat-icon>
-          <span>Marques</span>
-        </a>
-  
-        <a mat-list-item routerLink="/gestion/formes" routerLinkActive="active-link">
-          <mat-icon>layers</mat-icon>
-          <span>Formes Poinçons</span>
-        </a>
-  
-        <a mat-list-item routerLink="/gestion/emplacement" routerLinkActive="active-link">
-          <mat-icon>place</mat-icon>
-          <span>Emplacements</span>
-        </a>
-  
-        <a mat-list-item routerLink="/gestion/etats" routerLinkActive="active-link">
-          <mat-icon>flag</mat-icon>
-          <span>États Poinçons</span>
-        </a>
-  
-        <a mat-list-item routerLink="/gestion/compresseuse" routerLinkActive="active-link">
-          <mat-icon>precision_manufacturing</mat-icon>
-          <span>Compresseuses</span>
-        </a>
-  
-        <a mat-list-item routerLink="/gestion/produits-entretien" routerLinkActive="active-link">
-          <mat-icon>science</mat-icon>
-          <span>Produits Entretien</span>
-        </a>
-  
-        <mat-divider></mat-divider>
-  
-        <!-- Suivi -->
-        
-  
-        <div class="nav-section-title">Suivi</div>
-        <a mat-list-item routerLink="/suivi/utilisation/liste" routerLinkActive="active-link" >
-          <mat-icon>search</mat-icon>
-          <span>Utilisation</span>
-        </a>
+      body, html {
+        background: #fff;
+      }
+      .modern-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 240px;
+        background: #111827;
+        border-radius: 18px 0 0 18px;
+        box-shadow: 2px 0 16px rgba(44, 62, 80, 0.10);
+        display: flex;
+        flex-direction: column;
+        z-index: 1050;
+        padding: 18px 0 0 0;
+        border-top-left-radius: 32px;
+      }
+      .modern-sidebar .sidebar-logo {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+      .modern-sidebar .sidebar-logo svg {
+        width: 38px;
+        height: 38px;
+        color: #00a8ff;
+      }
+      .modern-sidebar nav {
+        flex: 1;
+      }
+      .modern-sidebar ul {
+        list-style: none;
+        padding: 0 0 0 0;
+        margin: 0;
+      }
+      .modern-sidebar li {
+        margin-bottom: 8px;
+      }
+      .modern-sidebar a {
+        display: flex;
+        align-items: center;
+        color: #cbd5e1;
+        font-size: 1.08rem;
+        font-weight: 500;
+        padding: 12px 24px;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: background 0.18s, color 0.18s;
+      }
+      .modern-sidebar a:hover, .modern-sidebar li.active > a {
+        background: #1e293b;
+        color: #fff;
+      }
+      .modern-sidebar a i {
+        margin-right: 16px;
+        font-size: 1.3rem;
+        opacity: 0.92;
+        color: #00a8ff;
+        transition: color 0.18s;
+      }
+      .modern-sidebar a:hover i, .modern-sidebar li.active > a i {
+        color: #fff;
+      }
+      .modern-sidebar .sidebar-bottom {
+        margin-top: auto;
+        padding-bottom: 24px;
+        position: relative;
+      }
+      .modern-sidebar .settings-btn {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        color: #cbd5e1;
+        font-size: 1.08rem;
+        font-weight: 500;
+        padding: 12px 24px;
+        border-radius: 8px;
+        background: none;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        transition: background 0.18s, color 0.18s;
+      }
+      .modern-sidebar .settings-btn:hover, .modern-sidebar .settings-btn.active {
+        background: #1e293b;
+        color: #fff;
+      }
+      .modern-sidebar .settings-btn i {
+        margin-right: 16px;
+        font-size: 1.3rem;
+        color: #00a8ff;
+        transition: color 0.18s;
+      }
+      .modern-sidebar .settings-btn:hover i, .modern-sidebar .settings-btn.active i {
+        color: #fff;
+      }
+      .settings-dropdown {
+        display: none;
+        position: absolute;
+        left: 24px;
+        bottom: 56px;
+        background: #1e293b;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(44,62,80,0.18);
+        min-width: 170px;
+        z-index: 2000;
+        padding: 8px 0;
+      }
+      .settings-dropdown.show {
+        display: block;
+      }
+      .settings-dropdown a {
+        color: #cbd5e1;
+        padding: 10px 24px;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        border-radius: 8px;
+        transition: background 0.18s, color 0.18s;
+      }
+      .settings-dropdown a i {
+        margin-right: 10px;
+        color: #00a8ff;
+        font-size: 1.1rem;
+      }
+      .settings-dropdown a:hover {
+        background: #00a8ff;
+        color: #fff;
+      }
+      .settings-dropdown a:hover i {
+        color: #fff;
+      }
+      @media (max-width: 991px) {
+        .modern-sidebar {
+          position: static;
+          width: 100%;
+          height: auto;
+          border-radius: 0;
+          flex-direction: row;
+          box-shadow: none;
+          padding: 0;
+        }
+        .modern-sidebar .sidebar-logo {
+          margin-bottom: 12px;
+        }
+      }
+      .main_container {
+        margin-left: 260px;
+        transition: margin-left 0.2s;
+      }
+      @media (max-width: 991px) {
+        .main_container {
+          margin-left: 0;
+        }
+      }
+      .child_menu {
+        max-height: 1000px;
+        overflow: hidden;
+        transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1);
+      }
+      .child_menu.collapsed {
+        max-height: 0;
+        padding: 0 !important;
+      }
+      .menu-item-has-children > a .fa-chevron-down {
+        transition: transform 0.3s;
+      }
+      .menu-item-has-children.open > a .fa-chevron-down {
+        transform: rotate(-180deg);
+      }
+    </style>
+<body class="nav-md">
+    <div class="container body">
+        <div class="left_col scroll-view custom-sidebar">
+          <div class="modern-sidebar">
+            <div class="sidebar-logo" style="font-size:2rem;font-weight:700;color:#009eff;letter-spacing:2px;text-align:center;margin-bottom:32px;">TERIAK</div>
+  <nav>
+    <ul>
+      <li>
+        <a routerLink="/dashboard"><i class="fa fa-home"></i> Dashboard</a>
+      </li>
 
-        <a mat-list-item routerLink="/suivi/entretien/liste" routerLinkActive="active-link">
-          <mat-icon>search</mat-icon>
-          <span>Entretiens</span>
-        </a>
-  
-        <mat-divider></mat-divider>
-  
-        <!-- Historique -->
-        <div class="nav-section-title">Historique</div>
-        <a mat-list-item routerLink="/historique/auditTrail" routerLinkActive="active-link">
-          <mat-icon>history</mat-icon>
-          <span>AUDIT trail</span>
-        </a>
-      </mat-nav-list>
-    </mat-sidenav>
-  
-    <!-- Main App Content -->
-    <mat-sidenav-content>
-      <!-- Topbar -->
-      <mat-toolbar color="primary" class="topbar">
-        <span class="page-title">Dashboard</span>
-        <span class="spacer"></span>
-  
-        <button mat-icon-button [matMenuTriggerFor]="userMenu">
-          <mat-icon>account_circle</mat-icon>
-        </button>
-  
-        <mat-menu #userMenu="matMenu">
-          <button mat-menu-item>
-            <mat-icon>person</mat-icon> Profil
-          </button>
-          <button mat-menu-item (click)="logout()">
-            <mat-icon>logout</mat-icon> Se déconnecter
-          </button>
-        </mat-menu>
-      </mat-toolbar>
-  
-      <!-- Routed View -->
-      <main class="content">
-        <router-outlet></router-outlet>
-      </main>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
-  
+      <li *ngIf="has('User.Manage')">
+        <a routerLink="/gestion/utilisateur/liste"><i class="fa fa-users"></i> Utilisateurs</a>
+      </li>
+
+      <li *ngIf="has('Produit.Manage')">
+        <a routerLink="/gestion/produit/liste"><i class="fa fa-cube"></i> Produits</a>
+      </li>
+
+      <li *ngIf="has('Poincon.Manage')">
+        <a routerLink="/gestion/poincon/liste"><i class="fa fa-certificate"></i> Poinçons</a>
+      </li>
+
+      <li *ngIf="has('Utilisation.Manage') || has('Entretien.Manage')" class="menu-item-has-children">
+        <a id="suiviMenuLink" (click)="toggleSuiviMenu()"><i class="fa fa-search"></i> Suivi <i class="fa fa-chevron-down"></i></a>
+        <ul *ngIf="suiviOpen">
+          <li *ngIf="has('Utilisation.Manage')">
+            <a routerLink="/suivi/utilisation/liste">Liste Utilisations</a>
+          </li>
+          <li *ngIf="has('Entretien.Manage')">
+            <a routerLink="/suivi/entretien/liste">Liste Entretien</a>
+          </li>
+        </ul>
+      </li>
+
+      <li *ngIf="has('Audit.View') || has('LoginHistory.View')">
+        <a><i class="fa fa-history"></i> Historique <i class="fa fa-chevron-down"></i></a>
+        <ul>
+          <li *ngIf="has('LoginHistory.View')">
+            <a routerLink="/historique/connexion">Connexions</a>
+          </li>
+          <li *ngIf="has('Audit.View')">
+            <a routerLink="/suivi/auditTrail">Audit Trail</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</div>
+<router-outlet></router-outlet>
+</div>
+</div>
+</body>

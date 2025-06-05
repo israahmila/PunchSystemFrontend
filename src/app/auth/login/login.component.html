@@ -1,4 +1,4 @@
-<div class="login-wrapper">
+<!--<div class="login-wrapper">
   <h2>Connexion</h2>
 
   <form (ngSubmit)="login()" #loginForm="ngForm" class="login-form">
@@ -53,4 +53,41 @@
       Identifiants invalides. Réessayez.
     </mat-error>
   </form>
-</div>
+</div>!-->
+
+
+  <body class="login">
+    <div>
+      <a class="hiddenanchor" id="signin"></a>
+
+      <div class="login_wrapper">
+        <div class="animate form login_form">
+          <section class="login_content">
+            <form (ngSubmit)="login()" #loginForm="ngForm" class="login-form">
+              <h1>Login Form</h1>
+              <div>
+                <input type="text" class="form-control" placeholder="Username" required="" [(ngModel)]="username" name="username"
+        #usernameField="ngModel"/>
+              </div>
+              <div>
+                <input type="password" class="form-control" placeholder="Password" required="" [(ngModel)]="password" name="password"
+        #passwordField="ngModel"
+        autocomplete="off"/>
+              </div>
+              <div>
+                <button class="btn btn-default submit"  type="submit"
+      [disabled]="loginForm.invalid">Log in</button>
+              </div>
+
+              <div class="clearfix"></div>
+
+
+            </form>
+          </section>
+        </div>
+
+        
+      </div>
+    </div>
+  </body>
+

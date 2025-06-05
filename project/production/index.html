@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" href="images/favicon.ico" type="image/ico" />
+
+    <title>Gentelella Alela!</title>
+
+    <!-- Bootstrap -->
+    <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+	
+    <!-- bootstrap-progressbar -->
+    <link href="../vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    <!-- JQVMap -->
+    <link href="../vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
+    <!-- bootstrap-daterangepicker -->
+    <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../build/css/custom.min.css" rel="stylesheet">
+    <!--<link href="custom-dashboard.css" rel="stylesheet">-->
+    <link href="modern-tables.css" rel="stylesheet">
+    <style>
+      body, html { background: #111827; }
+      .main_container { margin-left: 260px; transition: margin-left 0.2s; }
+      @media (max-width: 991px) { .main_container { margin-left: 0; } }
+      .page-title {
+        font-size: 2rem;
+        color: #2c3e50;
+        font-weight: 500;
+        margin-bottom: 32px;
+        margin-top: 24px;
+      }
+      .table-container {
+        background: #f5f8fa;
+        border-radius: 12px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        padding: 32px 24px;
+        margin-bottom: 32px;
+      }
+      .table thead th {
+        background: #eaf1f5;
+        color: #2c3e50;
+        font-weight: 600;
+        border-bottom: 2px solid #dbe3ea;
+      }
+      .table tbody tr {
+        background: #fff;
+        transition: background 0.18s;
+      }
+      .table tbody tr:hover {
+        background: #eaf1f5;
+      }
+      .table td, .table th {
+        vertical-align: middle !important;
+      }
+      .action-btn {
+        border: none;
+        background: none;
+        color: #2980b9;
+        font-size: 1.2rem;
+        margin-right: 8px;
+        cursor: pointer;
+        transition: color 0.18s;
+      }
+      .action-btn.delete { color: #e74c3c; }
+      .action-btn:hover { color: #00a8ff; }
+      .action-btn.delete:hover { color: #c0392b; }
+      .add-btn {
+        background: #009eff;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 18px;
+        font-size: 1rem;
+        font-weight: 500;
+        margin-bottom: 18px;
+        float: right;
+        transition: background 0.18s;
+      }
+      .add-btn:hover { background: #2980b9; }
+  
+      body, html {
+        background: #111827;
+      }
+      .modern-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 240px;
+        background: #111827;
+        border-radius: 18px 0 0 18px;
+        box-shadow: 2px 0 16px rgba(44, 62, 80, 0.10);
+        display: flex;
+        flex-direction: column;
+        z-index: 1050;
+        padding: 18px 0 0 0;
+        border-top-left-radius: 32px;
+      }
+      .modern-sidebar .sidebar-logo {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+      .modern-sidebar .sidebar-logo svg {
+        width: 38px;
+        height: 38px;
+        color: #00a8ff;
+      }
+      .modern-sidebar nav {
+        flex: 1;
+      }
+      .modern-sidebar ul {
+        list-style: none;
+        padding: 0 0 0 0;
+        margin: 0;
+      }
+      .modern-sidebar li {
+        margin-bottom: 8px;
+      }
+      .modern-sidebar a {
+        display: flex;
+        align-items: center;
+        color: #cbd5e1;
+        font-size: 1.08rem;
+        font-weight: 500;
+        padding: 12px 24px;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: background 0.18s, color 0.18s;
+      }
+      .modern-sidebar a:hover, .modern-sidebar li.active > a {
+        background: #1e293b;
+        color: #fff;
+      }
+      .modern-sidebar a i {
+        margin-right: 16px;
+        font-size: 1.3rem;
+        opacity: 0.92;
+        color: #00a8ff;
+        transition: color 0.18s;
+      }
+      .modern-sidebar a:hover i, .modern-sidebar li.active > a i {
+        color: #fff;
+      }
+      .modern-sidebar .sidebar-bottom {
+        margin-top: auto;
+        padding-bottom: 24px;
+        position: relative;
+      }
+      .modern-sidebar .settings-btn {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        color: #cbd5e1;
+        font-size: 1.08rem;
+        font-weight: 500;
+        padding: 12px 24px;
+        border-radius: 8px;
+        background: none;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        transition: background 0.18s, color 0.18s;
+      }
+      .modern-sidebar .settings-btn:hover, .modern-sidebar .settings-btn.active {
+        background: #1e293b;
+        color: #fff;
+      }
+      .modern-sidebar .settings-btn i {
+        margin-right: 16px;
+        font-size: 1.3rem;
+        color: #00a8ff;
+        transition: color 0.18s;
+      }
+      .modern-sidebar .settings-btn:hover i, .modern-sidebar .settings-btn.active i {
+        color: #fff;
+      }
+      .settings-dropdown {
+        display: none;
+        position: absolute;
+        left: 24px;
+        bottom: 56px;
+        background: #1e293b;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(44,62,80,0.18);
+        min-width: 170px;
+        z-index: 2000;
+        padding: 8px 0;
+      }
+      .settings-dropdown.show {
+        display: block;
+      }
+      .settings-dropdown a {
+        color: #cbd5e1;
+        padding: 10px 24px;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        border-radius: 8px;
+        transition: background 0.18s, color 0.18s;
+      }
+      .settings-dropdown a i {
+        margin-right: 10px;
+        color: #00a8ff;
+        font-size: 1.1rem;
+      }
+      .settings-dropdown a:hover {
+        background: #00a8ff;
+        color: #fff;
+      }
+      .settings-dropdown a:hover i {
+        color: #fff;
+      }
+      @media (max-width: 991px) {
+        .modern-sidebar {
+          position: static;
+          width: 100%;
+          height: auto;
+          border-radius: 0;
+          flex-direction: row;
+          box-shadow: none;
+          padding: 0;
+        }
+        .modern-sidebar .sidebar-logo {
+          margin-bottom: 12px;
+        }
+      }
+      .main_container {
+        margin-left: 260px;
+        transition: margin-left 0.2s;
+      }
+      @media (max-width: 991px) {
+        .main_container {
+          margin-left: 0;
+        }
+      }
+      .child_menu {
+        max-height: 1000px;
+        overflow: hidden;
+        transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1);
+      }
+      .child_menu.collapsed {
+        max-height: 0;
+        padding: 0 !important;
+      }
+      .menu-item-has-children > a .fa-chevron-down {
+        transition: transform 0.3s;
+      }
+      .menu-item-has-children.open > a .fa-chevron-down {
+        transform: rotate(-180deg);
+      }
+    </style>  
+
+  </head>
+
+  <body class="nav-md">
+    <div class="container body">
+        <div class="left_col scroll-view custom-sidebar">
+          <div class="modern-sidebar">
+            <div class="sidebar-logo" style="font-size:2rem;font-weight:700;color:#009eff;letter-spacing:2px;text-align:center;margin-bottom:32px;">LOGO</div>
+            <nav>
+              <ul>
+                <li><a href="index.html"><i class="fa fa-home"></i> Dashboard</a></li>
+                <li><a href="tables.html"><i class="fa fa-users"></i> Utilisateurs</a></li>
+                <li><a href="produits.html"><i class="fa fa-cube"></i> Produits</a></li>
+                <li><a href="poincons.html"><i class="fa fa-certificate"></i> Poinçons</a></li>
+                <li class="menu-item-has-children">
+                  <a href="#" id="suiviMenuLink"><i class="fa fa-search"></i> Suivi <span class="suivi-arrow" id="suiviArrow" style="display:inline-block;transition:transform 0.3s;"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 8L10 12L14 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                  <ul class="child_menu" id="suiviChildMenu" style="display:none;">
+                    <li><a href="Suivi_utilisations.html">Liste Utilisations</a></li>
+                    <li><a href="Suivi_entretien.html">Liste Entretien</a></li>
+                  </ul>
+                </li>
+                <li><a href="#"><i class="fa fa-history"></i> Historique</a></li>
+              </ul>
+            </nav>
+            <div class="sidebar-bottom">
+              <button class="settings-btn" id="settingsBtn" onclick="toggleSettingsDropdown()">
+                <i class="fa fa-cog"></i> Settings
+              </button>
+              <div class="settings-dropdown" id="settingsDropdown">
+                <a href="#"><i class="fa fa-user"></i> Profile</a>
+                <a href="#"><i class="fa fa-question-circle"></i> Help</a>
+                <a href="login.html"><i class="fa fa-sign-out"></i> Log out</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- page content -->
+        <div class="right_col" role="main" style="min-height: 100vh; background: #fff;">
+          <div style="padding: 40px 40px 0 40px;">
+            <h1 style="font-size: 2.2rem; color: #2c3e50; font-weight: 400;">Dashboard</h1>
+            <!-- Status Tiles -->
+            <div class="row" style="margin-top: 30px; margin-bottom: 40px;">
+              <div class="col-md-2 col-sm-4 col-xs-6" style="margin-bottom: 20px;">
+                <div style="background: #f5f8fa; border-radius: 8px; padding: 18px 10px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.03);">
+                  <div style="font-size: 18px; color: #7b8a99; margin-bottom: 6px;"><i class="fa fa-user"></i> Total Users</div>
+                  <div style="font-size: 24px; color: #2c3e50; font-weight: 600;">2500</div>
+                  <div style="font-size: 13px; color: #27ae60;">+4% cette semaine</div>
+            </div>
+          </div>
+              <div class="col-md-2 col-sm-4 col-xs-6" style="margin-bottom: 20px;">
+                <div style="background: #f5f8fa; border-radius: 8px; padding: 18px 10px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.03);">
+                  <div style="font-size: 18px; color: #7b8a99; margin-bottom: 6px;"><i class="fa fa-clock-o"></i> Average Time</div>
+                  <div style="font-size: 24px; color: #2c3e50; font-weight: 600;">123.50</div>
+                  <div style="font-size: 13px; color: #27ae60;">+3% cette semaine</div>
+                    </div>
+                  </div>
+              <div class="col-md-2 col-sm-4 col-xs-6" style="margin-bottom: 20px;">
+                <div style="background: #f5f8fa; border-radius: 8px; padding: 18px 10px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.03);">
+                  <div style="font-size: 18px; color: #7b8a99; margin-bottom: 6px;"><i class="fa fa-male"></i> Total Males</div>
+                  <div style="font-size: 24px; color: #2c3e50; font-weight: 600;">2,500</div>
+                  <div style="font-size: 13px; color: #27ae60;">+34% cette semaine</div>
+                </div>
+              </div>
+              <div class="col-md-2 col-sm-4 col-xs-6" style="margin-bottom: 20px;">
+                <div style="background: #f5f8fa; border-radius: 8px; padding: 18px 10px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.03);">
+                  <div style="font-size: 18px; color: #7b8a99; margin-bottom: 6px;"><i class="fa fa-female"></i> Total Females</div>
+                  <div style="font-size: 24px; color: #2c3e50; font-weight: 600;">4,567</div>
+                  <div style="font-size: 13px; color: #e74c3c;">-12% cette semaine</div>
+                </div>
+                  </div>
+              <div class="col-md-2 col-sm-4 col-xs-6" style="margin-bottom: 20px;">
+                <div style="background: #f5f8fa; border-radius: 8px; padding: 18px 10px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.03);">
+                  <div style="font-size: 18px; color: #7b8a99; margin-bottom: 6px;"><i class="fa fa-database"></i> Total Collections</div>
+                  <div style="font-size: 24px; color: #2c3e50; font-weight: 600;">2,315</div>
+                  <div style="font-size: 13px; color: #27ae60;">+34% cette semaine</div>
+                        </div>
+                      </div>
+              <div class="col-md-2 col-sm-4 col-xs-6" style="margin-bottom: 20px;">
+                <div style="background: #f5f8fa; border-radius: 8px; padding: 18px 10px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.03);">
+                  <div style="font-size: 18px; color: #7b8a99; margin-bottom: 6px;"><i class="fa fa-link"></i> Total Connections</div>
+                  <div style="font-size: 24px; color: #2c3e50; font-weight: 600;">7,325</div>
+                  <div style="font-size: 13px; color: #27ae60;">+34% cette semaine</div>
+                        </div>
+                      </div>
+                    </div>
+            <!-- End Status Tiles -->
+            <!-- Modernized Main Chart and Widgets -->
+            <div class="row" style="margin-bottom: 40px;">
+              <div class="col-md-8 col-sm-12">
+                <div style="background: #f5f8fa; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); padding: 24px; margin-bottom: 24px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
+                    <h3 style="margin: 0; font-size: 1.3rem; color: #2c3e50; font-weight: 500;">Network Activities <span style="font-size: 1rem; color: #7b8a99; font-weight: 400;">Graph title sub-title</span></h3>
+                    <div style="background: #fff; border: 1px solid #dbe3ea; border-radius: 6px; padding: 6px 14px; font-size: 14px; color: #2c3e50; cursor: pointer;">
+                      <i class="fa fa-calendar"></i> May 30, 2025 - June 1, 2025 <span class="fa fa-caret-down"></span>
+                    </div>
+                  </div>
+                  <div id="chart_plot_01" style="height: 240px;"></div>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-12">
+                <div style="background: #f5f8fa; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); padding: 24px; margin-bottom: 24px;">
+                  <h4 style="font-size: 1.1rem; color: #2c3e50; font-weight: 500; margin-bottom: 18px;">Top Campaign Performance</h4>
+                  <div style="margin-bottom: 12px;">
+                    <span style="color: #7b8a99;">Facebook Campaign</span>
+                    <div class="progress" style="height: 8px; background: #eaeaea; border-radius: 4px;">
+                      <div class="progress-bar bg-success" role="progressbar" style="width: 80%; background: #27ae60;"></div>
+                    </div>
+                        </div>
+                  <div style="margin-bottom: 12px;">
+                    <span style="color: #7b8a99;">Twitter Campaign</span>
+                    <div class="progress" style="height: 8px; background: #eaeaea; border-radius: 4px;">
+                      <div class="progress-bar bg-info" role="progressbar" style="width: 60%; background: #2980b9;"></div>
+                    </div>
+                  </div>
+                  <div style="margin-bottom: 12px;">
+                    <span style="color: #7b8a99;">Conventional Media</span>
+                    <div class="progress" style="height: 8px; background: #eaeaea; border-radius: 4px;">
+                      <div class="progress-bar bg-warning" role="progressbar" style="width: 40%; background: #f39c12;"></div>
+                    </div>
+                        </div>
+                  <div>
+                    <span style="color: #7b8a99;">Bill boards</span>
+                    <div class="progress" style="height: 8px; background: #eaeaea; border-radius: 4px;">
+                      <div class="progress-bar bg-danger" role="progressbar" style="width: 50%; background: #e74c3c;"></div>
+                    </div>
+                  </div>
+                        </div>
+                      </div>
+                    </div>
+            <div class="row" style="margin-bottom: 40px;">
+              <div class="col-md-4 col-sm-6">
+                <div style="background: #f5f8fa; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); padding: 24px; margin-bottom: 24px;">
+                  <h4 style="font-size: 1.1rem; color: #2c3e50; font-weight: 500; margin-bottom: 18px;">App Versions</h4>
+                  <div style="margin-bottom: 10px; color: #7b8a99;">0.1.5.2 <span style="float:right;">123k</span></div>
+                  <div class="progress" style="height: 8px; background: #eaeaea; border-radius: 4px; margin-bottom: 10px;">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 66%; background: #27ae60;"></div>
+                    </div>
+                  <div style="margin-bottom: 10px; color: #7b8a99;">0.1.5.3 <span style="float:right;">53k</span></div>
+                  <div class="progress" style="height: 8px; background: #eaeaea; border-radius: 4px; margin-bottom: 10px;">
+                    <div class="progress-bar bg-info" role="progressbar" style="width: 45%; background: #2980b9;"></div>
+                  </div>
+                  <div style="margin-bottom: 10px; color: #7b8a99;">0.1.5.4 <span style="float:right;">23k</span></div>
+                  <div class="progress" style="height: 8px; background: #eaeaea; border-radius: 4px; margin-bottom: 10px;">
+                    <div class="progress-bar bg-warning" role="progressbar" style="width: 25%; background: #f39c12;"></div>
+                    </div>
+                  <div style="margin-bottom: 10px; color: #7b8a99;">0.1.5.5 <span style="float:right;">3k</span></div>
+                  <div class="progress" style="height: 8px; background: #eaeaea; border-radius: 4px; margin-bottom: 10px;">
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: 5%; background: #e74c3c;"></div>
+                  </div>
+                  <div style="margin-bottom: 10px; color: #7b8a99;">0.1.5.6 <span style="float:right;">1k</span></div>
+                  <div class="progress" style="height: 8px; background: #eaeaea; border-radius: 4px;">
+                    <div class="progress-bar bg-secondary" role="progressbar" style="width: 2%; background: #7b8a99;"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-6">
+                <div style="background: #f5f8fa; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); padding: 24px; margin-bottom: 24px;">
+                  <h4 style="font-size: 1.1rem; color: #2c3e50; font-weight: 500; margin-bottom: 18px;">Device Usage</h4>
+                  <div style="margin-bottom: 10px; color: #7b8a99;">IOS <span style="float:right;">30%</span></div>
+                  <div class="progress" style="height: 8px; background: #eaeaea; border-radius: 4px; margin-bottom: 10px;">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 30%; background: #27ae60;"></div>
+            </div>
+                  <div style="margin-bottom: 10px; color: #7b8a99;">Android <span style="float:right;">10%</span></div>
+                  <div class="progress" style="height: 8px; background: #eaeaea; border-radius: 4px; margin-bottom: 10px;">
+                    <div class="progress-bar bg-info" role="progressbar" style="width: 10%; background: #2980b9;"></div>
+                        </div>
+                  <div style="margin-bottom: 10px; color: #7b8a99;">Blackberry <span style="float:right;">20%</span></div>
+                  <div class="progress" style="height: 8px; background: #eaeaea; border-radius: 4px; margin-bottom: 10px;">
+                    <div class="progress-bar bg-warning" role="progressbar" style="width: 20%; background: #f39c12;"></div>
+                </div>
+                  <div style="margin-bottom: 10px; color: #7b8a99;">Symbian <span style="float:right;">15%</span></div>
+                  <div class="progress" style="height: 8px; background: #eaeaea; border-radius: 4px; margin-bottom: 10px;">
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: 15%; background: #e74c3c;"></div>
+                        </div>
+                  <div style="margin-bottom: 10px; color: #7b8a99;">Others <span style="float:right;">30%</span></div>
+                  <div class="progress" style="height: 8px; background: #eaeaea; border-radius: 4px;">
+                    <div class="progress-bar bg-secondary" role="progressbar" style="width: 30%; background: #7b8a99;"></div>
+                        </div>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-12">
+                <div style="background: #f5f8fa; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); padding: 24px; margin-bottom: 24px;">
+                  <h4 style="font-size: 1.1rem; color: #2c3e50; font-weight: 500; margin-bottom: 18px;">Quick Settings</h4>
+                  <ul style="list-style: none; padding: 0; margin: 0 0 18px 0;">
+                    <li style="margin-bottom: 8px;"><i class="fa fa-calendar-o"></i> <a href="#" style="color: #2980b9;">Settings</a></li>
+                    <li style="margin-bottom: 8px;"><i class="fa fa-bars"></i> <a href="#" style="color: #2980b9;">Subscription</a></li>
+                    <li style="margin-bottom: 8px;"><i class="fa fa-bar-chart"></i> <a href="#" style="color: #2980b9;">Auto Renewal</a></li>
+                    <li style="margin-bottom: 8px;"><i class="fa fa-line-chart"></i> <a href="#" style="color: #2980b9;">Achievements</a></li>
+                    <li style="margin-bottom: 8px;"><i class="fa fa-area-chart"></i> <a href="#" style="color: #2980b9;">Logout</a></li>
+                  </ul>
+                  <div style="background: #fff; border-radius: 8px; padding: 12px; text-align: center;">
+                    <span style="font-size: 1.1rem; color: #7b8a99;">Profile Completion</span>
+                    <div style="margin: 10px 0;">
+                      <span style="font-size: 1.5rem; color: #27ae60;">50%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" style="margin-bottom: 40px;">
+              <div class="col-md-4 col-sm-12">
+                <div style="background: #f5f8fa; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); padding: 24px; margin-bottom: 24px;">
+                  <h4 style="font-size: 1.1rem; color: #2c3e50; font-weight: 500; margin-bottom: 18px;">Recent Activities</h4>
+                  <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li style="margin-bottom: 12px;">
+                      <span style="color: #2c3e50; font-weight: 500;">Who Needs Sundance When You've Got Crowdfunding?</span><br>
+                      <span style="color: #7b8a99; font-size: 13px;">13 hours ago by Jane Smith</span>
+                    </li>
+                    <li style="margin-bottom: 12px;">
+                      <span style="color: #2c3e50; font-weight: 500;">Film festivals used to be do-or-die moments for movie makers...</span><br>
+                      <span style="color: #7b8a99; font-size: 13px;">10 hours ago by John Doe</span>
+                    </li>
+                  </ul>
+                </div>
+                            </div>
+              <div class="col-md-8 col-sm-12">
+                <div style="background: #f5f8fa; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); padding: 24px; margin-bottom: 24px;">
+                  <h4 style="font-size: 1.1rem; color: #2c3e50; font-weight: 500; margin-bottom: 18px;">Visitors Location</h4>
+                  <div id="visitors-map" style="height: 180px; background: #fff; border-radius: 8px;"></div>
+                  <div style="margin-top: 12px; color: #7b8a99;">125.7k Views from 60 countries</div>
+                  <table style="width: 100%; margin-top: 10px; color: #2c3e50;">
+                    <tr><td>United States</td><td style="text-align:right;">33%</td></tr>
+                    <tr><td>France</td><td style="text-align:right;">27%</td></tr>
+                    <tr><td>Germany</td><td style="text-align:right;">16%</td></tr>
+                    <tr><td>Spain</td><td style="text-align:right;">11%</td></tr>
+                    <tr><td>Britain</td><td style="text-align:right;">10%</td></tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="row" style="margin-bottom: 40px;">
+              <div class="col-md-6 col-sm-12">
+                <div style="background: #f5f8fa; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); padding: 24px; margin-bottom: 24px;">
+                  <h4 style="font-size: 1.1rem; color: #2c3e50; font-weight: 500; margin-bottom: 18px;">To Do List</h4>
+                  <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li style="margin-bottom: 10px;"><input type="checkbox" style="margin-right: 8px;">Schedule meeting with new client</li>
+                    <li style="margin-bottom: 10px;"><input type="checkbox" style="margin-right: 8px;">Create email address for new intern</li>
+                    <li style="margin-bottom: 10px;"><input type="checkbox" style="margin-right: 8px;">Have IT fix the network printer</li>
+                    <li style="margin-bottom: 10px;"><input type="checkbox" style="margin-right: 8px;">Copy backups to offsite location</li>
+                      </ul>
+                    </div>
+                        </div>
+              <div class="col-md-6 col-sm-12">
+                <div style="background: #f5f8fa; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); padding: 24px; margin-bottom: 24px;">
+                  <h4 style="font-size: 1.1rem; color: #2c3e50; font-weight: 500; margin-bottom: 18px;">Weather Widget</h4>
+                  <div style="display: flex; align-items: center;">
+                    <div style="font-size: 48px; color: #2980b9; margin-right: 18px;"><i class="fa fa-sun-o"></i></div>
+                    <div>
+                      <div style="font-size: 1.5rem; color: #2c3e50;">23°C</div>
+                      <div style="color: #7b8a99;">Partly Cloudy Day</div>
+                      <div style="color: #7b8a99; font-size: 13px;">Monday, 07:30 AM</div>
+                    </div>
+                  </div>
+                  <div style="margin-top: 18px; display: flex; justify-content: space-between;">
+                    <div style="text-align: center;">
+                      <div style="color: #2c3e50;">Mon</div>
+                      <div style="color: #2c3e50;">25°C</div>
+                </div>
+                    <div style="text-align: center;">
+                      <div style="color: #2c3e50;">Tue</div>
+                      <div style="color: #2c3e50;">25°C</div>
+              </div>
+                    <div style="text-align: center;">
+                      <div style="color: #2c3e50;">Wed</div>
+                      <div style="color: #2c3e50;">27°C</div>
+                    </div>
+                    <div style="text-align: center;">
+                      <div style="color: #2c3e50;">Thu</div>
+                      <div style="color: #2c3e50;">28°C</div>
+                    </div>
+                    <div style="text-align: center;">
+                      <div style="color: #2c3e50;">Fri</div>
+                      <div style="color: #2c3e50;">28°C</div>
+                    </div>
+                    <div style="text-align: center;">
+                      <div style="color: #2c3e50;">Sat</div>
+                      <div style="color: #2c3e50;">26°C</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+              </div>
+          </div>
+        </div>
+        <!-- /page content -->
+
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="../vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="../vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- FastClick -->
+    <script src="../vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="../vendors/nprogress/nprogress.js"></script>
+    <!-- Chart.js -->
+    <script src="../vendors/Chart.js/dist/Chart.min.js"></script>
+    <!-- gauge.js -->
+    <script src="../vendors/gauge.js/dist/gauge.min.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="../vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <!-- iCheck -->
+    <script src="../vendors/iCheck/icheck.min.js"></script>
+    <!-- Skycons -->
+    <script src="../vendors/skycons/skycons.js"></script>
+    <!-- Flot -->
+    <script src="../vendors/Flot/jquery.flot.js"></script>
+    <script src="../vendors/Flot/jquery.flot.pie.js"></script>
+    <script src="../vendors/Flot/jquery.flot.time.js"></script>
+    <script src="../vendors/Flot/jquery.flot.stack.js"></script>
+    <script src="../vendors/Flot/jquery.flot.resize.js"></script>
+    <!-- Flot plugins -->
+    <script src="../vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+    <script src="../vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+    <script src="../vendors/flot.curvedlines/curvedLines.js"></script>
+    <!-- DateJS -->
+    <script src="../vendors/DateJS/build/date.js"></script>
+    <!-- JQVMap -->
+    <script src="../vendors/jqvmap/dist/jquery.vmap.js"></script>
+    <script src="../vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+    <script src="../vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="../vendors/moment/min/moment.min.js"></script>
+    <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="../build/js/custom.min.js"></script>
+	
+    <script>
+    $(function(){
+      if ($('#visitors-map').length) {
+        $('#visitors-map').vectorMap({
+          map: 'world_en',
+          backgroundColor: '#eaf1f5',
+          color: '#b0c4d4',
+          borderColor: '#fff',
+          hoverOpacity: 0.7,
+          selectedColor: '#2de0c2',
+          enableZoom: true,
+          showTooltip: true,
+          values: {},
+          scaleColors: ['#2de0c2', '#2980b9'],
+          normalizeFunction: 'polynomial'
+        });
+      }
+    });
+    </script>
+
+    <!-- Dashboard Content Start -->
+    <div id="dashboard-content">
+      <!-- existing dashboard content here (status tiles, charts, etc.) -->
+    </div>
+    <!-- Dashboard Content End -->
+    <script>
+      function toggleSettingsDropdown() {
+        var dropdown = document.getElementById('settingsDropdown');
+        dropdown.classList.toggle('show');
+      }
+      document.addEventListener('click', function(event) {
+        var dropdown = document.getElementById('settingsDropdown');
+        var btn = document.getElementById('settingsBtn');
+        if (!btn.contains(event.target) && !dropdown.contains(event.target)) {
+          dropdown.classList.remove('show');
+        }
+      });
+      // Suivi dropmenu toggle
+      document.getElementById('suiviMenuLink').onclick = function(e) {
+        e.preventDefault();
+        var menuItem = this.parentElement;
+        var childMenu = document.getElementById('suiviChildMenu');
+        var arrow = document.getElementById('suiviArrow');
+        var isOpen = menuItem.classList.contains('open');
+        if (isOpen) {
+          menuItem.classList.remove('open');
+          childMenu.style.display = 'none';
+          arrow.style.transform = 'rotate(0deg)';
+        } else {
+          menuItem.classList.add('open');
+          childMenu.style.display = 'block';
+          arrow.style.transform = 'rotate(180deg)';
+        }
+      };
+    </script>
+  </body>
+</html>

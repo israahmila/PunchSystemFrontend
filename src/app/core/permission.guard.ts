@@ -7,13 +7,12 @@ export function permissionGuard(permission: string): CanActivateFn {
   return () => {
     const permissionService = inject(PermissionService);
     const router = inject(Router);
-    const [module, action] = permission.split('.');
-    const hasPermission = permissionService.can(module, action as 'consulter' | 'ajouter' | 'modifier' | 'supprimer');
-
-    if (!hasPermission) {
+    
+    if (!permissionService.can(permission)) {
       router.navigate(['/dashboard']);
       return false;
     }
     return true;
   };
 }
+

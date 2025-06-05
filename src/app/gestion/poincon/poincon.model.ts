@@ -1,5 +1,5 @@
 export interface Poincon {
-    id : number;
+    id : string;
     codeFormat: string;
     forme: string;
     marque: string;

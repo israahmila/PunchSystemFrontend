@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Liste Entretiens</title>
+  <!-- Bootstrap -->
+  <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <!-- NProgress -->
+  <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+  <!-- Custom Theme Style -->
+  <link href="../build/css/custom.min.css" rel="stylesheet">
+  <style>
+    body, html { background: #111827; margin: 0; padding: 0; font-family: 'Arial', sans-serif; }
+    .main_container { margin-left: 260px; transition: margin-left 0.2s; background: #f4f6f9; }
+    @media (max-width: 991px) { .main_container { margin-left: 0; } }
+    .page-title { 
+      font-size: 2rem; 
+      color: #2c3e50; 
+      font-weight: 500; 
+      margin-bottom: 24px; 
+      margin-top: 24px; 
+      padding-left: 20px; 
+    }
+    .table-container { 
+      background: #f5f8fa; 
+      border-radius: 12px; 
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04); 
+      padding: 32px 24px; 
+      margin: 0 20px 32px 20px; 
+    }
+    .table-modern { 
+      width: 100%; 
+      border-collapse: collapse; 
+      margin-bottom: 0; 
+    }
+    .table-modern thead th { 
+      background: #4e6a81; 
+      color: #fff; 
+      font-weight: 600; 
+      padding: 12px 15px; 
+      border-bottom: 2px solid #dbe3ea; 
+      text-align: left; 
+    }
+    .table-modern tbody tr { 
+      background: #fff; 
+      transition: background 0.18s; 
+    }
+    .table-modern tbody tr:hover { 
+      background: #eaf1f5; 
+    }
+    .table-modern td { 
+      padding: 12px 15px; 
+      border-bottom: 1px solid #dbe6ee; 
+      color: #5a6a81; 
+      vertical-align: middle; 
+    }
+    .add-btn { 
+      background: #2980b9; 
+      color: #fff; 
+      border: none; 
+      border-radius: 6px; 
+      padding: 10px 22px; 
+      font-size: 1rem; 
+      font-weight: 500; 
+      box-shadow: 0 2px 8px rgba(44,62,80,0.08); 
+      transition: background 0.2s; 
+      text-decoration: none; 
+      display: inline-block; 
+    }
+    .add-btn:hover { 
+      background: #1e5f8a; 
+    }
+    .modern-sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 240px;
+      background: #111827;
+      border-radius: 18px 0 0 18px;
+      box-shadow: 2px 0 16px rgba(44, 62, 80, 0.10);
+      display: flex;
+      flex-direction: column;
+      z-index: 1050;
+      padding: 18px 0 0 0;
+      border-top-left-radius: 32px;
+    }
+    .modern-sidebar .sidebar-logo {
+      text-align: center;
+      margin-bottom: 32px;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #00a8ff;
+      letter-spacing: 2px;
+    }
+    .modern-sidebar nav { flex: 1; }
+    .modern-sidebar ul { list-style: none; padding: 0; margin: 0; }
+    .modern-sidebar li { margin-bottom: 8px; }
+    .modern-sidebar a {
+      display: flex;
+      align-items: center;
+      color: #cbd5e1;
+      font-size: 1.08rem;
+      font-weight: 500;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.18s, color 0.18s;
+    }
+    .modern-sidebar a:hover, .modern-sidebar li.active > a {
+      background: #1e293b;
+      color: #fff;
+    }
+    .modern-sidebar a i {
+      margin-right: 16px;
+      font-size: 1.3rem;
+      opacity: 0.92;
+      color: #00a8ff;
+      transition: color 0.18s;
+    }
+    .modern-sidebar a:hover i, .modern-sidebar li.active > a i { color: #fff; }
+    .modern-sidebar .sidebar-bottom {
+      margin-top: auto;
+      padding-bottom: 24px;
+      position: relative;
+    }
+    .modern-sidebar .settings-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      color: #cbd5e1;
+      font-size: 1.08rem;
+      font-weight: 500;
+      padding: 12px 24px;
+      border-radius: 8px;
+      background: none;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s;
+    }
+    .modern-sidebar .settings-btn:hover, .modern-sidebar .settings-btn.active {
+      background: #1e293b;
+      color: #fff;
+    }
+    .modern-sidebar .settings-btn i {
+      margin-right: 16px;
+      font-size: 1.3rem;
+      color: #00a8ff;
+      transition: color 0.18s;
+    }
+    .modern-sidebar .settings-btn:hover i, .modern-sidebar .settings-btn.active i { color: #fff; }
+    .settings-dropdown {
+      display: none;
+      position: absolute;
+      left: 24px;
+      bottom: 56px;
+      background: #1e293b;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(44,62,80,0.18);
+      min-width: 170px;
+      z-index: 2000;
+      padding: 8px 0;
+    }
+    .settings-dropdown.show { display: block; }
+    .settings-dropdown a {
+      color: #cbd5e1;
+      padding: 10px 24px;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      border-radius: 8px;
+      transition: background 0.18s, color 0.18s;
+    }
+    .settings-dropdown a i {
+      margin-right: 10px;
+      color: #00a8ff;
+      font-size: 1.1rem;
+    }
+    .settings-dropdown a:hover { background: #00a8ff; color: #fff; }
+    .settings-dropdown a:hover i { color: #fff; }
+    @media (max-width: 991px) {
+      .modern-sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        border-radius: 0;
+        flex-direction: row;
+        box-shadow: none;
+        padding: 0;
+      }
+      .modern-sidebar .sidebar-logo { margin-bottom: 12px; }
+    }
+    .child_menu {
+      max-height: 1000px;
+      overflow: hidden;
+      transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    .child_menu.collapsed {
+      max-height: 0;
+      padding: 0 !important;
+    }
+    .modern-search-bar { 
+      display: flex; 
+      align-items: center; 
+    }
+    .modern-search-input { 
+      flex: 1; 
+      padding: 10px 14px; 
+      border: 1.5px solid #dbe6ee; 
+      border-radius: 6px; 
+      background: #f8fafb; 
+      font-size: 1.1rem; 
+    }
+    .modern-search-btn { 
+      background: #2980b9; 
+      color: #fff; 
+      border: none; 
+      border-radius: 6px; 
+      padding: 10px; 
+      margin-left: 8px; 
+    }
+    /* Popup Styles */
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(44, 62, 80, 0.18);
+      z-index: 99999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .popup.show {
+      display: flex !important;
+    }
+    .popup-content {
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(44, 62, 80, 0.13);
+      min-width: 300px;
+      max-width: 400px;
+      text-align: left;
+    }
+    .popup-content h3 {
+      font-size: 1.5rem;
+      color: #2c3e50;
+      margin-bottom: 16px;
+    }
+    .popup-content label {
+      font-size: 1.1rem;
+      color: #34495e;
+      font-weight: 500;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .popup-content input,
+    .popup-content select,
+    .popup-content textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 16px;
+      border: 1px solid #dbe6ee;
+      border-radius: 4px;
+      background: #f8fafb;
+      font-size: 1rem;
+    }
+    .popup-content textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+    .popup-content .popup-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .popup-content .cancel-btn {
+      background: #aab7c4;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.18s;
+    }
+    .popup-content .cancel-btn:hover {
+      background: #9ca7b4;
+    }
+    .popup-content .save-btn {
+      background: #2980b9;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.18s;
+    }
+    .popup-content .save-btn:hover {
+      background: #1e5f8a;
+    }
+    .popup-close {
+      position: absolute;
+      top: 10px;
+      right: 16px;
+      font-size: 1.3rem;
+      cursor: pointer;
+      color: #b0c4d4;
+    }
+  </style>
+</head>
+<body class="nav-md">
+  <div class="container body">
+    <div class="left_col scroll-view custom-sidebar">
+      <div class="modern-sidebar">
+        <div class="sidebar-logo">TERIAK</div>
+        <nav>
+          <ul>
+            <li><a href="index.html"><i class="fa fa-home"></i> Dashboard</a></li>
+            <li><a href="tables.html"><i class="fa fa-users"></i> Utilisateurs</a></li>
+            <li><a href="produits.html"><i class="fa fa-cube"></i> Produits</a></li>
+            <li><a href="poincons.html"><i class="fa fa-certificate"></i> Poinçons</a></li>
+            <li class="menu-item-has-children active">
+              <a href="#" id="suiviMenuLink"><i class="fa fa-search"></i> Suivi <span class="suivi-arrow" id="suiviArrow" style="display:inline-block;transition:transform 0.3s;"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 8L10 12L14 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+              <ul class="child_menu" id="suiviChildMenu" style="display:block;">
+                <li><a href="Suivi_utilisations.html">Liste Utilisations</a></li>
+                <li><a href="Suivi_entretien.html" style="background:#1e293b;color:#fff;">Liste Entretien</a></li>
+              </ul>
+            </li>
+            <li><a href="#"><i class="fa fa-history"></i> Historique</a></li>
+          </ul>
+        </nav>
+        <div class="sidebar-bottom">
+          <button class="settings-btn" id="settingsBtn" onclick="toggleSettingsDropdown()">
+            <i class="fa fa-cog"></i> Settings
+          </button>
+          <div class="settings-dropdown" id="settingsDropdown">
+            <a href="#"><i class="fa fa-user"></i> Profile</a>
+            <a href="#"><i class="fa fa-question-circle"></i> Help</a>
+            <a href="login.html"><i class="fa fa-sign-out"></i> Log out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="main_container">
+      <div class="right_col" role="main" style="min-height: 100vh; background: #f4f6f9;">
+        <div class="row" style="display: block;">
+          <div class="col-md-12">
+            <h2 class="page-title">Liste Entretiens</h2>
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; padding: 0 20px;">
+              <form class="modern-search-bar" style="margin:0; flex:1; max-width:340px;" onsubmit="return false;">
+                <input type="text" class="modern-search-input" placeholder="Rechercher..." id="entretien-search-input">
+                <button class="modern-search-btn" type="submit">
+                  <i class="fa fa-search"></i>
+                </button>
+              </form>
+              <button id="add-entretien-btn" class="add-btn">Ajouter</button>
+            </div>
+            <div class="table-container">
+              <table class="table-modern" id="entretiens-table">
+                <thead>
+                  <tr>
+                    <th>Référence</th>
+                    <th>Utilisateur</th>
+                    <th>Référence Poinçon</th>
+                    <th>Statut Poinçon</th>
+                    <th>Type Entretien</th>
+                    <th>Date Entretien</th>
+                    <th>Produit Entretien</th>
+                    <th>Commentaire</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="entretiens-table-body">
+                  <tr style="background:#f8fafb;">
+                    <td>ENT-001</td>
+                    <td>Utilisateur A</td>
+                    <td>P1</td>
+                    <td>Actif</td>
+                    <td>a</td>
+                    <td>2025-06-01</td>
+                    <td>Produit Alpha</td>
+                    <td>Entretien de routine</td>
+                    <td>
+                      <i class="fa fa-pencil edit-entretien-btn" data-index="0" style="color:#f39c12; margin-right:8px; cursor:pointer;"></i>
+                      <i class="fa fa-trash delete-entretien-btn" data-index="0" style="color:#e74c3c; cursor:pointer;"></i>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>ENT-002</td>
+                    <td>Utilisateur B</td>
+                    <td>P2</td>
+                    <td>Inactif</td>
+                    <td>b</td>
+                    <td>2025-05-30</td>
+                    <td>Produit Beta</td>
+                    <td>Révision complète</td>
+                    <td>
+                      <i class="fa fa-pencil edit-entretien-btn" data-index="1" style="color:#f39c12; margin-right:8px; cursor:pointer;"></i>
+                      <i class="fa fa-trash delete-entretien-btn" data-index="1" style="color:#e74c3c; cursor:pointer;"></i>
+                    </td>
+                  </tr>
+                  <tr style="background:#f8fafb;">
+                    <td>ENT-003</td>
+                    <td>Utilisateur C</td>
+                    <td>P3</td>
+                    <td>Actif</td>
+                    <td>a</td>
+                    <td>2025-06-02</td>
+                    <td>Produit Gamma</td>
+                    <td>Test de performance</td>
+                    <td>
+                      <i class="fa fa-pencil edit-entretien-btn" data-index="2" style="color:#f39c12; margin-right:8px; cursor:pointer;"></i>
+                      <i class="fa fa-trash delete-entretien-btn" data-index="2" style="color:#e74c3c; cursor:pointer;"></i>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:24px; padding: 0 20px;">
+              <div></div>
+              <div style="display:flex; gap:8px;">
+                <button style="border:1px solid #b0c4d4; background:#fff; color:#4e6a81; border-radius:6px; padding:6px 14px; font-size:1rem;">1</button>
+                <button style="border:1px solid #b0c4d4; background:#fff; color:#4e6a81; border-radius:6px; padding:6px 14px; font-size:1rem;">2</button>
+                <button style="border:1px solid #b0c4d4; background:#fff; color:#4e6a81; border-radius:6px; padding:6px 14px; font-size:1rem;">3</button>
+                <span style="color:#b0c4d4; font-size:1.1rem; align-self:center;">...</span>
+                <button style="border:1px solid #b0c4d4; background:#fff; color:#4e6a81; border-radius:6px; padding:6px 14px; font-size:1rem;">6</button>
+              </div>
+              <button style="background:#2980b9; color:#fff; border:none; border-radius:6px; padding:10px 22px; font-size:1rem; font-weight:500; box-shadow:0 2px 8px rgba(44,62,80,0.08); transition:background 0.2s;">Exporter</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- jQuery -->
+  <script src="../vendors/jquery/dist/jquery.min.js"></script>
+  <!-- Bootstrap -->
+  <script src="../vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- FastClick -->
+  <script src="../vendors/fastclick/lib/fastclick.js"></script>
+  <!-- NProgress -->
+  <script src="../vendors/nprogress/nprogress.js"></script>
+  <!-- Custom Theme Scripts -->
+  <script src="../build/js/custom.min.js"></script>
+  <script>
+    document.getElementById('suiviMenuLink').onclick = function(e) {
+      e.preventDefault();
+      var menuItem = this.parentElement;
+      var childMenu = document.getElementById('suiviChildMenu');
+      var arrow = document.getElementById('suiviArrow');
+      var isOpen = menuItem.classList.contains('open');
+      if (isOpen) {
+        menuItem.classList.remove('open');
+        childMenu.style.display = 'none';
+        arrow.style.transform = 'rotate(0deg)';
+      } else {
+        menuItem.classList.add('open');
+        childMenu.style.display = 'block';
+        arrow.style.transform = 'rotate(180deg)';
+      }
+    };
+
+    function toggleSettingsDropdown() {
+      var dropdown = document.getElementById('settingsDropdown');
+      dropdown.classList.toggle('show');
+    }
+
+    document.addEventListener('click', function(event) {
+      var dropdown = document.getElementById('settingsDropdown');
+      var btn = document.getElementById('settingsBtn');
+      if (!btn.contains(event.target) && !dropdown.contains(event.target)) {
+        dropdown.classList.remove('show');
+      }
+    });
+
+    // Popup for Adding Entretien
+    document.getElementById('add-entretien-btn').onclick = function() {
+      const popupHtml = `
+        <div id="add-entretien-popup" class="popup show">
+          <div class="popup-content">
+            <h3>Ajouter un Entretien</h3>
+            <span class="popup-close" onclick="document.getElementById('add-entretien-popup').remove();">&times;</span>
+            <form id="add-entretien-form">
+              <label>Référence
+                <input type="text" name="reference" placeholder="Référence">
+              </label>
+              <label>Utilisateur
+                <input type="text" name="utilisateur" placeholder="Utilisateur">
+              </label>
+              <label>Référence poinçon
+                <select name="referencePoincon">
+                  <option value="P1">P1</option>
+                  <option value="P2">P2</option>
+                  <option value="P3">P3</option>
+                </select>
+              </label>
+              <label>Statut Poinçon
+                <select name="statutPoincon">
+                  <option value="Actif">Actif</option>
+                  <option value="Inactif">Inactif</option>
+                </select>
+              </label>
+              <label>Type entretien
+                <select name="typeEntretien">
+                  <option value="a">a</option>
+                  <option value="b">b</option>
+                </select>
+              </label>
+              <label>Date entretien
+                <input type="date" name="dateEntretien">
+              </label>
+              <label>Produit entretien
+                <select name="produitEntretien">
+                  <option value="Produit Alpha">Produit Alpha</option>
+                  <option value="Produit Beta">Produit Beta</option>
+                  <option value="Produit Gamma">Produit Gamma</option>
+                </select>
+              </label>
+              <label>Commentaire
+                <textarea name="commentaire" placeholder="Commentaire"></textarea>
+              </label>
+              <div class="popup-buttons">
+                <button type="button" class="cancel-btn" onclick="document.getElementById('add-entretien-popup').remove();">Annuler</button>
+                <button type="submit" class="save-btn">Enregistrer</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      `;
+      document.body.insertAdjacentHTML('beforeend', popupHtml);
+      document.getElementById('add-entretien-form').onsubmit = function(e) {
+        e.preventDefault();
+        document.getElementById('add-entretien-popup').remove();
+      };
+    };
+
+    // Popup for Modifying Entretien
+    const entretiens = [
+      { reference: 'ENT-001', utilisateur: 'Utilisateur A', referencePoincon: 'P1', statutPoincon: 'Actif', typeEntretien: 'a', dateEntretien: '2025-06-01', produitEntretien: 'Produit Alpha', commentaire: 'Entretien de routine' },
+      { reference: 'ENT-002', utilisateur: 'Utilisateur B', referencePoincon: 'P2', statutPoincon: 'Inactif', typeEntretien: 'b', dateEntretien: '2025-05-30', produitEntretien: 'Produit Beta', commentaire: 'Révision complète' },
+      { reference: 'ENT-003', utilisateur: 'Utilisateur C', referencePoincon: 'P3', statutPoincon: 'Actif', typeEntretien: 'a', dateEntretien: '2025-06-02', produitEntretien: 'Produit Gamma', commentaire: 'Test de performance' }
+    ];
+
+    document.body.addEventListener('click', function(e) {
+      if (e.target.classList.contains('edit-entretien-btn')) {
+        const index = parseInt(e.target.getAttribute('data-index'));
+        const entretien = entretiens[index];
+        const popupHtml = `
+          <div id="edit-entretien-popup" class="popup show">
+            <div class="popup-content">
+              <h3>Modifier un Entretien</h3>
+              <span class="popup-close" onclick="document.getElementById('edit-entretien-popup').remove();">&times;</span>
+              <form id="edit-entretien-form">
+                <label>Référence
+                  <input type="text" name="reference" value="${entretien.reference}">
+                </label>
+                <label>Utilisateur
+                  <input type="text" name="utilisateur" value="${entretien.utilisateur}">
+                </label>
+                <label>Référence poinçon
+                  <select name="referencePoincon">
+                    <option value="P1" ${entretien.referencePoincon === 'P1' ? 'selected' : ''}>P1</option>
+                    <option value="P2" ${entretien.referencePoincon === 'P2' ? 'selected' : ''}>P2</option>
+                    <option value="P3" ${entretien.referencePoincon === 'P3' ? 'selected' : ''}>P3</option>
+                  </select>
+                </label>
+                <label>Statut Poinçon
+                  <select name="statutPoincon">
+                    <option value="Actif" ${entretien.statutPoincon === 'Actif' ? 'selected' : ''}>Actif</option>
+                    <option value="Inactif" ${entretien.statutPoincon === 'Inactif' ? 'selected' : ''}>Inactif</option>
+                  </select>
+                </label>
+                <label>Type entretien
+                  <select name="typeEntretien">
+                    <option value="a" ${entretien.typeEntretien === 'a' ? 'selected' : ''}>a</option>
+                    <option value="b" ${entretien.typeEntretien === 'b' ? 'selected' : ''}>b</option>
+                  </select>
+                </label>
+                <label>Date entretien
+                  <input type="date" name="dateEntretien" value="${entretien.dateEntretien}">
+                </label>
+                <label>Produit entretien
+                  <select name="produitEntretien">
+                    <option value="Produit Alpha" ${entretien.produitEntretien === 'Produit Alpha' ? 'selected' : ''}>Produit Alpha</option>
+                    <option value="Produit Beta" ${entretien.produitEntretien === 'Produit Beta' ? 'selected' : ''}>Produit Beta</option>
+                    <option value="Produit Gamma" ${entretien.produitEntretien === 'Produit Gamma' ? 'selected' : ''}>Produit Gamma</option>
+                  </select>
+                </label>
+                <label>Commentaire
+                  <textarea name="commentaire">${entretien.commentaire}</textarea>
+                </label>
+                <div class="popup-buttons">
+                  <button type="button" class="cancel-btn" onclick="document.getElementById('edit-entretien-popup').remove();">Annuler</button>
+                  <button type="submit" class="save-btn">Enregistrer</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', popupHtml);
+        document.getElementById('edit-entretien-form').onsubmit = function(e) {
+          e.preventDefault();
+          document.getElementById('edit-entretien-popup').remove();
+        };
+      }
+    });
+  </script>
+</body>
+</html>

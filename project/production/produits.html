@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Liste Produits</title>
+    <!-- Bootstrap -->
+    <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="../build/css/custom.min.css" rel="stylesheet">
+    <link href="modern-tables.css" rel="stylesheet">
+    <style>
+      body, html { background: #111827; }
+      .main_container { margin-left: 260px; transition: margin-left 0.2s; }
+      @media (max-width: 991px) { .main_container { margin-left: 0; } }
+      .page-title {
+        font-size: 2rem;
+        color: #2c3e50;
+        font-weight: 500;
+        margin-bottom: 32px;
+        margin-top: 24px;
+      }
+      .table-container {
+        background: #f5f8fa;
+        border-radius: 12px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        padding: 32px 24px;
+        margin-bottom: 32px;
+      }
+      .table thead th {
+        background: #eaf1f5;
+        color: #2c3e50;
+        font-weight: 600;
+        border-bottom: 2px solid #dbe3ea;
+      }
+      .table tbody tr {
+        background: #fff;
+        transition: background 0.18s;
+      }
+      .table tbody tr:hover {
+        background: #eaf1f5;
+      }
+      .table td, .table th {
+        vertical-align: middle !important;
+      }
+      .action-btn {
+        border: none;
+        background: none;
+        color: #2980b9;
+        font-size: 1.2rem;
+        margin-right: 8px;
+        cursor: pointer;
+        transition: color 0.18s;
+      }
+      .action-btn.delete { color: #e74c3c; }
+      .action-btn:hover { color: #00a8ff; }
+      .action-btn.delete:hover { color: #c0392b; }
+      .add-btn {
+        background: #009eff;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 18px;
+        font-size: 1rem;
+        font-weight: 500;
+        margin-bottom: 18px;
+        float: right;
+        transition: background 0.18s;
+      }
+      .add-btn:hover { background: #2980b9; }
+      .modern-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 240px;
+        background: #111827;
+        border-radius: 18px 0 0 18px;
+        box-shadow: 2px 0 16px rgba(44, 62, 80, 0.10);
+        display: flex;
+        flex-direction: column;
+        z-index: 1050;
+        padding: 18px 0 0 0;
+        border-top-left-radius: 32px;
+      }
+      .modern-sidebar .sidebar-logo {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+      .modern-sidebar .sidebar-logo svg {
+        width: 38px;
+        height: 38px;
+        color: #00a8ff;
+      }
+      .modern-sidebar nav {
+        flex: 1;
+      }
+      .modern-sidebar ul {
+        list-style: none;
+        padding: 0 0 0 0;
+        margin: 0;
+      }
+      .modern-sidebar li {
+        margin-bottom: 8px;
+      }
+      .modern-sidebar a {
+        display: flex;
+        align-items: center;
+        color: #cbd5e1;
+        font-size: 1.08rem;
+        font-weight: 500;
+        padding: 12px 24px;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: background 0.18s, color 0.18s;
+      }
+      .modern-sidebar a:hover, .modern-sidebar li.active > a {
+        background: #1e293b;
+        color: #fff;
+      }
+      .modern-sidebar a i {
+        margin-right: 16px;
+        font-size: 1.3rem;
+        opacity: 0.92;
+        color: #00a8ff;
+        transition: color 0.18s;
+      }
+      .modern-sidebar a:hover i, .modern-sidebar li.active > a i {
+        color: #fff;
+      }
+      .modern-sidebar .sidebar-bottom {
+        margin-top: auto;
+        padding-bottom: 24px;
+        position: relative;
+      }
+      .modern-sidebar .settings-btn {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        color: #cbd5e1;
+        font-size: 1.08rem;
+        font-weight: 500;
+        padding: 12px 24px;
+        border-radius: 8px;
+        background: none;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        transition: background 0.18s, color 0.18s;
+      }
+      .modern-sidebar .settings-btn:hover, .modern-sidebar .settings-btn.active {
+        background: #1e293b;
+        color: #fff;
+      }
+      .modern-sidebar .settings-btn i {
+        margin-right: 16px;
+        font-size: 1.3rem;
+        color: #00a8ff;
+        transition: color 0.18s;
+      }
+      .modern-sidebar .settings-btn:hover i, .modern-sidebar .settings-btn.active i {
+        color: #fff;
+      }
+      .settings-dropdown {
+        display: none;
+        position: absolute;
+        left: 24px;
+        bottom: 56px;
+        background: #1e293b;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(44,62,80,0.18);
+        min-width: 170px;
+        z-index: 2000;
+        padding: 8px 0;
+      }
+      .settings-dropdown.show {
+        display: block;
+      }
+      .settings-dropdown a {
+        color: #cbd5e1;
+        padding: 10px 24px;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        border-radius: 8px;
+        transition: background 0.18s, color 0.18s;
+      }
+      .settings-dropdown a i {
+        margin-right: 10px;
+        color: #00a8ff;
+        font-size: 1.1rem;
+      }
+      .settings-dropdown a:hover {
+        background: #00a8ff;
+        color: #fff;
+      }
+      .settings-dropdown a:hover i {
+        color: #fff;
+      }
+      @media (max-width: 991px) {
+        .modern-sidebar {
+          position: static;
+          width: 100%;
+          height: auto;
+          border-radius: 0;
+          flex-direction: row;
+          box-shadow: none;
+          padding: 0;
+        }
+        .modern-sidebar .sidebar-logo {
+          margin-bottom: 12px;
+        }
+      }
+      .main_container {
+        margin-left: 260px;
+        transition: margin-left 0.2s;
+      }
+      @media (max-width: 991px) {
+        .main_container {
+          margin-left: 0;
+        }
+      }
+      .child_menu {
+        max-height: 1000px;
+        overflow: hidden;
+        transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1);
+      }
+      .child_menu.collapsed {
+        max-height: 0;
+        padding: 0 !important;
+      }
+      .menu-item-has-children > a .fa-chevron-down {
+        transition: transform 0.3s;
+      }
+      .menu-item-has-children.open > a .fa-chevron-down {
+        transform: rotate(-180deg);
+      }
+      /* Popup Styles */
+      .popup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(44, 62, 80, 0.18);
+        z-index: 99999;
+        display: none;
+        align-items: center;
+        justify-content: center;
+      }
+      .popup.show {
+        display: flex !important;
+      }
+      .popup-content {
+        background: #ffffff;
+        padding: 24px;
+        border-radius: 8px;
+        box-shadow: 0 4px 16px rgba(44, 62, 80, 0.13);
+        min-width: 300px;
+        max-width: 400px;
+        text-align: left;
+      }
+      .popup-content h3 {
+        font-size: 1.5rem;
+        color: #2c3e50;
+        margin-bottom: 16px;
+      }
+      .popup-content label {
+        font-size: 1.1rem;
+        color: #34495e;
+        font-weight: 500;
+        margin-bottom: 8px;
+        display: block;
+      }
+      .popup-content input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 16px;
+        border: 1px solid #dbe6ee;
+        border-radius: 4px;
+        background: #f8fafb;
+        font-size: 1rem;
+      }
+      .popup-content .poincons-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      .popup-content .retour-btn {
+        background: #aab7c4;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 16px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.18s;
+      }
+      .popup-content .retour-btn:hover {
+        background: #9ca7b4;
+      }
+    </style>
+  </head>
+  <body class="nav-md">
+    <div class="container body">
+      <div class="left_col scroll-view custom-sidebar">
+        <div class="modern-sidebar">
+          <div class="sidebar-logo" style="font-size:2rem;font-weight:700;color:#009eff;letter-spacing:2px;text-align:center;margin-bottom:32px;">LOGO</div>
+          <nav>
+            <ul>
+              <li><a href="index.html"><i class="fa fa-home"></i> Dashboard</a></li>
+              <li><a href="tables.html"><i class="fa fa-users"></i> Utilisateurs</a></li>
+              <li><a href="produits.html"><i class="fa fa-cube"></i> Produits</a></li>
+              <li><a href="poincons.html"><i class="fa fa-certificate"></i> Poinçons</a></li>
+              <li class="menu-item-has-children">
+                <a href="#" id="suiviMenuLink"><i class="fa fa-search"></i> Suivi <span class="suivi-arrow" id="suiviArrow" style="display:inline-block;transition:transform 0.3s;"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 8L10 12L14 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                <ul class="child_menu" id="suiviChildMenu" style="display:none;">
+                  <li><a href="Suivi_utilisations.html">Liste Utilisations</a></li>
+                  <li><a href="Suivi_entretien.html">Liste Entretien</a></li>
+                </ul>
+              </li>
+              <li><a href="#"><i class="fa fa-history"></i> Historique</a></li>
+            </ul>
+          </nav>
+          <div class="sidebar-bottom">
+            <button class="settings-btn" id="settingsBtn" onclick="toggleSettingsDropdown()">
+              <i class="fa fa-cog"></i> Settings
+            </button>
+            <div class="settings-dropdown" id="settingsDropdown">
+              <a href="#"><i class="fa fa-user"></i> Profile</a>
+              <a href="#"><i class="fa fa-question-circle"></i> Help</a>
+              <a href="login.html"><i class="fa fa-sign-out"></i> Log out</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- page content -->
+      <div class="right_col" role="main">
+        <div class="">
+          <div class="row" style="display: block;">
+            <div class="col-md-12">
+              <h2 style="font-size:2rem; color:#2c3e50; font-weight:500; margin-bottom:24px;">Liste Produits</h2>
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:18px;">
+                <form class="modern-search-bar" style="margin:0; flex:1; max-width:340px;" onsubmit="return false;">
+                  <input type="text" class="modern-search-input" placeholder="Rechercher..." id="product-search-input">
+                  <button class="modern-search-btn" type="submit">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </form>
+                <button id="add-product-btn" style="margin-left:16px; background:#2980b9; color:#fff; border:none; border-radius:6px; padding:10px 22px; font-size:1rem; font-weight:500; box-shadow:0 2px 8px rgba(44,62,80,0.08); transition:background 0.2s;">Ajouter</button>
+              </div>
+              <div class="table-modern-container" style="padding:0;">
+                <table class="table-modern" style="margin-bottom:0;" id="products-table">
+                  <thead style="background:#4e6a81; color:#fff;">
+                    <tr>
+                      <th>Code</th>
+                      <th>Designation</th>
+                      <th>Status</th>
+                      <th>Poinçon par défaut</th>
+                      <th>Liste poinçons</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="products-table-body">
+                    <tr style="background:#f8fafb;">
+                      <td>PRD001</td>
+                      <td>Produit Alpha</td>
+                      <td>actif</td>
+                      <td>a</td>
+                      <td><button class="btn-consulter" data-product-index="0" style="background:#f5f7fa; color:#4e6a81; border:1px solid #b0c4d4; border-radius:5px; padding:3px 12px; font-size:0.98em;">Consulter</button></td>
+                      <td>
+                        <i class="fa fa-pencil edit-product-btn" data-index="0" style="color:#f39c12; margin-right:8px; cursor:pointer;"></i>
+                        <i class="fa fa-trash delete-product-btn" data-index="0" style="color:#e74c3c; cursor:pointer;"></i>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>PRD002</td>
+                      <td>Produit Beta</td>
+                      <td>inactif</td>
+                      <td>b</td>
+                      <td><button class="btn-consulter" data-product-index="1" style="background:#f5f7fa; color:#4e6a81; border:1px solid #b0c4d4; border-radius:5px; padding:3px 12px; font-size:0.98em;">Consulter</button></td>
+                      <td>
+                        <i class="fa fa-pencil edit-product-btn" data-index="1" style="color:#f39c12; margin-right:8px; cursor:pointer;"></i>
+                        <i class="fa fa-trash delete-product-btn" data-index="1" style="color:#e74c3c; cursor:pointer;"></i>
+                      </td>
+                    </tr>
+                    <tr style="background:#f8fafb;">
+                      <td>PRD003</td>
+                      <td>Produit Gamma</td>
+                      <td>actif</td>
+                      <td>c</td>
+                      <td><button class="btn-consulter" data-product-index="2" style="background:#f5f7fa; color:#4e6a81; border:1px solid #b0c4d4; border-radius:5px; padding:3px 12px; font-size:0.98em;">Consulter</button></td>
+                      <td>
+                        <i class="fa fa-pencil edit-product-btn" data-index="2" style="color:#f39c12; margin-right:8px; cursor:pointer;"></i>
+                        <i class="fa fa-trash delete-product-btn" data-index="2" style="color:#e74c3c; cursor:pointer;"></i>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:24px;">
+                <div></div>
+                <div style="display:flex; gap:8px;">
+                  <button style="border:1px solid #b0c4d4; background:#fff; color:#4e6a81; border-radius:6px; padding:6px 14px; font-size:1rem;">1</button>
+                  <button style="border:1px solid #b0c4d4; background:#fff; color:#4e6a81; border-radius:6px; padding:6px 14px; font-size:1rem;">2</button>
+                  <button style="border:1px solid #b0c4d4; background:#fff; color:#4e6a81; border-radius:6px; padding:6px 14px; font-size:1rem;">3</button>
+                  <span style="color:#b0c4d4; font-size:1.1rem; align-self:center;">...</span>
+                  <button style="border:1px solid #b0c4d4; background:#fff; color:#4e6a81; border-radius:6px; padding:6px 14px; font-size:1rem;">6</button>
+                </div>
+                <button style="background:#2980b9; color:#fff; border:none; border-radius:6px; padding:10px 22px; font-size:1rem; font-weight:500; box-shadow:0 2px 8px rgba(44,62,80,0.08); transition:background 0.2s;">Exporter</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- jQuery -->
+    <script src="../vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="../vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- FastClick -->
+    <script src="../vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="../vendors/nprogress/nprogress.js"></script>
+    <!-- iCheck -->
+    <script src="../vendors/iCheck/icheck.min.js"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="../build/js/custom.min.js"></script>
+    <script>
+      // Product table interactivity
+      function getProductRowHtml(product, index) {
+        return `<tr${index % 2 === 0 ? ' style="background:#f8fafb;"' : ''}>
+          <td>${product.code}</td>
+          <td>${product.designation}</td>
+          <td>${product.status}</td>
+          <td>${product.poinconDefaut}</td>
+          <td><button class="btn-consulter" data-product-index="${index}" style="background:#f5f7fa; color:#4e6a81; border:1px solid #b0c4d4; border-radius:5px; padding:3px 12px; font-size:0.98em;">Consulter</button></td>
+          <td>
+            <i class="fa fa-pencil edit-product-btn" data-index="${index}" style="color:#f39c12; margin-right:8px; cursor:pointer;"></i>
+            <i class="fa fa-trash delete-product-btn" data-index="${index}" style="color:#e74c3c; cursor:pointer;"></i>
+          </td>
+        </tr>`;
+      }
+      let products = [
+        { code: 'PRD001', designation: 'Produit Alpha', status: 'actif', poinconDefaut: 'a', poincons: ['P001', 'P002', 'P003'] },
+        { code: 'PRD002', designation: 'Produit Beta', status: 'inactif', poinconDefaut: 'b', poincons: ['P004', 'P005'] },
+        { code: 'PRD003', designation: 'Produit Gamma', status: 'actif', poinconDefaut: 'c', poincons: ['P006'] }
+      ];
+      function renderProductsTable() {
+        const tbody = document.getElementById('products-table-body');
+        if (tbody) {
+          tbody.innerHTML = products.map(getProductRowHtml).join('');
+        } else {
+          console.error('products-table-body not found');
+        }
+      }
+      // Add/Edit Product Modal
+      function showProductModal(editIndex = null) {
+        let product = editIndex !== null ? products[editIndex] : { code: '', designation: '', status: 'actif', poinconDefaut: '', poincons: [] };
+        const allPoincons = ['P001', 'P002', 'P003', 'P004', 'P005', 'P006', 'P007', 'P008'];
+        const modalHtml = `
+          <div id="product-modal-bg" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(44,62,80,0.18);z-index:99999;display:flex;align-items:center;justify-content:center;">
+            <div style="background:#fff;padding:32px 28px 20px 28px;border-radius:10px;box-shadow:0 4px 32px rgba(44,62,80,0.13);min-width:340px;max-width:95vw;position:relative;">
+              <h3 style="margin-bottom:18px;font-size:1.7rem;color:#2c3e50;">${editIndex !== null ? 'Modifier' : 'Ajouter'} un Produit</h3>
+              <form id="product-modal-form">
+                <div style="display:flex;flex-direction:column;gap:16px;">
+                  <label style="font-size:1.1rem;color:#34495e;font-weight:500;">Code
+                    <input required name="code" placeholder="Code" value="${product.code}" style="width:100%;margin-top:4px;padding:10px 14px;border-radius:6px;border:1.5px solid #dbe6ee;background:#f8fafb;font-size:1.1rem;">
+                  </label>
+                  <label style="font-size:1.1rem;color:#34495e;font-weight:500;">Désignation
+                    <input required name="designation" placeholder="Désignation" value="${product.designation}" style="width:100%;margin-top:4px;padding:10px 14px;border-radius:6px;border:1.5px solid #dbe6ee;background:#f8fafb;font-size:1.1rem;">
+                  </label>
+                  <label style="font-size:1.1rem;color:#34495e;font-weight:500;">Statut
+                    <select required name="status" style="width:100%;margin-top:4px;padding:10px 14px;border-radius:6px;border:1.5px solid #dbe6ee;background:#f8fafb;font-size:1.1rem;">
+                      <option value="actif" ${product.status==='actif'?'selected':''}>Actif</option>
+                      <option value="inactif" ${product.status==='inactif'?'selected':''}>Inactif</option>
+                    </select>
+                  </label>
+                  <label style="font-size:1.1rem;color:#34495e;font-weight:500;">Poinçons
+                    <select name="poincons" multiple style="width:100%;margin-top:4px;padding:10px 14px;border-radius:6px;border:1.5px solid #dbe6ee;background:#f8fafb;font-size:1.1rem;min-height:80px;">
+                      ${allPoincons.map(p=>`<option value="${p}" ${product.poincons.includes(p)?'selected':''}>${p}</option>`).join('')}
+                    </select>
+                  </label>
+                </div>
+                <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:24px;">
+                  <button type="button" id="product-modal-cancel" style="background:#aab7c4;color:#fff;border:none;border-radius:6px;padding:10px 24px;font-weight:500;font-size:1.1rem;">Annuler</button>
+                  <button type="submit" style="background:#2980b9;color:#fff;border:none;border-radius:6px;padding:10px 24px;font-weight:500;font-size:1.1rem;">Enregistrer</button>
+                </div>
+              </form>
+              <span id="product-modal-close" style="position:absolute;top:10px;right:16px;font-size:1.3rem;cursor:pointer;color:#b0c4d4;">×</span>
+            </div>
+          </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+        document.getElementById('product-modal-close').onclick = document.getElementById('product-modal-cancel').onclick = function() {
+          document.getElementById('product-modal-bg').remove();
+        };
+        document.getElementById('product-modal-form').onsubmit = function(e) {
+          e.preventDefault();
+          const form = e.target;
+          const newProduct = {
+            code: form.code.value,
+            designation: form.designation.value,
+            status: form.status.value,
+            poinconDefaut: '',
+            poincons: Array.from(form.poincons.selectedOptions).map(o=>o.value)
+          };
+          if (editIndex !== null) {
+            products[editIndex] = newProduct;
+          } else {
+            products.push(newProduct);
+          }
+          renderProductsTable();
+          document.getElementById('product-modal-bg').remove();
+        };
+      }
+      // Popup for Poinçon Details
+      function showPoinconPopup(productIndex) {
+        console.log('showPoinconPopup called with index:', productIndex);
+        const product = products[productIndex];
+        if (!product) {
+          console.error('Product not found for index:', productIndex);
+          return;
+        }
+        const poinconList = product.poincons || [];
+        if (poinconList.length === 0) {
+          poinconList.push("Aucun poinçon");
+        }
+        const popupHtml = `
+          <div id="poincon-popup" class="popup show">
+            <div class="popup-content">
+              <h3>Détails poinçons par produit</h3>
+              <label>Poinçons</label>
+              <div class="poincons-container">
+                ${poinconList.map(p => `<input type="text" value="${p}" readonly style="padding: 8px; border: 1px solid #dbe6ee; border-radius: 4px; background: #f8fafb;">`).join('')}
+              </div>
+              <button class="retour-btn" onclick="document.getElementById('poincon-popup').remove();">Retour</button>
+            </div>
+          </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', popupHtml);
+        console.log('Popup HTML added to DOM');
+      }
+      document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM fully loaded');
+        renderProductsTable();
+        const addButton = document.getElementById('add-product-btn');
+        if (addButton) {
+          addButton.onclick = function() {
+            console.log('Add product button clicked');
+            showProductModal();
+          };
+        } else {
+          console.error('Add product button not found');
+        }
+        // Use event delegation with broader scope
+        document.body.addEventListener('click', function(e) {
+          if (e.target.classList.contains('btn-consulter')) {
+            console.log('Consulter button clicked');
+            const productIndex = Number(e.target.getAttribute('data-product-index'));
+            if (isNaN(productIndex)) {
+              console.error('Invalid product index:', e.target.getAttribute('data-product-index'));
+              return;
+            }
+            showPoinconPopup(productIndex);
+          } else if (e.target.classList.contains('edit-product-btn')) {
+            console.log('Edit button clicked');
+            showProductModal(Number(e.target.getAttribute('data-index')));
+          } else if (e.target.classList.contains('delete-product-btn')) {
+            console.log('Delete button clicked');
+            const idx = Number(e.target.getAttribute('data-index'));
+            if (confirm('Supprimer ce produit ?')) {
+              products.splice(idx, 1);
+              renderProductsTable();
+            }
+          }
+        });
+        const searchInput = document.getElementById('product-search-input');
+        if (searchInput) {
+          searchInput.oninput = function(e) {
+            const val = e.target.value.toLowerCase();
+            const tbody = document.getElementById('products-table-body');
+            tbody.innerHTML = products
+              .map((p, i) => Object.values(p).join(' ').toLowerCase().includes(val) ? getProductRowHtml(p, i) : '')
+              .join('');
+          };
+        } else {
+          console.error('Search input not found');
+        }
+        var gestionParent = document.querySelector('.menu-item-has-children > a');
+        var gestionMenu = document.querySelector('.menu-item-has-children .child_menu');
+        var parentLi = document.querySelector('.menu-item-has-children');
+        if (gestionParent && gestionMenu && parentLi) {
+          parentLi.classList.add('open');
+          gestionParent.addEventListener('click', function(e) {
+            e.preventDefault();
+            gestionMenu.classList.toggle('collapsed');
+            parentLi.classList.toggle('open');
+          });
+        }
+        document.getElementById('suiviMenuLink').onclick = function(e) {
+          e.preventDefault();
+          var menuItem = this.parentElement;
+          menuItem.classList.toggle('open');
+          var childMenu = document.getElementById('suiviChildMenu');
+          if (menuItem.classList.contains('open')) {
+            childMenu.style.display = 'block';
+          } else {
+            childMenu.style.display = 'none';
+          }
+        };
+      });
+      function toggleSettingsDropdown() {
+        var dropdown = document.getElementById('settingsDropdown');
+        dropdown.classList.toggle('show');
+      }
+      document.addEventListener('click', function(event) {
+        var dropdown = document.getElementById('settingsDropdown');
+        var btn = document.getElementById('settingsBtn');
+        if (!btn.contains(event.target) && !dropdown.contains(event.target)) {
+          dropdown.classList.remove('show');
+        }
+      });
+    </script>
+  </body>
+</html>
